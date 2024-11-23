@@ -17,6 +17,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <Kernel.h>
 #include "main.h"
 #include "i2c.h"
 #include "spi.h"
@@ -28,7 +29,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "kernel.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,12 +66,23 @@ __io_putchar( //Transmits a character ofer UART
 
 //-----------------------------------------------------------------------
 void
-print_continuously( //Function that serial prints "Hello, PC!"
+thread1( //Function that serial prints "Thread1 Running\n"
 		void)
  {
 	while (1)
 	{
-		printf("Thread1 Running");
+		printf("Thread1 Running\n");
+	}
+ }
+
+//-----------------------------------------------------------------------
+void
+thread2( //Function that serial prints "Thread2 Running\n"
+		void)
+ {
+	while (1)
+	{
+		printf("Thread2 Running\n");
 	}
  }
 
@@ -113,9 +124,16 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI2_Init();
 
-  os_KernelInit();
-  os_CreateThread(print_continuously);
-  os_KernelStart();
+  //If the kernel is successfully initialized, create the threads
+  //TODO later this should be in the scheduler
+  if (os_KernelInit())
+  {
+
+	  //Create the threads
+	  if (os_CreateThread(thread1))
+		  os_KernelStart();
+
+  }
 
   /* USER CODE END 2 */
 

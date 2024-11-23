@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file kernel.h
+ * @file queue.h
  * @date
  * @brief
  ********************************************************************************
  */
 
-#ifndef __KERNEL_H__
-#define __KERNEL_H__
+#ifndef __QUEUE_H__
+#define __QUEUE_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,28 +17,34 @@ extern "C" {
  * INCLUDES
  ************************************/
 #include "BaseTypes.h"
+#include "Kernel.h"
+#include <stddef.h>
 
 /************************************
  * MACROS AND DEFINES
  ************************************/
 
-//Std. Stack Sizes
-#define STACK_SIZE 0x4000
-#define THREAD_STACK_SIZE 0x400
-
-//SVC Numbers
-#define RUN_FIRST_THREAD 0x00
-
 /************************************
  * TYPEDEFS
  ************************************/
 
-// Thread context struct
+//Thread Node Structure
 typedef struct
 {
-	UINT* puiMyThreadStackPointer; //stack pointer for the thread
-	void (*pfnMyThreadFunction)(void*); //thread function pointer
-} ThreadContextStruct;
+	ThreadContextStruct* psThreadData;
+	struct ThreadNode* psNext;
+}
+ThreadNode;
+
+//OSQueue Structure
+typedef struct
+{
+	ThreadNode* psFront;
+	ThreadNode* psRear;
+	UINT uiNumThreads;
+	UINT uiMaxNumThreads;
+}
+OSQueue;
 
 /************************************
  * EXPORTED VARIABLES
@@ -47,10 +53,18 @@ typedef struct
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-BOOLE os_KernelInit(void); //A function that initializes all kernel related functions/data
-void os_KernelStart(void); //A function that starts the OS
-BOOLE os_CreateThread(void (*pfnThreadFunction)(void*)); //A function that creates a thread
+//OSQueue Functions
+OSQueue* os_InitOSQueue(UINT uiMaxNumThreads_);
 
+//OSQueue Operations
+BOOLE os_EnOSQueue(OSQueue* psOSQueue_, ThreadContextStruct* psThreadData_);
+ThreadContextStruct os_DeOSQueue(OSQueue* psOSQueue_);
+
+//OSQueue Getters
+UINT os_GetOSQueueSize(OSQueue* psOSQueue_);
+ThreadNode* os_PeekOSQueue(OSQueue* psOSQueue_);
+BOOLE os_IsOSQueueEmpty(OSQueue* psOSQueue_);
+BOOLE os_IsOSQueueFull(OSQueue* psOSQueue_);
 
 #ifdef __cplusplus
 }
