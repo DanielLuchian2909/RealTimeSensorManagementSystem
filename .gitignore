@@ -1,6 +1,40 @@
-# Eclipse
-.metadata
-.settings
-[Rr]elease
-[Dd]ebug
-.launch
+# STM32CubeIDE Generated Files
+/.settings/
+/Debug/
+/Release/
+*.launch
+*.ide.log
+*.ide.lock
+*.mk
+*.list
+*.map
+*.elf
+*.bin
+*.hex
+*.o
+*.d
+*.a
+*.axf
+*.sct
+*.pyc
+*.pyo
+*.class
+
+# Backup Files
+*.bak
+*~ 
+*.swp
+
+# User-specific settings
+.vscode/
+*.workspace
+*.cproject
+*.project
+*.suo
+*.user
+
+# Logs and Temporary Files
+*.log
+*.tmp
+*.obj
+*.dmp

@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file kernel.h
- * @date
- * @brief
+ * @file scheduler.h
+ * @author Daniel Luchian
+ * @brief Header file for the scheduler
  ********************************************************************************
  */
 
-#ifndef __KERNEL_H__
-#define __KERNEL_H__
+#ifndef __SCHEDULER_H__
+#define __SCHEDULER_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,29 +16,15 @@ extern "C" {
 /************************************
  * INCLUDES
  ************************************/
-#include "BaseTypes.h"
+#include "baseTypes.h" //Basic type definitions and utilities
 
 /************************************
  * MACROS AND DEFINES
  ************************************/
 
-//Std. Stack Sizes
-#define STACK_SIZE 0x4000
-#define THREAD_STACK_SIZE 0x400
-
-//SVC Numbers
-#define RUN_FIRST_THREAD 0x00
-
 /************************************
  * TYPEDEFS
  ************************************/
-
-// Thread context struct
-typedef struct
-{
-	UINT* puiMyThreadStackPointer; //stack pointer for the thread
-	void (*pfnMyThreadFunction)(void*); //thread function pointer
-} ThreadContextStruct;
 
 /************************************
  * EXPORTED VARIABLES
@@ -47,13 +33,10 @@ typedef struct
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-BOOLE os_KernelInit(void); //A function that initializes all kernel related functions/data
-void os_KernelStart(void); //A function that starts the OS
-BOOLE os_CreateThread(void (*pfnThreadFunction)(void*)); //A function that creates a thread
-
+void rtos_Yield(void); //Yield function for the RTOS
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __MY_FILE__
+#endif

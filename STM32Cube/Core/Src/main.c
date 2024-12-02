@@ -17,7 +17,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <Kernel.h>
 #include "main.h"
 #include "i2c.h"
 #include "spi.h"
@@ -27,12 +26,15 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
-#include <stdbool.h>
+
+#include "kernel.h"
+#include "scheduler.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -54,37 +56,15 @@
 /* Private function prototypes -----------------------------------------------*/
 
 void SystemClock_Config(void);
+
 /* USER CODE BEGIN PFP */
-//-----------------------------------------------------------------------
-INT //printed character
-__io_putchar( //Transmits a character ofer UART
-		INT ch) //Characte to print
-{
-	HAL_UART_Transmit(&huart2, (UCHAR*)&ch, 1, HAL_MAX_DELAY);
-	return ch;
-}
+/* I/O Utilities */
+INT __io_putchar(INT ch); //Transmit a character over UART
 
-//-----------------------------------------------------------------------
-void
-thread1( //Function that serial prints "Thread1 Running\n"
-		void)
- {
-	while (1)
-	{
-		printf("Thread1 Running\n");
-	}
- }
-
-//-----------------------------------------------------------------------
-void
-thread2( //Function that serial prints "Thread2 Running\n"
-		void)
- {
-	while (1)
-	{
-		printf("Thread2 Running\n");
-	}
- }
+/* Thread Test Functions */
+void Thread1(void);
+void Thread2(void);
+void Thread3(void);
 
 /* USER CODE END PFP */
 
@@ -124,16 +104,21 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI2_Init();
 
-  //If the kernel is successfully initialized, create the threads
   //TODO later this should be in the scheduler
-  if (os_KernelInit())
-  {
+  rtos_KernelInit();
 
-	  //Create the threads
-	  if (os_CreateThread(thread1))
-		  os_KernelStart();
+  //Create test threads
+  if (!rtos_CreateThread(Thread1))
+	  printf("Thread 1 could not be created.\n");
 
-  }
+  if (!rtos_CreateThread(Thread2))
+	  printf("Thread 2 could not be created.\n");
+
+  if (!rtos_CreateThread(Thread3))
+	  printf("Thread 3 could not be created.\n");
+
+  //TODO later this should be in the scheduler
+  rtos_KernelStart();
 
   /* USER CODE END 2 */
 
@@ -196,6 +181,58 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+//-----------------------------------------------------------------------
+INT //Printed character
+__io_putchar( //Transmits a character ofer UART
+		INT ch) //Character to print
+{
+	//Transmit characters
+	if (HAL_UART_Transmit(&huart2, (UCHAR*)&ch, 1, HAL_MAX_DELAY) != HAL_OK)
+		return -1; //If transmission fail, return error code
+	return ch; //Otherwise reuturn transmitted character
+}
+
+//-----------------------------------------------------------------------
+void
+Thread1( //Function that serial prints "Thread1 Running\n"
+		void)
+ {
+	while (1)
+	{
+		printf("Thread1 Running\n");
+		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
+		HAL_Delay(500);
+		rtos_Yield();
+	}
+ }
+
+//-----------------------------------------------------------------------
+void
+Thread2( //Function that serial prints "Thread2 Running\n"
+		void)
+ {
+	while (1)
+	{
+		printf("Thread2 Running\n");
+		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
+		HAL_Delay(500);
+		rtos_Yield();
+	}
+ }
+
+//-----------------------------------------------------------------------
+void
+Thread3( //Function that serial prints "Thread3 Running\n"
+		void)
+ {
+	while (1)
+	{
+		printf("Thread3 Running\n");
+		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
+		HAL_Delay(500);
+		rtos_Yield();
+	}
+ }
 
 /* USER CODE END 4 */
 

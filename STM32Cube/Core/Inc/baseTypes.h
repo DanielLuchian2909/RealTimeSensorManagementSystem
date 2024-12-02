@@ -1,12 +1,13 @@
-/*
- * baseTypes.h
- *
- *  Created on: Nov 11, 2024
- *      Author: danlu
+/**
+ ********************************************************************************
+ * @file BaseTypes.h
+ * @date
+ * @brief Common file for types for cross-processor/platform compatibility
+ ********************************************************************************
  */
 
-#ifndef INC_BASETYPES_H_
-#define INC_BASETYPES_H_
+#ifndef __BASETYPES_H__
+#define __BASETYPES_H__
 
 #define TRUE 1
 #define FALSE 0
@@ -18,7 +19,14 @@ typedef short SHORT;
 typedef unsigned char UCHAR;
 typedef char CHAR;
 typedef unsigned short BOOLE;
-typedef unsigned UINT;
+typedef unsigned int UINT;
 typedef int INT;
 
-#endif /* INC_BASETYPES_H_ */
+//Thread context struct
+typedef struct
+{
+	UINT* puiMyThreadStackPointer; //Stack pointer for the thread
+	void (*pfnMyThreadFunction)(void*); //Thread function pointer
+} ThreadContextStruct;
+
+#endif /* __BASETYPES_H__ */
