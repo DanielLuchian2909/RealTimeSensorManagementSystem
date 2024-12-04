@@ -1,5 +1,0 @@
-../OSModule/kernel.c:51:1:AllocateThread	2
-../OSModule/kernel.c:65:1:SVC_Handler_Main	2
-../OSModule/kernel.c:95:1:os_KernelInit	1
-../OSModule/kernel.c:111:1:os_KernelStart	1
-../OSModule/kernel.c:119:1:os_CreateThread	3
