@@ -62,9 +62,9 @@ void SystemClock_Config(void);
 INT __io_putchar(INT ch); //Transmit a character over UART
 
 /* Thread Test Functions */
-void Thread1(void);
-void Thread2(void);
-void Thread3(void);
+void TestThread1(void* pvParameters_);
+void TestThread2(void* pvParameters_);
+void TestThread3(void* pvParameters_);
 
 /* USER CODE END PFP */
 
@@ -107,14 +107,18 @@ int main(void)
   //TODO later this should be in the scheduler
   rtos_KernelInit();
 
+  /* Test Cases*/
+  //things to test osyield, hitting runtime, deadline, no deadine, ...
+
   //Create test threads
-  if (!rtos_CreateThread(Thread1))
+
+  if (!rtos_CreateThread(TestThread1, NULL))
 	  printf("Thread 1 could not be created.\n");
 
-  if (!rtos_CreateThread(Thread2))
+  if (!rtos_CreateThread(TestThread2, NULL))
 	  printf("Thread 2 could not be created.\n");
 
-  if (!rtos_CreateThread(Thread3))
+  if (!rtos_CreateThread(TestThread3, NULL))
 	  printf("Thread 3 could not be created.\n");
 
   //TODO later this should be in the scheduler
@@ -194,23 +198,31 @@ __io_putchar( //Transmits a character ofer UART
 
 //-----------------------------------------------------------------------
 void
-Thread1( //Function that serial prints "Thread1 Running\n"
-		void)
+TestThread1( //Function that serial prints "Thread1 Running\n"
+		void* pvParameters_)
  {
+
+	//Cast argument
+	UINT inputs = *(UINT*)pvParameters_;
+
 	while (1)
 	{
 		printf("Thread1 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
-		rtos_Yield();
+		//rtos_Yield();
 	}
  }
 
 //-----------------------------------------------------------------------
 void
-Thread2( //Function that serial prints "Thread2 Running\n"
-		void)
+TestThread2( //Function that serial prints "Thread2 Running\n"
+		void* pvParameters_)
  {
+
+	//Cast argument
+	UINT inputs = *(UINT*)pvParameters_;
+
 	while (1)
 	{
 		printf("Thread2 Running\n");
@@ -222,15 +234,19 @@ Thread2( //Function that serial prints "Thread2 Running\n"
 
 //-----------------------------------------------------------------------
 void
-Thread3( //Function that serial prints "Thread3 Running\n"
-		void)
+TestThread3( //Function that serial prints "Thread3 Running\n"
+		void* pvParameters_)
  {
+
+	//Cast argument
+	UINT inputs = *(UINT*)pvParameters_;
+
 	while (1)
 	{
 		printf("Thread3 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
-		rtos_Yield();
+		//rtos_Yield();
 	}
  }
 

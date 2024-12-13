@@ -81,7 +81,7 @@ Sched() //RTOS Scheduler, full implementation tbd
     }
 
     //Set PSP to the next thread's stack pointer
-    __set_PSP((UINT)g_psRTOSQueue->psFront->psThreadData->puiMyThreadStackPointer); //used to be psmynextthread
+    __set_PSP((UINT)rtos_PeekQueue(g_psRTOSQueue)->psThreadData->puiMyThreadStackPointer); //used to be psmynextthread
 
     return TRUE;
 }

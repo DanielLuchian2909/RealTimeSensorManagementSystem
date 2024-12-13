@@ -27,6 +27,8 @@ typedef struct
 {
 	UINT* puiMyThreadStackPointer; //Stack pointer for the thread
 	void (*pfnMyThreadFunction)(void*); //Thread function pointer
+	UINT uiMyThreadRuntimeMs; //Number of millisecond the thread has left to run
+	UINT uiMyThreadTimesliceMs; //Number of milliseconds thread is allowed to run for
 } ThreadContextStruct;
 
 #endif /* __BASETYPES_H__ */

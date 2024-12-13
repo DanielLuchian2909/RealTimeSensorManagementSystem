@@ -22,6 +22,9 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "queue.h"
+#include "kernel.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,6 +60,7 @@
 /* External variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN EV */
+extern RTOSQueue* g_psRTOSQueue; //Pointer to a global RTOSQueue
 
 /* USER CODE END EV */
 
@@ -174,6 +178,19 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  //If the thread is not done running, decrement its runtime, otherwise yield
+  if( rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs > 0)
+  {
+	  --(rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs);
+  }
+  else
+  {
+	  rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs;
+	  _ICSR |= 1<<28;
+	  __asm("isb");
+  }
+
 
   /* USER CODE END SysTick_IRQn 1 */
 }

@@ -47,7 +47,8 @@ extern "C" {
  ************************************/
 BOOLE rtos_KernelInit(void); //Initializes all kernel related functions/data
 void rtos_KernelStart(void); //A function that starts the RTOS
-BOOLE rtos_CreateThread(void (*pfnThreadFunction)(void*)); //Creates a thread
+BOOLE rtos_CreateThread(void (*pfnThreadFunction_)(void*), void* pvParameters_); //Creates a thread
+BOOLE rtos_CreateThreadWithDeadline(void (*pfnThreadFunction_)(void*), void* pvParameters_, UINT uiDeadline_); //Creates a thread
 
 #ifdef __cplusplus
 }

@@ -1,24 +1,9 @@
 # STM32CubeIDE Generated Files
 /.settings/
-/Debug/
-/Release/
-*.launch
-*.ide.log
-*.ide.lock
-*.mk
-*.list
-*.map
-*.elf
-*.bin
-*.hex
-*.o
-*.d
-*.a
-*.axf
-*.sct
-*.pyc
-*.pyo
-*.class
+STM32Cube/Debug/*
+STM32Cube/Release/*
+**/.settings
+**/.metadata
 
 # Backup Files
 *.bak

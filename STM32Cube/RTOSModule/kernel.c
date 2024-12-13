@@ -140,7 +140,8 @@ rtos_KernelStart() //Function to start the kernel
 //-----------------------------------------------------------------------
 BOOLE //Return whether a thread was succesfully created
 rtos_CreateThread( //A function that creates a thread
-		void (*pfnThreadFunction)(void*)) //A pointer to the thread's fucntion
+		void (*pfnThreadFunction_)(void*), //A pointer to the thread's function
+		void *pvParameters_) //A pointer to the thread's arguments
 {
 	//Allocate a new thread pointer
 	UINT* puiNewThreadPointer = AllocateThread();
@@ -155,10 +156,17 @@ rtos_CreateThread( //A function that creates a thread
 
 	//Set the thread context
 	*(--puiNewThreadPointer) =  1<<24; //Set the XPSR register
-	*(--puiNewThreadPointer) = (UINT)pfnThreadFunction; //Set the PC register
-	for (int i=0; i<14; ++i)
+	*(--puiNewThreadPointer) = (UINT)pfnThreadFunction_; //Set the PC register
+	for (int i=0; i<5; ++i)
 	{
 		*(--puiNewThreadPointer) = 0xA; //Dummy values to fill thread context stack
+	}
+
+	*(--puiNewThreadPointer) = (UINT)pvParameters_;
+
+	for (int i=0; i<8; i++)
+	{
+		*(--puiNewThreadPointer) = 0xA;
 	}
 
 	//Create a new thread context structure and check if malloc was succesful
@@ -169,9 +177,11 @@ rtos_CreateThread( //A function that creates a thread
 		return FALSE; //Memory allocatio failed
 	}
 
-	//Set the new thread context data
+	//Setup the thread contexts
 	psNewThreadContext->puiMyThreadStackPointer = puiNewThreadPointer;
-	psNewThreadContext->pfnMyThreadFunction = pfnThreadFunction;
+	psNewThreadContext->pfnMyThreadFunction = pfnThreadFunction_;
+	psNewThreadContext->uiMyThreadRuntimeMs = ROUND_ROBIN_TIMEOUT_MS;
+	psNewThreadContext->uiMyThreadTimesliceMs = ROUND_ROBIN_TIMEOUT_MS;
 
 	//Enqueue the new thread
 	if (!rtos_EnQueue(g_psRTOSQueue, psNewThreadContext))
@@ -180,6 +190,27 @@ rtos_CreateThread( //A function that creates a thread
 		//TODO add some debug log
 		return FALSE;
 	}
+
+	return TRUE;
+}
+
+//-----------------------------------------------------------------------
+BOOLE //Return whether a thread was succesfully created
+rtos_CreateThreadWithDeadline( //A function that creates a thread
+		void (*pfnThreadFunction_)(void*), //A pointer to the thread's function
+		void *pvParameters_, //A pointer to the thread's arguments
+		UINT uiDeadline_)
+{
+	//Create a standard thread
+	if (!rtos_CreateThread(pfnThreadFunction_, pvParameters_))
+	{
+		//some debug log
+		return FALSE;
+	}
+
+	//Set the threads deadline
+	rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = uiDeadline_;
+	rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs = uiDeadline_;
 
 	return TRUE;
 }

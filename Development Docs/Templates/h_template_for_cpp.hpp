@@ -1,22 +1,17 @@
 /**
  ********************************************************************************
- * @file scheduler.h
- * @author Daniel Luchian
- * @brief Header file for the scheduler
+ * @file        ClassName.h
+ * @author      [Your Name]
+ * @brief       Header file for the ClassName class
  ********************************************************************************
  */
 
-#ifndef __SCHEDULER_H__
-#define __SCHEDULER_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef __CLASSNAME_H__
+#define __CLASSNAME_H__
 
 /************************************
  * INCLUDES
  ************************************/
-#include "baseTypes.h" //Basic type definitions and utilities
 
 /************************************
  * MACROS AND DEFINES
@@ -25,7 +20,6 @@ extern "C" {
 /************************************
  * TYPEDEFS
  ************************************/
-#define ROUND_ROBIN_TIMEOUT_MS 1000; //The default value for a threads timeslice in ms
 
 /************************************
  * EXPORTED VARIABLES
@@ -34,10 +28,9 @@ extern "C" {
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-void rtos_Yield(void); //Yield function for the RTOS
 
-#ifdef __cplusplus
-}
-#endif
+/************************************
+ * CLASS DECLARATION
+ ************************************/
 
-#endif
+#endif // __CLASSNAME_H__
