@@ -1,27 +1,6 @@
 # STM32CubeIDE Generated Files
-/.settings/
 STM32Cube/Debug/*
 STM32Cube/Release/*
-**/.settings
-**/.metadata
-Debug/
-.settings/
-
-# Backup Files
-*.bak
-*~ 
-*.swp
-
-# User-specific settings
-.vscode/
-*.workspace
-*.cproject
-*.project
-*.suo
-*.user
-
-# Logs and Temporary Files
+STM32Cube/.setting/*
 *.log
-*.tmp
-*.obj
-*.dmp
+
