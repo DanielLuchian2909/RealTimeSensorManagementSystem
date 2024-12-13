@@ -1,4 +1,0 @@
-../Core/Src/main.c:60:5:__io_putchar	1
-../Core/Src/main.c:70:5:main	1
-../Core/Src/main.c:118:6:SystemClock_Config	3
-../Core/Src/main.c:168:6:Error_Handler	1
