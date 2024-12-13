@@ -3,4 +3,4 @@ STM32Cube/Debug/*
 STM32Cube/Release/*
 STM32Cube/.setting/*
 *.log
-
+STM32Cube Debug.launch
