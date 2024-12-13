@@ -4,6 +4,8 @@ STM32Cube/Debug/*
 STM32Cube/Release/*
 **/.settings
 **/.metadata
+Debug/
+.settings/
 
 # Backup Files
 *.bak
