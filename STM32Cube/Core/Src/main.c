@@ -107,19 +107,7 @@ int main(void)
   //TODO later this should be in the scheduler
   rtos_KernelInit();
 
-  /* Test Cases*/
-  //things to test osyield, hitting runtime, deadline, no deadine, ...
-
-  //Create test threads
-
-  if (!rtos_CreateThread(TestThread1, NULL))
-	  printf("Thread 1 could not be created.\n");
-
-  if (!rtos_CreateThread(TestThread2, NULL))
-	  printf("Thread 2 could not be created.\n");
-
-  if (!rtos_CreateThread(TestThread3, NULL))
-	  printf("Thread 3 could not be created.\n");
+  rtos_CreateThread(TestThread1, NULL);
 
   //TODO later this should be in the scheduler
   rtos_KernelStart();
