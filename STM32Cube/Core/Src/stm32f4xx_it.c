@@ -58,9 +58,10 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern I2C_HandleTypeDef hi2c1;
 /* USER CODE BEGIN EV */
 extern RTOSQueue* g_psRTOSQueue; //Pointer to a global RTOSQueue
+extern UINT g_uiKernelStatusFlag;
 
 /* USER CODE END EV */
 
@@ -156,19 +157,6 @@ void DebugMon_Handler(void)
 }
 
 /**
-  * @brief This function handles Pendable request for system service.
-  */
-//void PendSV_Handler(void)
-//{
-  /* USER CODE BEGIN PendSV_IRQn 0 */
-
-  /* USER CODE END PendSV_IRQn 0 */
-  /* USER CODE BEGIN PendSV_IRQn 1 */
-
-  /* USER CODE END PendSV_IRQn 1 */
-//}
-
-/**
   * @brief This function handles System tick timer.
   */
 void SysTick_Handler(void)
@@ -179,18 +167,20 @@ void SysTick_Handler(void)
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
-  //If the thread is not done running, decrement its runtime, otherwise yield
-  if( rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs > 0)
+  if (g_uiKernelStatusFlag & KERNEL_STARTED)
   {
-	  --(rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs);
+	  //If the thread is not done running, decrement its runtime, otherwise yield
+	  if( rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs > 0)
+	  {
+		  --(rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs);
+	  }
+	  else
+	  {
+		  rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs;
+		  _ICSR |= 1<<28;
+		  __asm("isb");
+	  }
   }
-  else
-  {
-	  rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs;
-	  _ICSR |= 1<<28;
-	  __asm("isb");
-  }
-
 
   /* USER CODE END SysTick_IRQn 1 */
 }
@@ -201,6 +191,34 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles I2C1 event interrupt.
+  */
+void I2C1_EV_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+
+  /* USER CODE END I2C1_EV_IRQn 0 */
+  HAL_I2C_EV_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+
+  /* USER CODE END I2C1_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles I2C1 error interrupt.
+  */
+void I2C1_ER_IRQHandler(void)
+{
+  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+
+  /* USER CODE END I2C1_ER_IRQn 0 */
+  HAL_I2C_ER_IRQHandler(&hi2c1);
+  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  /* USER CODE END I2C1_ER_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 

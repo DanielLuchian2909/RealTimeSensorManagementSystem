@@ -20,6 +20,7 @@
 #include "main.h"
 #include "i2c.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -29,6 +30,7 @@
 
 #include "kernel.h"
 #include "scheduler.h"
+#include "EnvironmentalSensor.h"
 
 /* USER CODE END Includes */
 
@@ -103,26 +105,47 @@ int main(void)
   MX_USART2_UART_Init();
   MX_I2C1_Init();
   MX_SPI2_Init();
+  MX_TIM1_Init();
+  /* USER CODE BEGIN 2 */
+  //rtos_KernelInit();
+ // rtos_CreateThread(TestThread1, NULL);
+  //rtos_CreateThread(TestThread2, NULL);
+ // rtos_KernelStart();
+  HAL_TIM_Base_Start(&htim1);
+  typedef struct bme280_data
+  {
+      /*! Compensated pressure */
+      UINT pressure;
 
-  //TODO later this should be in the scheduler
-  rtos_KernelInit();
+      /*! Compensated temperature */
+      INT temperature;
 
-  rtos_CreateThread(TestThread1, NULL);
-
-  //TODO later this should be in the scheduler
-  rtos_KernelStart();
-
+      /*! Compensated humidity */
+      UINT humidity;
+  }bme280_data;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  EnvSensorHandle* sensorHandle;
+  sensorHandle = cInterfaceCreateEnvironmentalSensor();
 
   while (1)
   {
     /* USER CODE END WHILE */
+	cInterfaceReadSensorData(sensorHandle, READ_MODE_SINGLE, ENVSENSOR_SELECT_ALL);
+	const bme280_data* sensorData = cInterfaceGetSensorData(sensorHandle);
+	printf("Temperature: %d°C, Humidity: %d%%, Pressure: %d hPa\n", sensorData->temperature, sensorData->humidity, sensorData->pressure);
+	HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
+
   }
+  // 1) select interface
+  // 2) init sensor
+  // 3) configure over sampling, filter, stand by, and set sensor settings
+  // 4) set the sensor mode
+  // 5) calculate measurement time in seconds
   /* USER CODE END 3 */
 }
 

@@ -43,6 +43,7 @@ static UINT* puiLastAllocatedThread = NULL; //Last allocated thread stack pointe
  * GLOBAL VARIABLES
  ************************************/
 RTOSQueue* g_psRTOSQueue = NULL; //RTOS thread queue
+UINT g_uiKernelStatusFlag = 0;
 
 /************************************
  * STATIC FUNCTIONS
@@ -123,10 +124,12 @@ rtos_KernelInit() //Function to initialize kernel related information
 	if (!g_psRTOSQueue)
 	{
 		//TODO add some debug log
+		g_uiKernelStatusFlag |= KERNEL_NOT_INITIALIZED;
 		return FALSE; //Failed to create kernel queue
 	}
 
 	//Kernel successfully created
+	g_uiKernelStatusFlag |= KERNEL_INITIALIZED;
 	return TRUE;
 }
 
@@ -134,6 +137,7 @@ rtos_KernelInit() //Function to initialize kernel related information
 void
 rtos_KernelStart() //Function to start the kernel
 {
+	g_uiKernelStatusFlag |= KERNEL_STARTED;
 	__asm("SVC #0");
 }
 

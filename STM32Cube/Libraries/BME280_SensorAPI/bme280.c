@@ -43,15 +43,15 @@
 
 /**\name Internal macros */
 /* To identify osr settings selected by user */
-#define OVERSAMPLING_SETTINGS    UINT8_C(0x07)
+#define OVERSAMPLING_SETTINGS    (UCHAR)(0x07)
 
 /* To identify filter and standby settings selected by user */
-#define FILTER_STANDBY_SETTINGS  UINT8_C(0x18)
+#define FILTER_STANDBY_SETTINGS  (UCHAR)(0x18)
 
 /*!
  * @brief This internal API puts the device to sleep mode.
  *
- * @param[in] dev : Structure instance of bme280_dev.
+ * @param[in] dev : ure instance of bme280_dev.
  *
  * @return Result of API execution status.
  *
@@ -60,12 +60,12 @@
  * @retval < 0 -> Fail.
  *
  */
-static int8_t put_device_to_sleep(struct bme280_dev *dev);
+static CHAR put_device_to_sleep(bme280_dev *dev);
 
 /*!
  * @brief This internal API writes the power mode in the sensor.
  *
- * @param[in] dev         : Structure instance of bme280_dev.
+ * @param[in] dev         : ure instance of bme280_dev.
  * @param[in] sensor_mode : Variable which contains the power mode to be set.
  *
  * @return Result of API execution status.
@@ -75,13 +75,13 @@ static int8_t put_device_to_sleep(struct bme280_dev *dev);
  * @retval < 0 -> Fail.
  *
  */
-static int8_t write_power_mode(uint8_t sensor_mode, struct bme280_dev *dev);
+static CHAR write_power_mode(UCHAR sensor_mode, bme280_dev *dev);
 
 /*!
  * @brief This internal API is used to validate the device pointer for
  * null conditions.
  *
- * @param[in] dev : Structure instance of bme280_dev.
+ * @param[in] dev : ure instance of bme280_dev.
  *
  * @return Result of API execution status
  *
@@ -90,7 +90,7 @@ static int8_t write_power_mode(uint8_t sensor_mode, struct bme280_dev *dev);
  * @retval < 0 -> Fail.
  *
  */
-static int8_t null_ptr_check(const struct bme280_dev *dev);
+static CHAR null_ptr_check(const bme280_dev *dev);
 
 /*!
  * @brief This internal API interleaves the register address between the
@@ -104,13 +104,13 @@ static int8_t null_ptr_check(const struct bme280_dev *dev);
  * @param[in] len        : No of bytes of data to be written for burst write.
  *
  */
-static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *temp_buff, const uint8_t *reg_data, uint32_t len);
+static void interleave_reg_addr(const UCHAR *reg_addr, UCHAR *temp_buff, const UCHAR *reg_data, UINT len);
 
 /*!
  * @brief This internal API reads the calibration data from the sensor, parse
- * it and store in the device structure.
+ * it and store in the device ure.
  *
- * @param[in] dev : Structure instance of bme280_dev.
+ * @param[in] dev : ure instance of bme280_dev.
  *
  * @return Result of API execution status
  *
@@ -119,27 +119,27 @@ static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *temp_buff, con
  * @retval < 0 -> Fail.
  *
  */
-static int8_t get_calib_data(struct bme280_dev *dev);
+static CHAR get_calib_data(bme280_dev *dev);
 
 /*!
  *  @brief This internal API is used to parse the temperature and
- *  pressure calibration data and store it in the device structure.
+ *  pressure calibration data and store it in the device ure.
  *
- *  @param[out] dev     : Structure instance of bme280_dev to store the calib data.
+ *  @param[out] dev     : ure instance of bme280_dev to store the calib data.
  *  @param[in] reg_data : Contains the calibration data to be parsed.
  *
  */
-static void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
+static void parse_temp_press_calib_data(const UCHAR *reg_data, bme280_dev *dev);
 
 /*!
  *  @brief This internal API is used to parse the humidity calibration data
- *  and store it in device structure.
+ *  and store it in device ure.
  *
- *  @param[out] dev     : Structure instance of bme280_dev to store the calib data.
+ *  @param[out] dev     : ure instance of bme280_dev to store the calib data.
  *  @param[in] reg_data : Contains calibration data to be parsed.
  *
  */
-static void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
+static void parse_humidity_calib_data(const UCHAR *reg_data, bme280_dev *dev);
 
 /*!
  * @brief This internal API is used to identify the settings which the user
@@ -155,12 +155,12 @@ static void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev
  * @return False -> User does not want to modify this group of settings
  *
  */
-static uint8_t are_settings_changed(uint8_t sub_settings, uint8_t desired_settings);
+static UCHAR are_settings_changed(UCHAR sub_settings, UCHAR desired_settings);
 
 /*!
  * @brief This API sets the humidity over sampling settings of the sensor.
  *
- * @param[in] dev      : Structure instance of bme280_dev.
+ * @param[in] dev      : ure instance of bme280_dev.
  * @param[in] settings : Pointer variable which contains the settings to
  * be set in the sensor.
  *
@@ -171,7 +171,7 @@ static uint8_t are_settings_changed(uint8_t sub_settings, uint8_t desired_settin
  * @retval < 0 -> Fail.
  *
  */
-static int8_t set_osr_humidity_settings(const struct bme280_settings *settings, struct bme280_dev *dev);
+static CHAR set_osr_humidity_settings(const bme280_settings *settings, bme280_dev *dev);
 
 /*!
  * @brief This internal API sets the oversampling settings for pressure,
@@ -181,7 +181,7 @@ static int8_t set_osr_humidity_settings(const struct bme280_settings *settings, 
  * are to be set.
  * @param[in] settings         : Pointer variable which contains the settings to
  * be set in the sensor.
- * @param[in] dev              : Structure instance of bme280_dev.
+ * @param[in] dev              : ure instance of bme280_dev.
  *
  * @return Result of API execution status
  *
@@ -190,14 +190,14 @@ static int8_t set_osr_humidity_settings(const struct bme280_settings *settings, 
  * @retval < 0 -> Fail.
  *
  */
-static int8_t set_osr_settings(uint8_t desired_settings, const struct bme280_settings *settings,
-                               struct bme280_dev *dev);
+static CHAR set_osr_settings(UCHAR desired_settings, const bme280_settings *settings,
+                             bme280_dev *dev);
 
 /*!
  * @brief This API sets the pressure and/or temperature oversampling settings
  * in the sensor according to the settings selected by the user.
  *
- * @param[in] dev : Structure instance of bme280_dev.
+ * @param[in] dev : ure instance of bme280_dev.
  * @param[in] desired_settings: variable to select the pressure and/or
  * temperature oversampling settings.
  * @param[in] settings : Pointer variable which contains the settings to
@@ -210,9 +210,9 @@ static int8_t set_osr_settings(uint8_t desired_settings, const struct bme280_set
  * @retval < 0 -> Fail.
  *
  */
-static int8_t set_osr_press_temp_settings(uint8_t desired_settings,
-                                          const struct bme280_settings *settings,
-                                          struct bme280_dev *dev);
+static CHAR set_osr_press_temp_settings(UCHAR desired_settings,
+                                        const bme280_settings *settings,
+                                        bme280_dev *dev);
 
 /*!
  * @brief This internal API fills the pressure oversampling settings provided by
@@ -224,7 +224,7 @@ static int8_t set_osr_press_temp_settings(uint8_t desired_settings,
  * oversampling data provided by the user.
  *
  */
-static void fill_osr_press_settings(uint8_t *reg_data, const struct bme280_settings *settings);
+static void fill_osr_press_settings(UCHAR *reg_data, const bme280_settings *settings);
 
 /*!
  * @brief This internal API fills the temperature oversampling settings provided
@@ -236,16 +236,16 @@ static void fill_osr_press_settings(uint8_t *reg_data, const struct bme280_setti
  * oversampling data provided by the user.
  *
  */
-static void fill_osr_temp_settings(uint8_t *reg_data, const struct bme280_settings *settings);
+static void fill_osr_temp_settings(UCHAR *reg_data, const bme280_settings *settings);
 
 /*!
  * @brief This internal API sets the filter and/or standby duration settings
  * in the sensor according to the settings selected by the user.
  *
- * @param[in] dev : Structure instance of bme280_dev.
+ * @param[in] dev : ure instance of bme280_dev.
  * @param[in] settings : Pointer variable which contains the settings to
  * be set in the sensor.
- * @param[in] settings : Structure instance of bme280_settings.
+ * @param[in] settings : ure instance of bme280_settings.
  *
  * @return Result of API execution status
  *
@@ -254,9 +254,9 @@ static void fill_osr_temp_settings(uint8_t *reg_data, const struct bme280_settin
  * @retval < 0 -> Fail.
  *
  */
-static int8_t set_filter_standby_settings(uint8_t desired_settings,
-                                          const struct bme280_settings *settings,
-                                          struct bme280_dev *dev);
+static CHAR set_filter_standby_settings(UCHAR desired_settings,
+                                        const bme280_settings *settings,
+                                        bme280_dev *dev);
 
 /*!
  * @brief This internal API fills the filter settings provided by the user
@@ -268,7 +268,7 @@ static int8_t set_filter_standby_settings(uint8_t desired_settings,
  * settings data provided by the user.
  *
  */
-static void fill_filter_settings(uint8_t *reg_data, const struct bme280_settings *settings);
+static void fill_filter_settings(UCHAR *reg_data, const bme280_settings *settings);
 
 /*!
  * @brief This internal API fills the standby duration settings provided by the
@@ -280,34 +280,34 @@ static void fill_filter_settings(uint8_t *reg_data, const struct bme280_settings
  * settings data provided by the user.
  *
  */
-static void fill_standby_settings(uint8_t *reg_data, const struct bme280_settings *settings);
+static void fill_standby_settings(UCHAR *reg_data, const bme280_settings *settings);
 
 /*!
  * @brief This internal API parse the oversampling(pressure, temperature
  * and humidity), filter and standby duration settings and store in the
- * device structure.
+ * device ure.
  *
  * @param[in] settings : Pointer variable which contains the settings to
  * be get in the sensor.
  * @param[in] reg_data : Register data to be parsed.
  *
  */
-static void parse_device_settings(const uint8_t *reg_data, struct bme280_settings *settings);
+static void parse_device_settings(const UCHAR *reg_data, bme280_settings *settings);
 
 /*!
  * @brief This API is used to parse the pressure, temperature and
- * humidity data and store it in the bme280_uncomp_data structure instance.
+ * humidity data and store it in the bme280_uncomp_data ure instance.
  *
  * @param[in] reg_data     : Contains register data which needs to be parsed
  * @param[out] uncomp_data : Contains the uncompensated pressure, temperature and humidity data
  */
-static void parse_sensor_data(const uint8_t *reg_data, struct bme280_uncomp_data *uncomp_data);
+static void parse_sensor_data(const UCHAR *reg_data, bme280_uncomp_data *uncomp_data);
 
 /*!
  * @brief This internal API reloads the already existing device settings in the
  * sensor after soft reset.
  *
- * @param[in] dev : Structure instance of bme280_dev.
+ * @param[in] dev : ure instance of bme280_dev.
  * @param[in] settings : Pointer variable which contains the settings to
  * be set in the sensor.
  *
@@ -318,7 +318,7 @@ static void parse_sensor_data(const uint8_t *reg_data, struct bme280_uncomp_data
  * @retval < 0 -> Fail.
  *
  */
-static int8_t reload_device_settings(const struct bme280_settings *settings, struct bme280_dev *dev);
+static CHAR reload_device_settings(const bme280_settings *settings, bme280_dev *dev);
 
 #ifdef BME280_DOUBLE_ENABLE
 
@@ -327,39 +327,39 @@ static int8_t reload_device_settings(const struct bme280_settings *settings, str
  * return the compensated pressure data in double data type.
  *
  * @param[in] uncomp_data : Contains the uncompensated pressure data.
- * @param[in] calib_data  : Pointer to the calibration data structure.
+ * @param[in] calib_data  : Pointer to the calibration data ure.
  *
  * @return Compensated pressure data in double.
  *
  */
-static double compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
-                                  const struct bme280_calib_data *calib_data);
+static double compensate_pressure(const bme280_uncomp_data *uncomp_data,
+                                  const bme280_calib_data *calib_data);
 
 /*!
  * @brief This internal API is used to compensate the raw humidity data and
  * return the compensated humidity data in double data type.
  *
  * @param[in] uncomp_data : Contains the uncompensated humidity data.
- * @param[in] calib_data  : Pointer to the calibration data structure.
+ * @param[in] calib_data  : Pointer to the calibration data ure.
  *
  * @return Compensated humidity data in double.
  *
  */
-static double compensate_humidity(const struct bme280_uncomp_data *uncomp_data,
-                                  const struct bme280_calib_data *calib_data);
+static double compensate_humidity(const bme280_uncomp_data *uncomp_data,
+                                  const bme280_calib_data *calib_data);
 
 /*!
  * @brief This internal API is used to compensate the raw temperature data and
  * return the compensated temperature data in double data type.
  *
  * @param[in] uncomp_data : Contains the uncompensated temperature data.
- * @param[in] calib_data  : Pointer to calibration data structure.
+ * @param[in] calib_data  : Pointer to calibration data ure.
  *
  * @return Compensated temperature data in double.
  *
  */
-static double compensate_temperature(const struct bme280_uncomp_data *uncomp_data,
-                                     struct bme280_calib_data *calib_data);
+static double compensate_temperature(const bme280_uncomp_data *uncomp_data,
+                                      bme280_calib_data *calib_data);
 
 #else
 
@@ -368,39 +368,39 @@ static double compensate_temperature(const struct bme280_uncomp_data *uncomp_dat
  * return the compensated temperature data in integer data type.
  *
  * @param[in] uncomp_data : Contains the uncompensated temperature data.
- * @param[in] calib_data  : Pointer to calibration data structure.
+ * @param[in] calib_data  : Pointer to calibration data ure.
  *
  * @return Compensated temperature data in integer.
  *
  */
-static int32_t compensate_temperature(const struct bme280_uncomp_data *uncomp_data,
-                                      struct bme280_calib_data *calib_data);
+static INT compensate_temperature(const bme280_uncomp_data *uncomp_data,
+                                       bme280_calib_data *calib_data);
 
 /*!
  * @brief This internal API is used to compensate the raw pressure data and
  * return the compensated pressure data in integer data type.
  *
  * @param[in] uncomp_data : Contains the uncompensated pressure data.
- * @param[in] calib_data  : Pointer to the calibration data structure.
+ * @param[in] calib_data  : Pointer to the calibration data ure.
  *
  * @return Compensated pressure data in integer.
  *
  */
-static uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
-                                    const struct bme280_calib_data *calib_data);
+static UINT compensate_pressure(const  bme280_uncomp_data *uncomp_data,
+                                    const  bme280_calib_data *calib_data);
 
 /*!
  * @brief This internal API is used to compensate the raw humidity data and
  * return the compensated humidity data in integer data type.
  *
  * @param[in] uncomp_data : Contains the uncompensated humidity data.
- * @param[in] calib_data  : Pointer to the calibration data structure.
+ * @param[in] calib_data  : Pointer to the calibration data ure.
  *
  * @return Compensated humidity data in integer.
  *
  */
-static uint32_t compensate_humidity(const struct bme280_uncomp_data *uncomp_data,
-                                    const struct bme280_calib_data *calib_data);
+static UINT compensate_humidity(const  bme280_uncomp_data *uncomp_data,
+                                    const  bme280_calib_data *calib_data);
 
 #endif
 
@@ -410,10 +410,10 @@ static uint32_t compensate_humidity(const struct bme280_uncomp_data *uncomp_data
  *  @brief This API is the entry point.
  *  It reads the chip-id and calibration data from the sensor.
  */
-int8_t bme280_init(struct bme280_dev *dev)
+CHAR bme280_init( bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t chip_id = 0;
+    CHAR rslt;
+    UCHAR chip_id = 0;
 
     /* Read the chip-id of bme280 sensor */
     rslt = bme280_get_regs(BME280_REG_CHIP_ID, &chip_id, 1, dev);
@@ -446,11 +446,11 @@ int8_t bme280_init(struct bme280_dev *dev)
 /*!
  * @brief This API reads the data from the given register address of the sensor.
  */
-int8_t bme280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct bme280_dev *dev)
+CHAR bme280_get_regs(UCHAR reg_addr, UCHAR *reg_data, UINT len,  bme280_dev *dev)
 {
-    int8_t rslt;
+    CHAR rslt;
 
-    /* Check for null pointer in the device structure */
+    /* Check for null pointer in the device ure */
     rslt = null_ptr_check(dev);
 
     if ((rslt == BME280_OK) && (reg_data != NULL))
@@ -482,19 +482,19 @@ int8_t bme280_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct
  * @brief This API writes the given data to the register address
  * of the sensor.
  */
-int8_t bme280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint32_t len, struct bme280_dev *dev)
+CHAR bme280_set_regs(UCHAR *reg_addr, const UCHAR *reg_data, UINT len,  bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t temp_buff[20]; /* Typically not to write more than 10 registers */
-    uint32_t temp_len;
-    uint32_t reg_addr_cnt;
+    CHAR rslt;
+    UCHAR temp_buff[20]; /* Typically not to write more than 10 registers */
+    UINT temp_len;
+    UINT reg_addr_cnt;
 
     if (len > BME280_MAX_LEN)
     {
         len = BME280_MAX_LEN;
     }
 
-    /* Check for null pointer in the device structure */
+    /* Check for null pointer in the device ure */
     rslt = null_ptr_check(dev);
 
     /* Check for arguments validity */
@@ -552,12 +552,12 @@ int8_t bme280_set_regs(uint8_t *reg_addr, const uint8_t *reg_data, uint32_t len,
  * @brief This API sets the oversampling, filter and standby duration
  * (normal mode) settings in the sensor.
  */
-int8_t bme280_set_sensor_settings(uint8_t desired_settings,
-                                  const struct bme280_settings *settings,
-                                  struct bme280_dev *dev)
+CHAR bme280_set_sensor_settings(UCHAR desired_settings,
+                                  const  bme280_settings *settings,
+                                   bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t sensor_mode;
+    CHAR rslt;
+    UCHAR sensor_mode;
 
     if (settings != NULL)
     {
@@ -599,10 +599,10 @@ int8_t bme280_set_sensor_settings(uint8_t desired_settings,
  * @brief This API gets the oversampling, filter and standby duration
  * (normal mode) settings from the sensor.
  */
-int8_t bme280_get_sensor_settings(struct bme280_settings *settings, struct bme280_dev *dev)
+CHAR bme280_get_sensor_settings( bme280_settings *settings,  bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_data[4];
+    CHAR rslt;
+    UCHAR reg_data[4];
 
     if (settings != NULL)
     {
@@ -624,10 +624,10 @@ int8_t bme280_get_sensor_settings(struct bme280_settings *settings, struct bme28
 /*!
  * @brief This API sets the power mode of the sensor.
  */
-int8_t bme280_set_sensor_mode(uint8_t sensor_mode, struct bme280_dev *dev)
+CHAR bme280_set_sensor_mode(UCHAR sensor_mode,  bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t last_set_mode;
+    CHAR rslt;
+    UCHAR last_set_mode;
 
     rslt = bme280_get_sensor_mode(&last_set_mode, dev);
 
@@ -651,9 +651,9 @@ int8_t bme280_set_sensor_mode(uint8_t sensor_mode, struct bme280_dev *dev)
 /*!
  * @brief This API gets the power mode of the sensor.
  */
-int8_t bme280_get_sensor_mode(uint8_t *sensor_mode, struct bme280_dev *dev)
+CHAR bme280_get_sensor_mode(UCHAR *sensor_mode,  bme280_dev *dev)
 {
-    int8_t rslt;
+    CHAR rslt;
 
     if (sensor_mode != NULL)
     {
@@ -674,15 +674,15 @@ int8_t bme280_get_sensor_mode(uint8_t *sensor_mode, struct bme280_dev *dev)
 /*!
  * @brief This API performs the soft reset of the sensor.
  */
-int8_t bme280_soft_reset(struct bme280_dev *dev)
+CHAR bme280_soft_reset( bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr = BME280_REG_RESET;
-    uint8_t status_reg = 0;
-    uint8_t try_run = 5;
+    CHAR rslt;
+    UCHAR reg_addr = BME280_REG_RESET;
+    UCHAR status_reg = 0;
+    UCHAR try_run = 5;
 
     /* 0xB6 is the soft reset command */
-    uint8_t soft_rst_cmd = BME280_SOFT_RESET_COMMAND;
+    UCHAR soft_rst_cmd = BME280_SOFT_RESET_COMMAND;
 
     /* Write the soft reset command in the sensor */
     rslt = bme280_set_regs(&reg_addr, &soft_rst_cmd, 1, dev);
@@ -712,15 +712,15 @@ int8_t bme280_soft_reset(struct bme280_dev *dev)
  * sensor, compensates the data and store it in the bme280_data structure
  * instance passed by the user.
  */
-int8_t bme280_get_sensor_data(uint8_t sensor_comp, struct bme280_data *comp_data, struct bme280_dev *dev)
+CHAR bme280_get_sensor_data(UCHAR sensor_comp,  bme280_data *comp_data,  bme280_dev *dev)
 {
-    int8_t rslt;
+    CHAR rslt;
 
     /* Array to store the pressure, temperature and humidity data read from
      * the sensor
      */
-    uint8_t reg_data[BME280_LEN_P_T_H_DATA] = { 0 };
-    struct bme280_uncomp_data uncomp_data = { 0 };
+    UCHAR reg_data[BME280_LEN_P_T_H_DATA] = { 0 };
+    bme280_uncomp_data uncomp_data = { 0 };
 
     if (comp_data != NULL)
     {
@@ -751,12 +751,12 @@ int8_t bme280_get_sensor_data(uint8_t sensor_comp, struct bme280_data *comp_data
  * temperature and/or humidity data according to the component selected
  * by the user.
  */
-int8_t bme280_compensate_data(uint8_t sensor_comp,
-                              const struct bme280_uncomp_data *uncomp_data,
-                              struct bme280_data *comp_data,
-                              struct bme280_calib_data *calib_data)
+CHAR bme280_compensate_data(UCHAR sensor_comp,
+                              const  bme280_uncomp_data *uncomp_data,
+                               bme280_data *comp_data,
+                               bme280_calib_data *calib_data)
 {
-    int8_t rslt = BME280_OK;
+    CHAR rslt = BME280_OK;
 
     if ((uncomp_data != NULL) && (comp_data != NULL) && (calib_data != NULL))
     {
@@ -796,15 +796,15 @@ int8_t bme280_compensate_data(uint8_t sensor_comp,
  * @brief This API is used to calculate the maximum delay in milliseconds required for the
  * temperature/pressure/humidity(whichever are enabled) measurement to complete.
  */
-int8_t bme280_cal_meas_delay(uint32_t *max_delay, const struct bme280_settings *settings)
+CHAR bme280_cal_meas_delay(UINT *max_delay, const  bme280_settings *settings)
 {
-    int8_t rslt = BME280_OK;
-    uint8_t temp_osr;
-    uint8_t pres_osr;
-    uint8_t hum_osr;
+    CHAR rslt = BME280_OK;
+    UCHAR temp_osr;
+    UCHAR pres_osr;
+    UCHAR hum_osr;
 
     /* Array to map OSR config register value to actual OSR */
-    uint8_t osr_sett_to_act_osr[] = { 0, 1, 2, 4, 8, 16 };
+    UCHAR osr_sett_to_act_osr[] = { 0, 1, 2, 4, 8, 16 };
 
     if ((settings != NULL) && (max_delay != NULL))
     {
@@ -837,7 +837,7 @@ int8_t bme280_cal_meas_delay(uint32_t *max_delay, const struct bme280_settings *
         }
 
         (*max_delay) =
-            (uint32_t)((BME280_MEAS_OFFSET + (BME280_MEAS_DUR * temp_osr) +
+            (UINT)((BME280_MEAS_OFFSET + (BME280_MEAS_DUR * temp_osr) +
                         ((BME280_MEAS_DUR * pres_osr) + BME280_PRES_HUM_MEAS_OFFSET) +
                         ((BME280_MEAS_DUR * hum_osr) + BME280_PRES_HUM_MEAS_OFFSET)));
     }
@@ -856,9 +856,9 @@ int8_t bme280_cal_meas_delay(uint32_t *max_delay, const struct bme280_settings *
  * @brief This internal API sets the oversampling settings for pressure,
  * temperature and humidity in the sensor.
  */
-static int8_t set_osr_settings(uint8_t desired_settings, const struct bme280_settings *settings, struct bme280_dev *dev)
+static CHAR set_osr_settings(UCHAR desired_settings, const  bme280_settings *settings,  bme280_dev *dev)
 {
-    int8_t rslt = BME280_W_INVALID_OSR_MACRO;
+    CHAR rslt = BME280_W_INVALID_OSR_MACRO;
 
     if (desired_settings & BME280_SEL_OSR_HUM)
     {
@@ -876,12 +876,12 @@ static int8_t set_osr_settings(uint8_t desired_settings, const struct bme280_set
 /*!
  * @brief This API sets the humidity oversampling settings of the sensor.
  */
-static int8_t set_osr_humidity_settings(const struct bme280_settings *settings, struct bme280_dev *dev)
+static CHAR set_osr_humidity_settings(const  bme280_settings *settings,  bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t ctrl_hum;
-    uint8_t ctrl_meas;
-    uint8_t reg_addr = BME280_REG_CTRL_HUM;
+    CHAR rslt;
+    UCHAR ctrl_hum;
+    UCHAR ctrl_meas;
+    UCHAR reg_addr = BME280_REG_CTRL_HUM;
 
     ctrl_hum = settings->osr_h & BME280_CTRL_HUM_MSK;
 
@@ -909,13 +909,13 @@ static int8_t set_osr_humidity_settings(const struct bme280_settings *settings, 
  * @brief This API sets the pressure and/or temperature oversampling settings
  * in the sensor according to the settings selected by the user.
  */
-static int8_t set_osr_press_temp_settings(uint8_t desired_settings,
-                                          const struct bme280_settings *settings,
-                                          struct bme280_dev *dev)
+static CHAR set_osr_press_temp_settings(UCHAR desired_settings,
+                                          const  bme280_settings *settings,
+                                           bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr = BME280_REG_CTRL_MEAS;
-    uint8_t reg_data;
+    CHAR rslt;
+    UCHAR reg_addr = BME280_REG_CTRL_MEAS;
+    UCHAR reg_data;
 
     rslt = bme280_get_regs(reg_addr, &reg_data, 1, dev);
 
@@ -942,13 +942,13 @@ static int8_t set_osr_press_temp_settings(uint8_t desired_settings,
  * @brief This internal API sets the filter and/or standby duration settings
  * in the sensor according to the settings selected by the user.
  */
-static int8_t set_filter_standby_settings(uint8_t desired_settings,
-                                          const struct bme280_settings *settings,
-                                          struct bme280_dev *dev)
+static CHAR set_filter_standby_settings(UCHAR desired_settings,
+                                          const  bme280_settings *settings,
+                                           bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr = BME280_REG_CONFIG;
-    uint8_t reg_data;
+    CHAR rslt;
+    UCHAR reg_addr = BME280_REG_CONFIG;
+    UCHAR reg_data;
 
     rslt = bme280_get_regs(reg_addr, &reg_data, 1, dev);
 
@@ -975,7 +975,7 @@ static int8_t set_filter_standby_settings(uint8_t desired_settings,
  * @brief This internal API fills the filter settings provided by the user
  * in the data buffer so as to write in the sensor.
  */
-static void fill_filter_settings(uint8_t *reg_data, const struct bme280_settings *settings)
+static void fill_filter_settings(UCHAR *reg_data, const  bme280_settings *settings)
 {
     *reg_data = BME280_SET_BITS(*reg_data, BME280_FILTER, settings->filter);
 }
@@ -984,7 +984,7 @@ static void fill_filter_settings(uint8_t *reg_data, const struct bme280_settings
  * @brief This internal API fills the standby duration settings provided by
  * the user in the data buffer so as to write in the sensor.
  */
-static void fill_standby_settings(uint8_t *reg_data, const struct bme280_settings *settings)
+static void fill_standby_settings(UCHAR *reg_data, const  bme280_settings *settings)
 {
     *reg_data = BME280_SET_BITS(*reg_data, BME280_STANDBY, settings->standby_time);
 }
@@ -993,7 +993,7 @@ static void fill_standby_settings(uint8_t *reg_data, const struct bme280_setting
  * @brief This internal API fills the pressure oversampling settings provided by
  * the user in the data buffer so as to write in the sensor.
  */
-static void fill_osr_press_settings(uint8_t *reg_data, const struct bme280_settings *settings)
+static void fill_osr_press_settings(UCHAR *reg_data, const  bme280_settings *settings)
 {
     *reg_data = BME280_SET_BITS(*reg_data, BME280_CTRL_PRESS, settings->osr_p);
 }
@@ -1002,7 +1002,7 @@ static void fill_osr_press_settings(uint8_t *reg_data, const struct bme280_setti
  * @brief This internal API fills the temperature oversampling settings
  * provided by the user in the data buffer so as to write in the sensor.
  */
-static void fill_osr_temp_settings(uint8_t *reg_data, const struct bme280_settings *settings)
+static void fill_osr_temp_settings(UCHAR *reg_data, const  bme280_settings *settings)
 {
     *reg_data = BME280_SET_BITS(*reg_data, BME280_CTRL_TEMP, settings->osr_t);
 }
@@ -1010,9 +1010,9 @@ static void fill_osr_temp_settings(uint8_t *reg_data, const struct bme280_settin
 /*!
  * @brief This internal API parse the oversampling(pressure, temperature
  * and humidity), filter and standby duration settings and store in the
- * bme280_settings structure.
+ * bme280_settings ure.
  */
-static void parse_device_settings(const uint8_t *reg_data, struct bme280_settings *settings)
+static void parse_device_settings(const UCHAR *reg_data,  bme280_settings *settings)
 {
     settings->osr_h = BME280_GET_BITS_POS_0(reg_data[0], BME280_CTRL_HUM);
     settings->osr_p = BME280_GET_BITS(reg_data[2], BME280_CTRL_PRESS);
@@ -1023,43 +1023,43 @@ static void parse_device_settings(const uint8_t *reg_data, struct bme280_setting
 
 /*!
  *  @brief This API is used to parse the pressure, temperature and
- *  humidity data and store it in the bme280_uncomp_data structure instance.
+ *  humidity data and store it in the bme280_uncomp_data ure instance.
  */
-static void parse_sensor_data(const uint8_t *reg_data, struct bme280_uncomp_data *uncomp_data)
+static void parse_sensor_data(const UCHAR *reg_data,  bme280_uncomp_data *uncomp_data)
 {
     /* Variables to store the sensor data */
-    uint32_t data_xlsb;
-    uint32_t data_lsb;
-    uint32_t data_msb;
+    UINT data_xlsb;
+    UINT data_lsb;
+    UINT data_msb;
 
     /* Store the parsed register values for pressure data */
-    data_msb = (uint32_t)reg_data[0] << BME280_12_BIT_SHIFT;
-    data_lsb = (uint32_t)reg_data[1] << BME280_4_BIT_SHIFT;
-    data_xlsb = (uint32_t)reg_data[2] >> BME280_4_BIT_SHIFT;
+    data_msb = (UINT)reg_data[0] << BME280_12_BIT_SHIFT;
+    data_lsb = (UINT)reg_data[1] << BME280_4_BIT_SHIFT;
+    data_xlsb = (UINT)reg_data[2] >> BME280_4_BIT_SHIFT;
     uncomp_data->pressure = data_msb | data_lsb | data_xlsb;
 
     /* Store the parsed register values for temperature data */
-    data_msb = (uint32_t)reg_data[3] << BME280_12_BIT_SHIFT;
-    data_lsb = (uint32_t)reg_data[4] << BME280_4_BIT_SHIFT;
-    data_xlsb = (uint32_t)reg_data[5] >> BME280_4_BIT_SHIFT;
+    data_msb = (UINT)reg_data[3] << BME280_12_BIT_SHIFT;
+    data_lsb = (UINT)reg_data[4] << BME280_4_BIT_SHIFT;
+    data_xlsb = (UINT)reg_data[5] >> BME280_4_BIT_SHIFT;
     uncomp_data->temperature = data_msb | data_lsb | data_xlsb;
 
     /* Store the parsed register values for humidity data */
-    data_msb = (uint32_t)reg_data[6] << BME280_8_BIT_SHIFT;
-    data_lsb = (uint32_t)reg_data[7];
+    data_msb = (UINT)reg_data[6] << BME280_8_BIT_SHIFT;
+    data_lsb = (UINT)reg_data[7];
     uncomp_data->humidity = data_msb | data_lsb;
 }
 
 /*!
  * @brief This internal API writes the power mode in the sensor.
  */
-static int8_t write_power_mode(uint8_t sensor_mode, struct bme280_dev *dev)
+static CHAR write_power_mode(UCHAR sensor_mode,  bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr = BME280_REG_PWR_CTRL;
+    CHAR rslt;
+    UCHAR reg_addr = BME280_REG_PWR_CTRL;
 
     /* Variable to store the value read from power mode register */
-    uint8_t sensor_mode_reg_val;
+    UCHAR sensor_mode_reg_val;
 
     /* Read the power mode register */
     rslt = bme280_get_regs(reg_addr, &sensor_mode_reg_val, 1, dev);
@@ -1079,11 +1079,11 @@ static int8_t write_power_mode(uint8_t sensor_mode, struct bme280_dev *dev)
 /*!
  * @brief This internal API puts the device to sleep mode.
  */
-static int8_t put_device_to_sleep(struct bme280_dev *dev)
+static CHAR put_device_to_sleep( bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_data[4];
-    struct bme280_settings settings;
+    CHAR rslt;
+    UCHAR reg_data[4];
+     bme280_settings settings;
 
     rslt = bme280_get_regs(BME280_REG_CTRL_HUM, reg_data, 4, dev);
 
@@ -1105,9 +1105,9 @@ static int8_t put_device_to_sleep(struct bme280_dev *dev)
  * @brief This internal API reloads the already existing device settings in
  * the sensor after soft reset.
  */
-static int8_t reload_device_settings(const struct bme280_settings *settings, struct bme280_dev *dev)
+static CHAR reload_device_settings(const  bme280_settings *settings,  bme280_dev *dev)
 {
-    int8_t rslt;
+    CHAR rslt;
 
     rslt = set_osr_settings(BME280_SEL_ALL_SETTINGS, settings, dev);
 
@@ -1125,7 +1125,7 @@ static int8_t reload_device_settings(const struct bme280_settings *settings, str
  * @brief This internal API is used to compensate the raw temperature data and
  * return the compensated temperature data in double data type.
  */
-static double compensate_temperature(const struct bme280_uncomp_data *uncomp_data, struct bme280_calib_data *calib_data)
+static double compensate_temperature(const  bme280_uncomp_data *uncomp_data,  bme280_calib_data *calib_data)
 {
     double var1;
     double var2;
@@ -1137,7 +1137,7 @@ static double compensate_temperature(const struct bme280_uncomp_data *uncomp_dat
     var1 = var1 * ((double)calib_data->dig_t2);
     var2 = (((double)uncomp_data->temperature) / 131072.0 - ((double)calib_data->dig_t1) / 8192.0);
     var2 = (var2 * var2) * ((double)calib_data->dig_t3);
-    calib_data->t_fine = (int32_t)(var1 + var2);
+    calib_data->t_fine = (INT)(var1 + var2);
     temperature = (var1 + var2) / 5120.0;
 
     if (temperature < temperature_min)
@@ -1156,8 +1156,8 @@ static double compensate_temperature(const struct bme280_uncomp_data *uncomp_dat
  * @brief This internal API is used to compensate the raw pressure data and
  * return the compensated pressure data in double data type.
  */
-static double compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
-                                  const struct bme280_calib_data *calib_data)
+static double compensate_pressure(const  bme280_uncomp_data *uncomp_data,
+                                  const  bme280_calib_data *calib_data)
 {
     double var1;
     double var2;
@@ -1204,8 +1204,8 @@ static double compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
  * @brief This internal API is used to compensate the raw humidity data and
  * return the compensated humidity data in double data type.
  */
-static double compensate_humidity(const struct bme280_uncomp_data *uncomp_data,
-                                  const struct bme280_calib_data *calib_data)
+static double compensate_humidity(const  bme280_uncomp_data *uncomp_data,
+                                  const  bme280_calib_data *calib_data)
 {
     double humidity;
     double humidity_min = 0.0;
@@ -1244,19 +1244,19 @@ static double compensate_humidity(const struct bme280_uncomp_data *uncomp_data,
  * @brief This internal API is used to compensate the raw temperature data and
  * return the compensated temperature data in integer data type.
  */
-static int32_t compensate_temperature(const struct bme280_uncomp_data *uncomp_data,
-                                      struct bme280_calib_data *calib_data)
+static INT compensate_temperature(const  bme280_uncomp_data *uncomp_data,
+                                       bme280_calib_data *calib_data)
 {
-    int32_t var1;
-    int32_t var2;
-    int32_t temperature;
-    int32_t temperature_min = -4000;
-    int32_t temperature_max = 8500;
+    INT var1;
+    INT var2;
+    INT temperature;
+    INT temperature_min = -4000;
+    INT temperature_max = 8500;
 
-    var1 = (int32_t)((uncomp_data->temperature / 8) - ((int32_t)calib_data->dig_t1 * 2));
-    var1 = (var1 * ((int32_t)calib_data->dig_t2)) / 2048;
-    var2 = (int32_t)((uncomp_data->temperature / 16) - ((int32_t)calib_data->dig_t1));
-    var2 = (((var2 * var2) / 4096) * ((int32_t)calib_data->dig_t3)) / 16384;
+    var1 = (INT)((uncomp_data->temperature / 8) - ((INT)calib_data->dig_t1 * 2));
+    var1 = (var1 * ((INT)calib_data->dig_t2)) / 2048;
+    var2 = (INT)((uncomp_data->temperature / 16) - ((INT)calib_data->dig_t1));
+    var2 = (((var2 * var2) / 4096) * ((INT)calib_data->dig_t3)) / 16384;
     calib_data->t_fine = var1 + var2;
     temperature = (calib_data->t_fine * 5 + 128) / 256;
 
@@ -1278,16 +1278,16 @@ static int32_t compensate_temperature(const struct bme280_uncomp_data *uncomp_da
  * return the compensated pressure data in integer data type with higher
  * accuracy.
  */
-static uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
-                                    const struct bme280_calib_data *calib_data)
+static UINT compensate_pressure(const  bme280_uncomp_data *uncomp_data,
+                                    const  bme280_calib_data *calib_data)
 {
     int64_t var1;
     int64_t var2;
     int64_t var3;
     int64_t var4;
-    uint32_t pressure;
-    uint32_t pressure_min = 3000000;
-    uint32_t pressure_max = 11000000;
+    UINT pressure;
+    UINT pressure_min = 3000000;
+    UINT pressure_max = 11000000;
 
     var1 = ((int64_t)calib_data->t_fine) - 128000;
     var2 = var1 * var1 * (int64_t)calib_data->dig_p6;
@@ -1305,7 +1305,7 @@ static uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data
         var1 = (((int64_t)calib_data->dig_p9) * (var4 / 8192) * (var4 / 8192)) / 33554432;
         var2 = (((int64_t)calib_data->dig_p8) * var4) / 524288;
         var4 = ((var4 + var1 + var2) / 256) + (((int64_t)calib_data->dig_p7) * 16);
-        pressure = (uint32_t)(((var4 / 2) * 100) / 128);
+        pressure = (UINT)(((var4 / 2) * 100) / 128);
 
         if (pressure < pressure_min)
         {
@@ -1329,45 +1329,45 @@ static uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data
  * @brief This internal API is used to compensate the raw pressure data and
  * return the compensated pressure data in integer data type.
  */
-static uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
-                                    const struct bme280_calib_data *calib_data)
+static UINT compensate_pressure(const  bme280_uncomp_data *uncomp_data,
+                                    const  bme280_calib_data *calib_data)
 {
-    int32_t var1;
-    int32_t var2;
-    int32_t var3;
-    int32_t var4;
-    uint32_t var5;
-    uint32_t pressure;
-    uint32_t pressure_min = 30000;
-    uint32_t pressure_max = 110000;
+    INT var1;
+    INT var2;
+    INT var3;
+    INT var4;
+    UINT var5;
+    UINT pressure;
+    UINT pressure_min = 30000;
+    UINT pressure_max = 110000;
 
-    var1 = (((int32_t)calib_data->t_fine) / 2) - (int32_t)64000;
-    var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((int32_t)calib_data->dig_p6);
-    var2 = var2 + ((var1 * ((int32_t)calib_data->dig_p5)) * 2);
-    var2 = (var2 / 4) + (((int32_t)calib_data->dig_p4) * 65536);
+    var1 = (((INT)calib_data->t_fine) / 2) - (INT)64000;
+    var2 = (((var1 / 4) * (var1 / 4)) / 2048) * ((INT)calib_data->dig_p6);
+    var2 = var2 + ((var1 * ((INT)calib_data->dig_p5)) * 2);
+    var2 = (var2 / 4) + (((INT)calib_data->dig_p4) * 65536);
     var3 = (calib_data->dig_p3 * (((var1 / 4) * (var1 / 4)) / 8192)) / 8;
-    var4 = (((int32_t)calib_data->dig_p2) * var1) / 2;
+    var4 = (((INT)calib_data->dig_p2) * var1) / 2;
     var1 = (var3 + var4) / 262144;
-    var1 = (((32768 + var1)) * ((int32_t)calib_data->dig_p1)) / 32768;
+    var1 = (((32768 + var1)) * ((INT)calib_data->dig_p1)) / 32768;
 
     /* Avoid exception caused by division by zero */
     if (var1)
     {
-        var5 = (uint32_t)((uint32_t)1048576) - uncomp_data->pressure;
-        pressure = ((uint32_t)(var5 - (uint32_t)(var2 / 4096))) * 3125;
+        var5 = (UINT)((UINT)1048576) - uncomp_data->pressure;
+        pressure = ((UINT)(var5 - (UINT)(var2 / 4096))) * 3125;
 
         if (pressure < 0x80000000)
         {
-            pressure = (pressure << 1) / ((uint32_t)var1);
+            pressure = (pressure << 1) / ((UINT)var1);
         }
         else
         {
-            pressure = (pressure / (uint32_t)var1) * 2;
+            pressure = (pressure / (UINT)var1) * 2;
         }
 
-        var1 = (((int32_t)calib_data->dig_p9) * ((int32_t)(((pressure / 8) * (pressure / 8)) / 8192))) / 4096;
-        var2 = (((int32_t)(pressure / 4)) * ((int32_t)calib_data->dig_p8)) / 8192;
-        pressure = (uint32_t)((int32_t)pressure + ((var1 + var2 + calib_data->dig_p7) / 16));
+        var1 = (((INT)calib_data->dig_p9) * ((INT)(((pressure / 8) * (pressure / 8)) / 8192))) / 4096;
+        var2 = (((INT)(pressure / 4)) * ((INT)calib_data->dig_p8)) / 8192;
+        pressure = (UINT)((INT)pressure + ((var1 + var2 + calib_data->dig_p7) / 16));
 
         if (pressure < pressure_min)
         {
@@ -1391,32 +1391,32 @@ static uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data
  * @brief This internal API is used to compensate the raw humidity data and
  * return the compensated humidity data in integer data type.
  */
-static uint32_t compensate_humidity(const struct bme280_uncomp_data *uncomp_data,
-                                    const struct bme280_calib_data *calib_data)
+static UINT compensate_humidity(const  bme280_uncomp_data *uncomp_data,
+                                    const  bme280_calib_data *calib_data)
 {
-    int32_t var1;
-    int32_t var2;
-    int32_t var3;
-    int32_t var4;
-    int32_t var5;
-    uint32_t humidity;
-    uint32_t humidity_max = 102400;
+    INT var1;
+    INT var2;
+    INT var3;
+    INT var4;
+    INT var5;
+    UINT humidity;
+    UINT humidity_max = 102400;
 
-    var1 = calib_data->t_fine - ((int32_t)76800);
-    var2 = (int32_t)(uncomp_data->humidity * 16384);
-    var3 = (int32_t)(((int32_t)calib_data->dig_h4) * 1048576);
-    var4 = ((int32_t)calib_data->dig_h5) * var1;
-    var5 = (((var2 - var3) - var4) + (int32_t)16384) / 32768;
-    var2 = (var1 * ((int32_t)calib_data->dig_h6)) / 1024;
-    var3 = (var1 * ((int32_t)calib_data->dig_h3)) / 2048;
-    var4 = ((var2 * (var3 + (int32_t)32768)) / 1024) + (int32_t)2097152;
-    var2 = ((var4 * ((int32_t)calib_data->dig_h2)) + 8192) / 16384;
+    var1 = calib_data->t_fine - ((INT)76800);
+    var2 = (INT)(uncomp_data->humidity * 16384);
+    var3 = (INT)(((INT)calib_data->dig_h4) * 1048576);
+    var4 = ((INT)calib_data->dig_h5) * var1;
+    var5 = (((var2 - var3) - var4) + (INT)16384) / 32768;
+    var2 = (var1 * ((INT)calib_data->dig_h6)) / 1024;
+    var3 = (var1 * ((INT)calib_data->dig_h3)) / 2048;
+    var4 = ((var2 * (var3 + (INT)32768)) / 1024) + (INT)2097152;
+    var2 = ((var4 * ((INT)calib_data->dig_h2)) + 8192) / 16384;
     var3 = var5 * var2;
     var4 = ((var3 / 32768) * (var3 / 32768)) / 128;
-    var5 = var3 - ((var4 * ((int32_t)calib_data->dig_h1)) / 16);
+    var5 = var3 - ((var4 * ((INT)calib_data->dig_h1)) / 16);
     var5 = (var5 < 0 ? 0 : var5);
     var5 = (var5 > 419430400 ? 419430400 : var5);
-    humidity = (uint32_t)(var5 / 4096);
+    humidity = (UINT)(var5 / 4096);
 
     if (humidity > humidity_max)
     {
@@ -1429,15 +1429,15 @@ static uint32_t compensate_humidity(const struct bme280_uncomp_data *uncomp_data
 
 /*!
  * @brief This internal API reads the calibration data from the sensor, parse
- * it and store in the device structure.
+ * it and store in the device ure.
  */
-static int8_t get_calib_data(struct bme280_dev *dev)
+static CHAR get_calib_data(bme280_dev *dev)
 {
-    int8_t rslt;
-    uint8_t reg_addr = BME280_REG_TEMP_PRESS_CALIB_DATA;
+    CHAR rslt;
+    UCHAR reg_addr = BME280_REG_TEMP_PRESS_CALIB_DATA;
 
     /* Array to store calibration data */
-    uint8_t calib_data[BME280_LEN_TEMP_PRESS_CALIB_DATA] = { 0 };
+    UCHAR calib_data[BME280_LEN_TEMP_PRESS_CALIB_DATA] = { 0 };
 
     /* Read the calibration data from the sensor */
     rslt = bme280_get_regs(reg_addr, calib_data, BME280_LEN_TEMP_PRESS_CALIB_DATA, dev);
@@ -1445,7 +1445,7 @@ static int8_t get_calib_data(struct bme280_dev *dev)
     if (rslt == BME280_OK)
     {
         /* Parse temperature and pressure calibration data and store
-         * it in device structure
+         * it in device ure
          */
         parse_temp_press_calib_data(calib_data, dev);
         reg_addr = BME280_REG_HUMIDITY_CALIB_DATA;
@@ -1456,7 +1456,7 @@ static int8_t get_calib_data(struct bme280_dev *dev)
         if (rslt == BME280_OK)
         {
             /* Parse humidity calibration data and store it in
-             * device structure
+             * device ure
              */
             parse_humidity_calib_data(calib_data, dev);
         }
@@ -1469,9 +1469,9 @@ static int8_t get_calib_data(struct bme280_dev *dev)
  * @brief This internal API interleaves the register address between the
  * register data buffer for burst write operation.
  */
-static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *temp_buff, const uint8_t *reg_data, uint32_t len)
+static void interleave_reg_addr(const UCHAR *reg_addr, UCHAR *temp_buff, const UCHAR *reg_data, UINT len)
 {
-    uint32_t index;
+    UINT index;
 
     for (index = 1; index < len; index++)
     {
@@ -1482,57 +1482,57 @@ static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *temp_buff, con
 
 /*!
  *  @brief This internal API is used to parse the temperature and
- *  pressure calibration data and store it in device structure.
+ *  pressure calibration data and store it in device ure.
  */
-static void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev)
+static void parse_temp_press_calib_data(const UCHAR *reg_data, bme280_dev *dev)
 {
-    struct bme280_calib_data *calib_data = &dev->calib_data;
+     bme280_calib_data *calib_data = &dev->calib_data;
 
     calib_data->dig_t1 = BME280_CONCAT_BYTES(reg_data[1], reg_data[0]);
-    calib_data->dig_t2 = (int16_t)BME280_CONCAT_BYTES(reg_data[3], reg_data[2]);
-    calib_data->dig_t3 = (int16_t)BME280_CONCAT_BYTES(reg_data[5], reg_data[4]);
+    calib_data->dig_t2 = (SHORT)BME280_CONCAT_BYTES(reg_data[3], reg_data[2]);
+    calib_data->dig_t3 = (SHORT)BME280_CONCAT_BYTES(reg_data[5], reg_data[4]);
     calib_data->dig_p1 = BME280_CONCAT_BYTES(reg_data[7], reg_data[6]);
-    calib_data->dig_p2 = (int16_t)BME280_CONCAT_BYTES(reg_data[9], reg_data[8]);
-    calib_data->dig_p3 = (int16_t)BME280_CONCAT_BYTES(reg_data[11], reg_data[10]);
-    calib_data->dig_p4 = (int16_t)BME280_CONCAT_BYTES(reg_data[13], reg_data[12]);
-    calib_data->dig_p5 = (int16_t)BME280_CONCAT_BYTES(reg_data[15], reg_data[14]);
-    calib_data->dig_p6 = (int16_t)BME280_CONCAT_BYTES(reg_data[17], reg_data[16]);
-    calib_data->dig_p7 = (int16_t)BME280_CONCAT_BYTES(reg_data[19], reg_data[18]);
-    calib_data->dig_p8 = (int16_t)BME280_CONCAT_BYTES(reg_data[21], reg_data[20]);
-    calib_data->dig_p9 = (int16_t)BME280_CONCAT_BYTES(reg_data[23], reg_data[22]);
+    calib_data->dig_p2 = (SHORT)BME280_CONCAT_BYTES(reg_data[9], reg_data[8]);
+    calib_data->dig_p3 = (SHORT)BME280_CONCAT_BYTES(reg_data[11], reg_data[10]);
+    calib_data->dig_p4 = (SHORT)BME280_CONCAT_BYTES(reg_data[13], reg_data[12]);
+    calib_data->dig_p5 = (SHORT)BME280_CONCAT_BYTES(reg_data[15], reg_data[14]);
+    calib_data->dig_p6 = (SHORT)BME280_CONCAT_BYTES(reg_data[17], reg_data[16]);
+    calib_data->dig_p7 = (SHORT)BME280_CONCAT_BYTES(reg_data[19], reg_data[18]);
+    calib_data->dig_p8 = (SHORT)BME280_CONCAT_BYTES(reg_data[21], reg_data[20]);
+    calib_data->dig_p9 = (SHORT)BME280_CONCAT_BYTES(reg_data[23], reg_data[22]);
     calib_data->dig_h1 = reg_data[25];
 }
 
 /*!
  *  @brief This internal API is used to parse the humidity calibration data
- *  and store it in device structure.
+ *  and store it in device ure.
  */
-static void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev)
+static void parse_humidity_calib_data(const UCHAR *reg_data, bme280_dev *dev)
 {
-    struct bme280_calib_data *calib_data = &dev->calib_data;
-    int16_t dig_h4_lsb;
-    int16_t dig_h4_msb;
-    int16_t dig_h5_lsb;
-    int16_t dig_h5_msb;
+    bme280_calib_data *calib_data = &dev->calib_data;
+    SHORT dig_h4_lsb;
+    SHORT dig_h4_msb;
+    SHORT dig_h5_lsb;
+    SHORT dig_h5_msb;
 
-    calib_data->dig_h2 = (int16_t)BME280_CONCAT_BYTES(reg_data[1], reg_data[0]);
+    calib_data->dig_h2 = (SHORT)BME280_CONCAT_BYTES(reg_data[1], reg_data[0]);
     calib_data->dig_h3 = reg_data[2];
-    dig_h4_msb = (int16_t)(int8_t)reg_data[3] * 16;
-    dig_h4_lsb = (int16_t)(reg_data[4] & 0x0F);
+    dig_h4_msb = (SHORT)(CHAR)reg_data[3] * 16;
+    dig_h4_lsb = (SHORT)(reg_data[4] & 0x0F);
     calib_data->dig_h4 = dig_h4_msb | dig_h4_lsb;
-    dig_h5_msb = (int16_t)(int8_t)reg_data[5] * 16;
-    dig_h5_lsb = (int16_t)(reg_data[4] >> 4);
+    dig_h5_msb = (SHORT)(CHAR)reg_data[5] * 16;
+    dig_h5_lsb = (SHORT)(reg_data[4] >> 4);
     calib_data->dig_h5 = dig_h5_msb | dig_h5_lsb;
-    calib_data->dig_h6 = (int8_t)reg_data[6];
+    calib_data->dig_h6 = (CHAR)reg_data[6];
 }
 
 /*!
  * @brief This internal API is used to identify the settings which the user
  * wants to modify in the sensor.
  */
-static uint8_t are_settings_changed(uint8_t sub_settings, uint8_t desired_settings)
+static UCHAR are_settings_changed(UCHAR sub_settings, UCHAR desired_settings)
 {
-    uint8_t settings_changed = FALSE;
+    UCHAR settings_changed = FALSE;
 
     if (sub_settings & desired_settings)
     {
@@ -1549,21 +1549,21 @@ static uint8_t are_settings_changed(uint8_t sub_settings, uint8_t desired_settin
 }
 
 /*!
- * @brief This internal API is used to validate the device structure pointer for
+ * @brief This internal API is used to validate the device ure pointer for
  * null conditions.
  */
-static int8_t null_ptr_check(const struct bme280_dev *dev)
+static CHAR null_ptr_check(const bme280_dev *dev)
 {
-    int8_t rslt;
+    CHAR rslt;
 
     if ((dev == NULL) || (dev->read == NULL) || (dev->write == NULL) || (dev->delay_us == NULL))
     {
-        /* Device structure pointer is not valid */
+        /* Device ure pointer is not valid */
         rslt = BME280_E_NULL_PTR;
     }
     else
     {
-        /* Device structure is fine */
+        /* Device Structure is fine */
         rslt = BME280_OK;
     }
 

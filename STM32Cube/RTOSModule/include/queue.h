@@ -27,22 +27,20 @@ extern "C" {
  ************************************/
 
 //Thread Node Structure
-typedef struct
+typedef struct ThreadNode
 {
 	ThreadContextStruct* psThreadData; //Pointer to thread-specific data
 	struct ThreadNode* psNext; //Pointer to the next node in the queue
-}
-ThreadNode;
+} ThreadNode;
 
 //RTOS Queue Structure
-typedef struct
+typedef struct RTOSQueue
 {
 	ThreadNode* psFront; //Pointer to the front of the queue
 	ThreadNode* psRear; //Poiner to the rear of the queue
 	UINT uiNumThreads; //Current number of threads in the queue
 	UINT uiMaxNumThreads; //Maxium number of threads the queue can hold
-}
-RTOSQueue;
+} RTOSQueue;
 
 /************************************
  * EXPORTED VARIABLES
