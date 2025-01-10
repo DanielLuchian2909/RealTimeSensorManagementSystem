@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "fatfs.h"
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
@@ -106,6 +107,7 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI2_Init();
   MX_TIM1_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
   //rtos_KernelInit();
  // rtos_CreateThread(TestThread1, NULL);
