@@ -2,7 +2,7 @@
  ********************************************************************************
  * @file        EnvironmentalSensor.h
  * @author      Daniel Luchian
- * @brief       Header file for the ClassName class
+ * @brief       Header file for the EnvironmentalSensor class
  ********************************************************************************
  */
 
@@ -59,7 +59,15 @@ extern "C" {
 EnvSensorHandle* cInterfaceCreateEnvironmentalSensor(); //Create a new sensor object
 void cInterfaceDestroyEnvironmentalSensor(EnvSensorHandle* psEnvSensorHandle_); //Destroy the sensor object
 void cInterfaceReadSensorData(EnvSensorHandle* psEnvSensorHandle_, ReadMode eReadMode_, EnvSensorSelect eEnvSensorSelect_); //Read the sensor data
+BOOLE cInterfaceSoftReset(EnvSensorHandle* psEnvSensorHandle_);//Soft reset the sensor
+BOOLE cInterfaceSetSensorMode(EnvSensorHandle* psEnvSensorHandle_, UCHAR ucSensorMode_); //Set sensor mode
+BOOLE cInterfaceSetSensorSettings( EnvSensorHandle* psEnvSensorHandle_,void* psNewSensorSettings_, UCHAR ucDesiredSettings_); //Set sensor settings
 const bme280_data* cInterfaceGetSensorData(EnvSensorHandle* psEnvSensorHandle_); //Get the sensor data
+UCHAR cInterfaceGetChipID(EnvSensorHandle* psEnvSensorHandle_); //Get the chip idUCHAR //Returns the sensor chip ID
+UCHAR cInterfaceGetSensorMode(EnvSensorHandle* psEnvSensorHandle_); //Get sensor mode
+const  bme280_settings* cInterfaceGetSensorSettings(EnvSensorHandle* psEnvSensorHandle_); //Get sensor settings
+UCHAR cInterfaceGetSensorStandbyTime(EnvSensorHandle* psEnvSensorHandle_); //Get sensor standy time
+UINT cInterfaceGetMaxDelay(EnvSensorHandle* psEnvSensorHandle_); //Get sensor max delay
 
 #ifdef __cplusplus
 }
@@ -80,8 +88,7 @@ public:
 
 	//Sensor Operation
 	void readSensorData(ReadMode eReadMode_, EnvSensorSelect eEnvSensorSelect_);
-	CHAR softReset();
-	//CHAR compensateData(); //TODO Implement
+	BOOLE softReset();
 
 	//Setters
 	BOOLE setSensorMode(UCHAR ucSensorMode_);

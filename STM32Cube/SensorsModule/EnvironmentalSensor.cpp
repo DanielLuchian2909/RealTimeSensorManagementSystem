@@ -2,7 +2,7 @@
  ********************************************************************************
  * @file        EnvironmentalSensor.cpp
  * @author      Daniel Luchian
- * @brief       Implementation file for the ClassName class
+ * @brief       Implementation file for the EnvironmentalSensor class
  ********************************************************************************
  */
 
@@ -34,11 +34,6 @@ extern TIM_HandleTypeDef htim1; //Handle for timer 1
 /************************************
  * PRIVATE TYPEDEFS
  ************************************/
-//Structure containing a pointer to an environmental sensor class for C-interfacing
-typedef struct EnvSensorHandle
-{
-	EnvironmentalSensor* pcMyEnvSensor;
-} EnvSensorHandle;
 
 /************************************
  * STATIC VARIABLES
@@ -147,7 +142,7 @@ Bme280Delay( //Delay function in microseconds
     htim1.Instance->CNT = 0;
 
     //Delay the microseconds component
-    while (htim1.Instance->CNT < uiPeriod_)
+    while (htim1.Instance->CNT < uiMicroSeconds)
     {
         //Wait for timer to count set microseconds
     }
@@ -156,50 +151,6 @@ Bme280Delay( //Delay function in microseconds
 /************************************
  * GLOBAL FUNCTIONS
  ************************************/
-//---------------------------------------------------------------------
-extern "C"
-EnvSensorHandle* //Returns a pointer to an EnvSensorHandle
-cInterfaceCreateEnvironmentalSensor() //C style function to create the sensor object
-{
-	//Creates a new EnvSensorHandle and Environmental Sensor Class then links them
-    return new EnvSensorHandle{ new EnvironmentalSensor() };
-}
-
-//---------------------------------------------------------------------
-extern "C"
-void
-cInterfaceDestroyEnvironmentalSensor( //C style function to destroy the senseor object and handle
-		EnvSensorHandle* psEnvSensorHandle_) //A pointer to an environmental sensor handle
-{
-	if (psEnvSensorHandle_) //If the sensor exists delete it and its handle
-	{
-		delete psEnvSensorHandle_->pcMyEnvSensor;
-		delete psEnvSensorHandle_;
-	}
-}
-
-//---------------------------------------------------------------------
-extern "C"
-void cInterfaceReadSensorData( //C style function to read the sensor data
-		EnvSensorHandle* psEnvSensorHandle_, //A pointer to to an environmental sensor handle
-		ReadMode eReadMode_, //The sensor read mode
-		EnvSensorSelect eEnvSensorSelect_) //The sensor(s) to read
-{
-	//If the handle exists and it has a sensor read the sensors data
-	if (psEnvSensorHandle_ && (psEnvSensorHandle_->pcMyEnvSensor) )
-	{
-		psEnvSensorHandle_->pcMyEnvSensor->readSensorData(eReadMode_, eEnvSensorSelect_);
-	}
-}
-
-//---------------------------------------------------------------------
-extern "C"
-const bme280_data* //A pointer to the data (immutable)
-cInterfaceGetSensorData( //C style function to get the sensor data
-		EnvSensorHandle* psEnvSensorHandle_) //A pointer to to an environmental sensor handle
-{
-	return (psEnvSensorHandle_->pcMyEnvSensor->getSensorData());
-}
 
 /************************************
  * CONSTRUCTORS AND DESTRUCTOR
@@ -215,8 +166,6 @@ EnvironmentalSensor::EnvironmentalSensor() //Default constructor
 
 	//Create a new environmental sensor settings structure
 	psMyCurrentSensorSettings = new bme280_settings;
-
-	psMyEnvSensor->intf = BME280_I2C_INTF;
 
 	//Configure I2C as the default communication
 	configureI2c();
@@ -280,11 +229,11 @@ EnvironmentalSensor::readSensorData( //Read the current sensor data
 }
 
 //-----------------------------------------------------------------------
-CHAR //Returns true if the reset did not fail, otherwise false
+BOOLE //Returns true if the reset did not fail, otherwise false
 EnvironmentalSensor::softReset() //Function to reset the sensor
 {
 	//Soft rest the sensor through the BME280 library
-	return (bme280_soft_reset(psMyEnvSensor));
+	return (bme280_soft_reset(psMyEnvSensor) == 0);
 }
 
 //-----------------------------------------------------------------------
@@ -302,8 +251,8 @@ EnvironmentalSensor::setSensorMode( //Setting the sensor mode
 }
 
 //-----------------------------------------------------------------------
-BOOLE //Returns true if the sensor mode is successfully set, otherwise false
-EnvironmentalSensor::setSensorSettings( //Setting the sensor mode
+BOOLE //Returns true if the sensor settings was successfully set, otherwise false
+EnvironmentalSensor::setSensorSettings( //Setting the sensor settings
 		void* psNewSensorSettings_, //Sensor settings to set
 		UCHAR ucDesiredSettings) //The desired settings to change
 {
@@ -353,10 +302,10 @@ EnvironmentalSensor::getSensorMode() const
 }
 
 //-----------------------------------------------------------------------
-const  bme280_settings* //Return a constant reference to a BME280 sensor settings structure
+const  bme280_settings* //Return a constant pointer to a BME280 sensor settings structure
 EnvironmentalSensor::getSensorSettings() const //Getter for the sensor settings
 {
-
+	return psMyCurrentSensorSettings;
 }
 
 //-----------------------------------------------------------------------
@@ -380,7 +329,7 @@ EnvironmentalSensor::getMaxDelay() const //Getter for sensor standby time
 void
 EnvironmentalSensor::configureI2c() //Function responsible for configuring I2C for the sensor
 {
+	psMyEnvSensor->intf = BME280_I2C_INTF;
 	psMyEnvSensor->read = Bme280I2cRead;
 	psMyEnvSensor->write= Bme280I2cWrite;
-	psMyEnvSensor->intf_ptr = &hi2c1;
 }
