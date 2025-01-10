@@ -36,37 +36,18 @@
 *
 */
 
-#ifndef _BME280_DEFS_H
-#define _BME280_DEFS_H
+#ifndef __BME280_DEFS_H__
+#define __BME280_DEFS_H__
 
 /********************************************************/
 /* header includes */
-#include <stdint.h>
-#include <stddef.h>
+#include "baseTypes.h"
+
+//Macro fixes
 
 /********************************************************/
 /*! @name       Common macros               */
 /********************************************************/
-
-#if !defined(UINT8_C) && !defined(INT8_C)
-#define INT8_C(x)    S8_C(x)
-#define UINT8_C(x)   U8_C(x)
-#endif
-
-#if !defined(UINT16_C) && !defined(INT16_C)
-#define INT16_C(x)   S16_C(x)
-#define UINT16_C(x)  U16_C(x)
-#endif
-
-#if !defined(INT32_C) && !defined(UINT32_C)
-#define INT32_C(x)   S32_C(x)
-#define UINT32_C(x)  U32_C(x)
-#endif
-
-#if !defined(INT64_C) && !defined(UINT64_C)
-#define INT64_C(x)   S64_C(x)
-#define UINT64_C(x)  U64_C(x)
-#endif
 
 /**@}*/
 /**\name C standard macros */
@@ -92,121 +73,121 @@
 /******************************************************************************/
 /*! @name        General Macro Definitions                */
 /******************************************************************************/
-#ifndef TRUE
-#define TRUE                                      UINT8_C(1)
-#endif
-#ifndef FALSE
-#define FALSE                                     UINT8_C(0)
-#endif
+
 
 /*!
  * BME280_INTF_RET_TYPE is the read/write interface return type which can be overwritten by the build system.
  */
 #ifndef BME280_INTF_RET_TYPE
-#define BME280_INTF_RET_TYPE                      int8_t
+#define BME280_INTF_RET_TYPE                      CHAR
 #endif
 
 /*!
  * The last error code from read/write interface is stored in the device structure as intf_rslt.
  */
 #ifndef BME280_INTF_RET_SUCCESS
-#define BME280_INTF_RET_SUCCESS                   INT8_C(0)
+#define BME280_INTF_RET_SUCCESS                   (CHAR)(0)
+#endif
+
+#ifndef BME280_INTF_RET_FAIL
+#define BME280_INTF_RET_FAIL                   	  (CHAR)(1)
 #endif
 
 /*! @name API success code */
-#define BME280_OK                                 INT8_C(0)
+#define BME280_OK                                 (CHAR)(0)
 
 /*! @name API error codes */
-#define BME280_E_NULL_PTR                         INT8_C(-1)
-#define BME280_E_COMM_FAIL                        INT8_C(-2)
-#define BME280_E_INVALID_LEN                      INT8_C(-3)
-#define BME280_E_DEV_NOT_FOUND                    INT8_C(-4)
-#define BME280_E_SLEEP_MODE_FAIL                  INT8_C(-5)
-#define BME280_E_NVM_COPY_FAILED                  INT8_C(-6)
+#define BME280_E_NULL_PTR                         (CHAR)(-1)
+#define BME280_E_COMM_FAIL                        (CHAR)(-2)
+#define BME280_E_INVALID_LEN                      (CHAR)(-3)
+#define BME280_E_DEV_NOT_FOUND                    (CHAR)(-4)
+#define BME280_E_SLEEP_MODE_FAIL                  (CHAR)(-5)
+#define BME280_E_NVM_COPY_FAILED                  (CHAR)(-6)
 
 /*! @name API warning codes */
-#define BME280_W_INVALID_OSR_MACRO                INT8_C(1)
+#define BME280_W_INVALID_OSR_MACRO                (CHAR)(1)
 
 /*! @name BME280 chip identifier */
-#define BME280_CHIP_ID                            UINT8_C(0x60)
+#define BME280_CHIP_ID                            (UCHAR)(0x60)
 
 /*! @name I2C addresses */
-#define BME280_I2C_ADDR_PRIM                      UINT8_C(0x76)
-#define BME280_I2C_ADDR_SEC                       UINT8_C(0x77)
+#define BME280_I2C_ADDR_PRIM                      (UCHAR)(0x76)
+#define BME280_I2C_ADDR_SEC                       (UCHAR)(0x77)
 
 /*! @name Register Address */
-#define BME280_REG_CHIP_ID                        UINT8_C(0xD0)
-#define BME280_REG_RESET                          UINT8_C(0xE0)
-#define BME280_REG_TEMP_PRESS_CALIB_DATA          UINT8_C(0x88)
-#define BME280_REG_HUMIDITY_CALIB_DATA            UINT8_C(0xE1)
-#define BME280_REG_CTRL_HUM                       UINT8_C(0xF2)
-#define BME280_REG_STATUS                         UINT8_C(0xF3)
-#define BME280_REG_PWR_CTRL                       UINT8_C(0xF4)
-#define BME280_REG_CTRL_MEAS                      UINT8_C(0xF4)
-#define BME280_REG_CONFIG                         UINT8_C(0xF5)
-#define BME280_REG_DATA                           UINT8_C(0xF7)
+#define BME280_REG_CHIP_ID                        (UCHAR)(0xD0)
+#define BME280_REG_RESET                          (UCHAR)(0xE0)
+#define BME280_REG_TEMP_PRESS_CALIB_DATA          (UCHAR)(0x88)
+#define BME280_REG_HUMIDITY_CALIB_DATA            (UCHAR)(0xE1)
+#define BME280_REG_CTRL_HUM                       (UCHAR)(0xF2)
+#define BME280_REG_STATUS                         (UCHAR)(0xF3)
+#define BME280_REG_PWR_CTRL                       (UCHAR)(0xF4)
+#define BME280_REG_CTRL_MEAS                      (UCHAR)(0xF4)
+#define BME280_REG_CONFIG                         (UCHAR)(0xF5)
+#define BME280_REG_DATA                           (UCHAR)(0xF7)
 
 /*! @name Macros related to size */
-#define BME280_LEN_TEMP_PRESS_CALIB_DATA          UINT8_C(26)
-#define BME280_LEN_HUMIDITY_CALIB_DATA            UINT8_C(7)
-#define BME280_LEN_P_T_H_DATA                     UINT8_C(8)
+#define BME280_LEN_TEMP_PRESS_CALIB_DATA          (UCHAR)(26)
+#define BME280_LEN_HUMIDITY_CALIB_DATA            (UCHAR)(7)
+#define BME280_LEN_P_T_H_DATA                     (UCHAR)(8)
 
 /*! @name Sensor power modes */
-#define BME280_POWERMODE_SLEEP                    UINT8_C(0x00)
-#define BME280_POWERMODE_FORCED                   UINT8_C(0x01)
-#define BME280_POWERMODE_NORMAL                   UINT8_C(0x03)
+#define BME280_POWERMODE_SLEEP                    (UCHAR)(0x00)
+#define BME280_POWERMODE_FORCED                   (UCHAR)(0x01)
+#define BME280_POWERMODE_NORMAL                   (UCHAR)(0x03)
+#define BME280_POWERMODE_INVALID				  (UCHAR)(0x05)
 
-#define BME280_SENSOR_MODE_MSK                    UINT8_C(0x03)
-#define BME280_SENSOR_MODE_POS                    UINT8_C(0x00)
+#define BME280_SENSOR_MODE_MSK                    (UCHAR)(0x03)
+#define BME280_SENSOR_MODE_POS                    (UCHAR)(0x00)
 
 /*! @name Soft reset command */
-#define BME280_SOFT_RESET_COMMAND                 UINT8_C(0xB6)
+#define BME280_SOFT_RESET_COMMAND                 (UCHAR)(0xB6)
 
-#define BME280_STATUS_IM_UPDATE                   UINT8_C(0x01)
-#define BME280_STATUS_MEAS_DONE                   UINT8_C(0x08)
+#define BME280_STATUS_IM_UPDATE                   (UCHAR)(0x01)
+#define BME280_STATUS_MEAS_DONE                   (UCHAR)(0x08)
 
 /*! @name Sensor component selection macros
  * These values are internal for API implementation. Don't relate this to
  * data sheet.
  */
-#define BME280_PRESS                              UINT8_C(1)
-#define BME280_TEMP                               UINT8_C(1 << 1)
-#define BME280_HUM                                UINT8_C(1 << 2)
-#define BME280_ALL                                UINT8_C(0x07)
+#define BME280_PRESS                              (UCHAR)(1)
+#define BME280_TEMP                               (UCHAR)(1 << 1)
+#define BME280_HUM                                (UCHAR)(1 << 2)
+#define BME280_ALL                                (UCHAR)(0x07)
 
 /*! @name Settings selection macros */
-#define BME280_SEL_OSR_PRESS                      UINT8_C(1)
-#define BME280_SEL_OSR_TEMP                       UINT8_C(1 << 1)
-#define BME280_SEL_OSR_HUM                        UINT8_C(1 << 2)
-#define BME280_SEL_FILTER                         UINT8_C(1 << 3)
-#define BME280_SEL_STANDBY                        UINT8_C(1 << 4)
-#define BME280_SEL_ALL_SETTINGS                   UINT8_C(0x1F)
+#define BME280_SEL_OSR_PRESS                      (UCHAR)(1)
+#define BME280_SEL_OSR_TEMP                       (UCHAR)(1 << 1)
+#define BME280_SEL_OSR_HUM                        (UCHAR)(1 << 2)
+#define BME280_SEL_FILTER                         (UCHAR)(1 << 3)
+#define BME280_SEL_STANDBY                        (UCHAR)(1 << 4)
+#define BME280_SEL_ALL_SETTINGS                   (UCHAR)(0x1F)
 
 /*! @name Oversampling macros */
-#define BME280_NO_OVERSAMPLING                    UINT8_C(0x00)
-#define BME280_OVERSAMPLING_1X                    UINT8_C(0x01)
-#define BME280_OVERSAMPLING_2X                    UINT8_C(0x02)
-#define BME280_OVERSAMPLING_4X                    UINT8_C(0x03)
-#define BME280_OVERSAMPLING_8X                    UINT8_C(0x04)
-#define BME280_OVERSAMPLING_16X                   UINT8_C(0x05)
-#define BME280_OVERSAMPLING_MAX                   UINT8_C(16)
+#define BME280_NO_OVERSAMPLING                    (UCHAR)(0x00)
+#define BME280_OVERSAMPLING_1X                    (UCHAR)(0x01)
+#define BME280_OVERSAMPLING_2X                    (UCHAR)(0x02)
+#define BME280_OVERSAMPLING_4X                    (UCHAR)(0x03)
+#define BME280_OVERSAMPLING_8X                    (UCHAR)(0x04)
+#define BME280_OVERSAMPLING_16X                   (UCHAR)(0x05)
+#define BME280_OVERSAMPLING_MAX                   (UCHAR)(16)
 
-#define BME280_CTRL_HUM_MSK                       UINT8_C(0x07)
-#define BME280_CTRL_HUM_POS                       UINT8_C(0x00)
-#define BME280_CTRL_PRESS_MSK                     UINT8_C(0x1C)
-#define BME280_CTRL_PRESS_POS                     UINT8_C(0x02)
-#define BME280_CTRL_TEMP_MSK                      UINT8_C(0xE0)
-#define BME280_CTRL_TEMP_POS                      UINT8_C(0x05)
+#define BME280_CTRL_HUM_MSK                       (UCHAR)(0x07)
+#define BME280_CTRL_HUM_POS                       (UCHAR)(0x00)
+#define BME280_CTRL_PRESS_MSK                     (UCHAR)(0x1C)
+#define BME280_CTRL_PRESS_POS                     (UCHAR)(0x02)
+#define BME280_CTRL_TEMP_MSK                      (UCHAR)(0xE0)
+#define BME280_CTRL_TEMP_POS                      (UCHAR)(0x05)
 
 /*! @name Measurement delay calculation macros  */
-#define BME280_MEAS_OFFSET                        UINT16_C(1250)
-#define BME280_MEAS_DUR                           UINT16_C(2300)
-#define BME280_PRES_HUM_MEAS_OFFSET               UINT16_C(575)
-#define BME280_MEAS_SCALING_FACTOR                UINT16_C(1000)
-#define BME280_STARTUP_DELAY                      UINT16_C(2000)
+#define BME280_MEAS_OFFSET                        (USHORT)(1250)
+#define BME280_MEAS_DUR                           (USHORT)(2300)
+#define BME280_PRES_HUM_MEAS_OFFSET               (USHORT)(575)
+#define BME280_MEAS_SCALING_FACTOR                (USHORT)(1000)
+#define BME280_STARTUP_DELAY                      (USHORT)(2000)
 
 /*! @name Length macros */
-#define BME280_MAX_LEN                            UINT8_C(10)
+#define BME280_MAX_LEN                            (UCHAR)(10)
 
 /*! @name Standby duration selection macros */
 #define BME280_STANDBY_TIME_0_5_MS                (0x00)
@@ -218,13 +199,13 @@
 #define BME280_STANDBY_TIME_10_MS                 (0x06)
 #define BME280_STANDBY_TIME_20_MS                 (0x07)
 
-#define BME280_STANDBY_MSK                        UINT8_C(0xE0)
-#define BME280_STANDBY_POS                        UINT8_C(0x05)
+#define BME280_STANDBY_MSK                        (UCHAR)(0xE0)
+#define BME280_STANDBY_POS                        (UCHAR)(0x05)
 
 /*! @name Bit shift macros */
-#define BME280_12_BIT_SHIFT                       UINT8_C(12)
-#define BME280_8_BIT_SHIFT                        UINT8_C(8)
-#define BME280_4_BIT_SHIFT                        UINT8_C(4)
+#define BME280_12_BIT_SHIFT                       (UCHAR)(12)
+#define BME280_8_BIT_SHIFT                        (UCHAR)(8)
+#define BME280_4_BIT_SHIFT                        (UCHAR)(4)
 
 /*! @name Filter coefficient selection macros */
 #define BME280_FILTER_COEFF_OFF                   (0x00)
@@ -233,11 +214,11 @@
 #define BME280_FILTER_COEFF_8                     (0x03)
 #define BME280_FILTER_COEFF_16                    (0x04)
 
-#define BME280_FILTER_MSK                         UINT8_C(0x1C)
-#define BME280_FILTER_POS                         UINT8_C(0x02)
+#define BME280_FILTER_MSK                         (UCHAR)(0x1C)
+#define BME280_FILTER_POS                         (UCHAR)(0x02)
 
 /*! @name Macro to combine two 8 bit data's to form a 16 bit data */
-#define BME280_CONCAT_BYTES(msb, lsb)             (((uint16_t)msb << 8) | (uint16_t)lsb)
+#define BME280_CONCAT_BYTES(msb, lsb)             (((USHORT)msb << 8) | (USHORT)lsb)
 
 /*! @name Macro to SET and GET BITS of a register */
 #define BME280_SET_BITS(reg_data, bitname, data) \
@@ -257,12 +238,13 @@
 /*!
  * @brief Interface selection Enums
  */
-enum bme280_intf {
+typedef enum{
     /*! SPI interface */
     BME280_SPI_INTF,
     /*! I2C interface */
     BME280_I2C_INTF
-};
+
+}bme280_intf;
 
 /******************************************************************************/
 /*! @name           Function Pointers                             */
@@ -282,7 +264,11 @@ enum bme280_intf {
  * @retval Non zero value -> Fail.
  *
  */
-typedef BME280_INTF_RET_TYPE (*bme280_read_fptr_t)(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf_ptr);
+typedef BME280_INTF_RET_TYPE (*bme280_read_fptr_t)(
+		UCHAR reg_addr,
+		UCHAR *reg_data,
+		UINT len,
+		void *intf_ptr);
 
 /*!
  * @brief Bus communication function pointer which should be mapped to
@@ -299,8 +285,11 @@ typedef BME280_INTF_RET_TYPE (*bme280_read_fptr_t)(uint8_t reg_addr, uint8_t *re
  * @retval Non zero value -> Fail.
  *
  */
-typedef BME280_INTF_RET_TYPE (*bme280_write_fptr_t)(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                                                    void *intf_ptr);
+typedef BME280_INTF_RET_TYPE (*bme280_write_fptr_t)(
+		UCHAR reg_addr,
+		const UCHAR *reg_data,
+		UINT len,
+		void *intf_ptr);
 
 /*!
  * @brief Delay function pointer which should be mapped to
@@ -311,7 +300,9 @@ typedef BME280_INTF_RET_TYPE (*bme280_write_fptr_t)(uint8_t reg_addr, const uint
  *                                  for interface related call backs
  *
  */
-typedef void (*bme280_delay_us_fptr_t)(uint32_t period, void *intf_ptr);
+typedef void (*bme280_delay_us_fptr_t)(
+		UINT period,
+		void *intf_ptr);
 
 /******************************************************************************/
 /*!  @name         Structure Declarations                             */
@@ -320,147 +311,148 @@ typedef void (*bme280_delay_us_fptr_t)(uint32_t period, void *intf_ptr);
 /*!
  * @brief Calibration data
  */
-struct bme280_calib_data
+typedef struct bme280_calib_data
 {
     /*! Calibration coefficient for the temperature sensor */
-    uint16_t dig_t1;
+    USHORT dig_t1;
 
     /*! Calibration coefficient for the temperature sensor */
-    int16_t dig_t2;
+    SHORT dig_t2;
 
     /*! Calibration coefficient for the temperature sensor */
-    int16_t dig_t3;
+    SHORT dig_t3;
 
     /*! Calibration coefficient for the pressure sensor */
-    uint16_t dig_p1;
+    USHORT dig_p1;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p2;
+    SHORT dig_p2;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p3;
+    SHORT dig_p3;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p4;
+    SHORT dig_p4;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p5;
+    SHORT dig_p5;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p6;
+    SHORT dig_p6;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p7;
+    SHORT dig_p7;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p8;
+    SHORT dig_p8;
 
     /*! Calibration coefficient for the pressure sensor */
-    int16_t dig_p9;
+    SHORT dig_p9;
 
     /*! Calibration coefficient for the humidity sensor */
-    uint8_t dig_h1;
+    UCHAR dig_h1;
 
     /*! Calibration coefficient for the humidity sensor */
-    int16_t dig_h2;
+    SHORT dig_h2;
 
     /*! Calibration coefficient for the humidity sensor */
-    uint8_t dig_h3;
+    UCHAR dig_h3;
 
     /*! Calibration coefficient for the humidity sensor */
-    int16_t dig_h4;
+    SHORT dig_h4;
 
     /*! Calibration coefficient for the humidity sensor */
-    int16_t dig_h5;
+    SHORT dig_h5;
 
     /*! Calibration coefficient for the humidity sensor */
-    int8_t dig_h6;
+    CHAR dig_h6;
 
     /*! Variable to store the intermediate temperature coefficient */
-    int32_t t_fine;
-};
+    INT t_fine;
+}bme280_calib_data;
 
 /*!
  * @brief bme280 sensor structure which comprises of temperature, pressure and
  * humidity data
  */
-#ifdef BME280_DOUBLE_ENABLE
-struct bme280_data
-{
+//#ifdef BME280_DOUBLE_ENABLE
+//typedef struct bme280_data
+//{
     /*! Compensated pressure */
-    double pressure;
+ //   DOUBLE pressure;
 
     /*! Compensated temperature */
-    double temperature;
+  //  DOUBLE temperature;
 
     /*! Compensated humidity */
-    double humidity;
-};
-#else
-struct bme280_data
+  //  DOUBLE humidity;
+//}bme280_data;
+
+//#else
+typedef struct bme280_data
 {
     /*! Compensated pressure */
-    uint32_t pressure;
+    UINT pressure;
 
     /*! Compensated temperature */
-    int32_t temperature;
+    INT temperature;
 
     /*! Compensated humidity */
-    uint32_t humidity;
-};
-#endif /*! BME280_USE_FLOATING_POINT */
+    UINT humidity;
+}bme280_data;
+//#endif /*! BME280_USE_FLOATING_POINT */
 
 /*!
  * @brief bme280 sensor structure which comprises of uncompensated temperature,
  * pressure and humidity data
  */
-struct bme280_uncomp_data
+typedef struct bme280_uncomp_data
 {
     /*! Un-compensated pressure */
-    uint32_t pressure;
+    UINT pressure;
 
     /*! Un-compensated temperature */
-    uint32_t temperature;
+    UINT temperature;
 
     /*! Un-compensated humidity */
-    uint32_t humidity;
-};
+    UINT humidity;
+}bme280_uncomp_data;
 
 /*!
  * @brief bme280 sensor settings structure which comprises of mode,
  * oversampling and filter settings.
  */
-struct bme280_settings
+typedef struct bme280_settings
 {
     /*! Pressure oversampling */
-    uint8_t osr_p;
+    UCHAR osr_p;
 
     /*! Temperature oversampling */
-    uint8_t osr_t;
+    UCHAR osr_t;
 
     /*! Humidity oversampling */
-    uint8_t osr_h;
+    UCHAR osr_h;
 
     /*! Filter coefficient */
-    uint8_t filter;
+    UCHAR filter;
 
     /*! Standby time */
-    uint8_t standby_time;
-};
+    UCHAR standby_time;
+}bme280_settings;
 
 /*!
  * @brief bme280 device structure
  */
-struct bme280_dev
+typedef struct bme280_dev
 {
     /*! Chip Id */
-    uint8_t chip_id;
+    UCHAR chip_id;
 
     /*! Interface Selection
      * For SPI, intf = BME280_SPI_INTF
      * For I2C, intf = BME280_I2C_INTF
      */
-    enum bme280_intf intf;
+    bme280_intf intf;
 
     /*!
      * The interface pointer is used to enable the user
@@ -483,7 +475,8 @@ struct bme280_dev
     bme280_delay_us_fptr_t delay_us;
 
     /*! Trim data */
-    struct bme280_calib_data calib_data;
-};
+    bme280_calib_data calib_data;
+
+}bme280_dev;
 
 #endif /* _BME280_DEFS_H */

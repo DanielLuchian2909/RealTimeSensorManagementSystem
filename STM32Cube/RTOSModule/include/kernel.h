@@ -34,6 +34,11 @@ extern "C" {
 #define SHPR3 *(uint32_t*)0xE000ED20 //PendSV is bits 23-16
 #define _ICSR *(uint32_t*)0xE000ED04 //Trigger PendSV
 
+/* Kernel Status Flags */
+#define KERNEL_INITIALIZED		0x0001
+#define KERNEL_NOT_INITIALIZED  0x0002
+#define KERNEL_STARTED			0x0003
+
 /************************************
  * TYPEDEFS
  ************************************/
