@@ -61,7 +61,7 @@ The file module uses the FAT file system (with the FatFs library) to format, con
 
 ### MCU Pinout
 
-![STM32 MCU Pinout](DevelopmentDocs/MCUPinoutSTM32Cube.png)
+![STM32 MCU Pinout](Development Docs/MCUPinoutSTM32Cube.png)
 
 ### Development Environment
 
