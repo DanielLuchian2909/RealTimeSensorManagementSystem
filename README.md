@@ -14,7 +14,7 @@ This repository, written by Daniel Luchian, contains the software for an in-prog
   - [Hardware Currently in Use](#hardware-currently-in-use)
   - [MCU Pinout](#mcu-pinout)
   - [Development Environment](#development-environment)
-  - [Libraries and Frameworks](#libraries-annd-frameworks)
+  - [Libraries and Frameworks](#libraries-and-frameworks)
 
 
 ## Features
