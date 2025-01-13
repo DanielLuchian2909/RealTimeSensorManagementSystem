@@ -56,7 +56,7 @@ The file module uses the FAT file system (with the FatFs library) to format, con
 | Component                      | Manufacturer               | Description                                                                 | Link                                                                                                                       |
 |---------------------------------|----------------------------|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | **NUCLEO-F401RE**               | STMicroelectronics         | A development board featuring the STM32F401RE microcontroller and its pinouts. | [Nucleo 64 F401RE on STMicroelectronics](https://www.st.com/en/evaluation-tools/nucleo-f401re.html) |
-| **BME280 Environmental Sensor** | Interface by Bicool, Bosch | A sensor interface used to measure temperature, humidity, and atmospheric pressure. | [BME280 Sensor on Amazon](https://www.amazon.ca/BME280-Environmental-Sensor-Temperature-Atmospheric/dp/B088HJHJXG) |
+| **BME280 Environmental Sensor** | Interface by Bicool, sensor Bosch | A sensor interface used to measure temperature, humidity, and atmospheric pressure. | [BME280 Sensor on Amazon](https://www.amazon.ca/BME280-Environmental-Sensor-Temperature-Atmospheric/dp/B088HJHJXG) |
 | **MicroSD Card Adapter**        | UNIVERSAL-SOLDER Electronics | A board used to interface a MicroSD card with the STM32 microcontroller.      | [MicroSD Adapter on Amazon](https://www.amazon.ca/CANADUINO%C2%AE-Micro-SD-Adapter-Arduino-Converter/dp/B09TY9L76L) |
 
 ### MCU Pinout
