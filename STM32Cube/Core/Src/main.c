@@ -53,6 +53,20 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+typedef struct Bme280DataAlias
+{
+// Compensated pressure
+UINT pressure;
+
+// Compensated temperature
+INT temperature;
+
+// Compensated humidity
+UINT humidity;
+} Bme280DataAlias;
+
+//Current flag used for syncrhronization (will be replaced by proper mutexes and semaphores later)
+volatile BOOLE bSensorBusy = FALSE;
 
 /* USER CODE END PV */
 
@@ -65,7 +79,7 @@ void SystemClock_Config(void);
 INT __io_putchar(INT ch); //Transmit a character over UART
 
 /* Thread Test Functions */
-void TestThread1(void* pvParameters_);
+void ReadWriteSensorData(void* pvParameters_);
 void TestThread2(void* pvParameters_);
 void TestThread3(void* pvParameters_);
 
@@ -109,45 +123,37 @@ int main(void)
   MX_TIM1_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-  //rtos_KernelInit();
- // rtos_CreateThread(TestThread1, NULL);
-  //rtos_CreateThread(TestThread2, NULL);
- // rtos_KernelStart();
+
+  //Start the timer
   HAL_TIM_Base_Start(&htim1);
-  typedef struct bme280_data
-  {
-      /*! Compensated pressure */
-      UINT pressure;
 
-      /*! Compensated temperature */
-      INT temperature;
+  //Intialize all kernel related information
+  rtos_KernelInit();
 
-      /*! Compensated humidity */
-      UINT humidity;
-  }bme280_data;
+  //Create an environmental sensor class and an alias to the class
+  EnvSensorHandle* psSensorHandle = cInterfaceCreateEnvironmentalSensor();
+
+  //Create the thread to collect and display sensor data
+  rtos_CreateThread(ReadWriteSensorData, (void*)psSensorHandle);
+
+  //Create a test thread to confirm scheduling
+  rtos_CreateThread(TestThread2, NULL);
+
+  //Start the kernel
+  rtos_KernelStart();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  EnvSensorHandle* sensorHandle;
-  sensorHandle = cInterfaceCreateEnvironmentalSensor();
 
   while (1)
   {
     /* USER CODE END WHILE */
-	cInterfaceReadSensorData(sensorHandle, READ_MODE_SINGLE, ENVSENSOR_SELECT_ALL);
-	const bme280_data* sensorData = cInterfaceGetSensorData(sensorHandle);
-	printf("Temperature: %d°C, Humidity: %d%%, Pressure: %d hPa\n", sensorData->temperature, sensorData->humidity, sensorData->pressure);
-	HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
 
   }
-  // 1) select interface
-  // 2) init sensor
-  // 3) configure over sampling, filter, stand by, and set sensor settings
-  // 4) set the sensor mode
-  // 5) calculate measurement time in seconds
   /* USER CODE END 3 */
 }
 
@@ -211,19 +217,40 @@ __io_putchar( //Transmits a character ofer UART
 
 //-----------------------------------------------------------------------
 void
-TestThread1( //Function that serial prints "Thread1 Running\n"
-		void* pvParameters_)
+ReadWriteSensorData( //Function that runs reading and writing the sensor
+		void* pvParameters_) //Thread function parameter
  {
-
 	//Cast argument
-	UINT inputs = *(UINT*)pvParameters_;
+	EnvSensorHandle* psInputs = *(EnvSensorHandle*)pvParameters_;
 
+	//Initialize a pointer to sensor data
+	Bme280DataAlias* psSensorData = NULL;
+
+	//Thread execution code
 	while (1)
 	{
-		printf("Thread1 Running\n");
-		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
-		HAL_Delay(500);
-		//rtos_Yield();
+		//Check if the sensor is busy
+		if (!bSensorBusy)
+		{
+            //Set the flag to indicate the sensor is in use
+			bSensorBusy = TRUE;
+
+            //Read the sensor data
+            cInterfaceReadSensorData(psInputs, READ_MODE_SINGLE, ENVSENSOR_SELECT_ALL);
+
+            //Get the sensor data
+            psSensorData = cInterfaceGetSensorData(psInputs);
+
+            // Print the sensor data
+            if (psSensorData != NULL)
+            {
+                printf("Temperature: %d°C, Humidity: %d%%, Pressure: %d hPa\n",
+                		psSensorData->temperature, psSensorData->humidity, psSensorData->pressure);
+            }
+
+            //Set sensor to available
+            bSensorBusy = FALSE;
+		}
 	}
  }
 
