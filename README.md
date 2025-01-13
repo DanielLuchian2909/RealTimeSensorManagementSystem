@@ -21,9 +21,9 @@ This repository, written by Daniel Luchian, contains the software for an in-prog
 
 This project has three core aspects:
 
-    1. RTOS Module: A real-time operating system written in C for the STM32F4 controller. 
-    2. Sensor Module: A sensor module written in C++, responsible for configuring, running, and communicating with select sensors. 
-    3. File Module: A file module written in C, responsible for writing and reading data to a file system (currently a Micro-SD Card)
+  1. RTOS Module: A real-time operating system written in C for the STM32F4 controller. 
+  2. Sensor Module: A sensor module written in C++, responsible for configuring, running, and communicating with select sensors.
+  3. File Module: A file module written in C, responsible for writing and reading data to a file system (currently a Micro-SD Card)
 
 ### RTOS Module
 
