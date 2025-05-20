@@ -110,7 +110,7 @@ DSTATUS USER_status (
   * @retval DRESULT: Operation result
   */
 DRESULT USER_read (
-	BYTE pdrv,      /* Physical drive nmuber to identify the drive */
+	BYTE pdrv,      /* Physical drive number to identify the drive */
 	BYTE *buff,     /* Data buffer to store read data */
 	DWORD sector,   /* Sector address in LBA */
 	UINT count      /* Number of sectors to read */

@@ -21,19 +21,22 @@ typedef unsigned __int64 QWORD;
 //typedef unsigned int	UINT;
 
 /* This type MUST be 8-bit */
-typedef UCHAR			BYTE;
+//typedef unsigned char	BYTE;
+typedef UCHAR BYTE;
 
 /* These types MUST be 16-bit */
 //typedef short			SHORT;
+//typedef unsigned short	WORD;
 typedef USHORT	WORD;
+//typedef unsigned short	WCHAR;
 typedef USHORT	WCHAR;
 
 /* These types MUST be 32-bit */
-typedef INT			FFLONG;
-typedef UINT		DWORD;
+typedef long			FLONG;
+typedef unsigned long	DWORD;
 
 /* This type MUST be 64-bit (Remove this for ANSI C (C89) compatibility) */
-typedef ULONG 		QWORD;
+typedef unsigned long long QWORD;
 
 #endif
 

@@ -10,7 +10,8 @@
  * INCLUDES
  ************************************/
 #include "baseTypes.h"
-#include "EnvironmentalSensor.h"
+
+#include "include/EnvironmentalSensor.h"
 
 /************************************
  * EXTERN VARIABLES
@@ -189,7 +190,7 @@ cInterfaceGetSensorStandbyTime( //C style getter for the sensor standby time
 //---------------------------------------------------------------------
 extern "C"
 UINT //Returns the max delay between measurements
-cInterfaceGetMaxDelay( //C style gtter for sensor maximum delay
+cInterfaceGetMaxDelay( //C style getter for sensor maximum delay
 		EnvSensorHandle* psEnvSensorHandle_) //A pointer to to an environmental sensor handle
 {
 	//If the handle exists and it has a sensor, get the maximum delay

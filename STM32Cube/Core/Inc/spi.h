@@ -35,6 +35,7 @@ extern "C" {
 extern SPI_HandleTypeDef hspi2;
 
 /* USER CODE BEGIN Private defines */
+#define PCLK1 48000000
 
 /* USER CODE END Private defines */
 

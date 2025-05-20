@@ -31,6 +31,7 @@
 
 #include "kernel.h"
 #include "scheduler.h"
+
 #include "EnvironmentalSensor.h"
 
 /* USER CODE END Includes */
@@ -57,9 +58,7 @@
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-
 void SystemClock_Config(void);
-
 /* USER CODE BEGIN PFP */
 /* I/O Utilities */
 INT __io_putchar(INT ch); //Transmit a character over UART
@@ -81,6 +80,7 @@ void TestThread3(void* pvParameters_);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -109,37 +109,22 @@ int main(void)
   MX_TIM1_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-  //rtos_KernelInit();
- // rtos_CreateThread(TestThread1, NULL);
-  //rtos_CreateThread(TestThread2, NULL);
- // rtos_KernelStart();
   HAL_TIM_Base_Start(&htim1);
-  typedef struct bme280_data
-  {
-      /*! Compensated pressure */
-      UINT pressure;
 
-      /*! Compensated temperature */
-      INT temperature;
+  //rtos_KernelInit();
+  //rtos_CreateThread(TestThread1, NULL);
+  //rtos_CreateThread(TestThread2, NULL);
+  //rtos_KernelStart();
 
-      /*! Compensated humidity */
-      UINT humidity;
-  }bme280_data;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  EnvSensorHandle* sensorHandle;
-  sensorHandle = cInterfaceCreateEnvironmentalSensor();
 
   while (1)
   {
     /* USER CODE END WHILE */
-	cInterfaceReadSensorData(sensorHandle, READ_MODE_SINGLE, ENVSENSOR_SELECT_ALL);
-	const bme280_data* sensorData = cInterfaceGetSensorData(sensorHandle);
-	printf("Temperature: %d°C, Humidity: %d%%, Pressure: %d hPa\n", sensorData->temperature, sensorData->humidity, sensorData->pressure);
-	HAL_Delay(1000);
-
+	printf("Thread1 Running\n");
     /* USER CODE BEGIN 3 */
 
   }
@@ -206,7 +191,7 @@ __io_putchar( //Transmits a character ofer UART
 	//Transmit characters
 	if (HAL_UART_Transmit(&huart2, (UCHAR*)&ch, 1, HAL_MAX_DELAY) != HAL_OK)
 		return -1; //If transmission fail, return error code
-	return ch; //Otherwise reuturn transmitted character
+	return ch; //Otherwise return transmitted character
 }
 
 //-----------------------------------------------------------------------

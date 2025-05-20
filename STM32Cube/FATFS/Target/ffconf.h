@@ -108,7 +108,7 @@
 /   950 - Traditional Chinese (DBCS)
 */
 
-#define _USE_LFN     0    /* 0 to 3 */
+#define _USE_LFN     1    /* 0 to 3 */
 #define _MAX_LFN     255  /* Maximum LFN length to handle (12 to 255) */
 /* The _USE_LFN switches the support of long file name (LFN).
 /
@@ -256,6 +256,8 @@
 /  The _SYNC_t defines O/S dependent sync object type. e.g. HANDLE, ID, OS_EVENT*,
 /  SemaphoreHandle_t and etc.. A header file for O/S definitions needs to be
 /  included somewhere in the scope of ff.h. */
+
+#define FF_FS_FAT32 1
 
 /* define the ff_malloc ff_free macros as standard malloc free */
 #if !defined(ff_malloc) && !defined(ff_free)

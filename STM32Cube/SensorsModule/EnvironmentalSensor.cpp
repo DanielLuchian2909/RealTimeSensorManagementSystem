@@ -9,7 +9,8 @@
 /************************************
  * INCLUDES
  ************************************/
-#include "EnvironmentalSensor.h"
+#include "include/EnvironmentalSensor.h"
+
 #include <cstdlib>
 
 //Declaration of C Headers/Libraries
