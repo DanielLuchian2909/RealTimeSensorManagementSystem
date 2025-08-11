@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;STM32Cube/SensorsModule/inlude&apos; to &apos;include&apos;" description="Rename resource &apos;inlude&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="SensorsModule/inlude" name="include" stamp="1745804529395" updateReferences="true"/>
+</session>
