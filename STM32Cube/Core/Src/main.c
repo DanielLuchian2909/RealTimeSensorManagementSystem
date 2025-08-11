@@ -29,9 +29,9 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 
+#include "EnvironmentalSensor.h"
 #include "kernel.h"
 #include "scheduler.h"
-#include "EnvironmentalSensor.h"
 
 /* USER CODE END Includes */
 
@@ -79,9 +79,8 @@ void SystemClock_Config(void);
 INT __io_putchar(INT ch); //Transmit a character over UART
 
 /* Thread Test Functions */
-void ReadWriteSensorData(void* pvParameters_);
+void TestThread1(void* pvParameters_);
 void TestThread2(void* pvParameters_);
-void TestThread3(void* pvParameters_);
 
 /* USER CODE END PFP */
 
@@ -134,7 +133,7 @@ int main(void)
   EnvSensorHandle* psSensorHandle = cInterfaceCreateEnvironmentalSensor();
 
   //Create the thread to collect and display sensor data
-  rtos_CreateThread(ReadWriteSensorData, (void*)psSensorHandle);
+  rtos_CreateThread(TestThread1, NULL);
 
   //Create a test thread to confirm scheduling
   rtos_CreateThread(TestThread2, NULL);
@@ -217,46 +216,25 @@ __io_putchar( //Transmits a character ofer UART
 
 //-----------------------------------------------------------------------
 void
-ReadWriteSensorData( //Function that runs reading and writing the sensor
-		void* pvParameters_) //Thread function parameter
+TestThread1( //Function that serial prints "Thread2 Running\n"
+		void* pvParameters_)
  {
+
 	//Cast argument
-	EnvSensorHandle* psInputs = *(EnvSensorHandle*)pvParameters_;
+	UINT inputs = *(UINT*)pvParameters_;
 
-	//Initialize a pointer to sensor data
-	Bme280DataAlias* psSensorData = NULL;
-
-	//Thread execution code
 	while (1)
 	{
-		//Check if the sensor is busy
-		if (!bSensorBusy)
-		{
-            //Set the flag to indicate the sensor is in use
-			bSensorBusy = TRUE;
-
-            //Read the sensor data
-            cInterfaceReadSensorData(psInputs, READ_MODE_SINGLE, ENVSENSOR_SELECT_ALL);
-
-            //Get the sensor data
-            psSensorData = cInterfaceGetSensorData(psInputs);
-
-            // Print the sensor data
-            if (psSensorData != NULL)
-            {
-                printf("Temperature: %d°C, Humidity: %d%%, Pressure: %d hPa\n",
-                		psSensorData->temperature, psSensorData->humidity, psSensorData->pressure);
-            }
-
-            //Set sensor to available
-            bSensorBusy = FALSE;
-		}
+		printf("Thread1 Running\n");
+		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
+		HAL_Delay(500);
+		rtos_Yield();
 	}
  }
 
 //-----------------------------------------------------------------------
 void
-TestThread2( //Function that serial prints "Thread2 Running\n"
+TestThread2( //Function that serial prints "Thread3 Running\n"
 		void* pvParameters_)
  {
 
@@ -266,24 +244,6 @@ TestThread2( //Function that serial prints "Thread2 Running\n"
 	while (1)
 	{
 		printf("Thread2 Running\n");
-		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
-		HAL_Delay(500);
-		rtos_Yield();
-	}
- }
-
-//-----------------------------------------------------------------------
-void
-TestThread3( //Function that serial prints "Thread3 Running\n"
-		void* pvParameters_)
- {
-
-	//Cast argument
-	UINT inputs = *(UINT*)pvParameters_;
-
-	while (1)
-	{
-		printf("Thread3 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
 		//rtos_Yield();

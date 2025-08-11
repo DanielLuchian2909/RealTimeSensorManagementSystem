@@ -10,7 +10,8 @@
  * INCLUDES
  ************************************/
 #include "baseTypes.h"
-#include "EnvironmentalSensor.h"
+
+#include "include/EnvironmentalSensor.h"
 
 /************************************
  * EXTERN VARIABLES
