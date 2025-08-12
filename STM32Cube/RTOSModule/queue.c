@@ -10,7 +10,6 @@
  * INCLUDES
  ************************************/
 #include <stdlib.h>
-
 #include "queue.h"
 
 /************************************
@@ -18,7 +17,7 @@
  ************************************/
 //-----------------------------------------------------------------------
 RTOSQueue* //A pointer to an RTOSQueue
-rtos_InitQueue( //Initializes an empty RTOSQueue
+rtos_initQueue( //Initializes an empty RTOSQueue
 		UINT uiMaxNumThreads_) //An unsigned integer for the max number of threads
 {
     //Dynamically allocate memory for the RTOSQueue
@@ -37,12 +36,12 @@ rtos_InitQueue( //Initializes an empty RTOSQueue
 
 //-----------------------------------------------------------------------
 BOOLE //Return true if the node is successfully added
-rtos_EnQueue( //Function to add a node to the RTOSQueue
+rtos_enQueue( //Function to add a node to the RTOSQueue
 		RTOSQueue* psRTOSQueue_, //Pointer to the RTOSQueue
 		ThreadContextStruct* psThreadData_) //Value of the new thread data
 {
 	//Check if another thread is allowed to be enqueued
-	if (rtos_IsQueueFull(psRTOSQueue_))
+	if (rtos_isQueueFull(psRTOSQueue_))
 		return FALSE; //Queue is full
 
 	//Allocate a new node
@@ -55,7 +54,7 @@ rtos_EnQueue( //Function to add a node to the RTOSQueue
 	psNewThreadNode->psNext = NULL;
 
 	//If the queue is empty set the front to the new pointer, otherwise set the rear
-	if (rtos_IsQueueEmpty(psRTOSQueue_))
+	if (rtos_isQueueEmpty(psRTOSQueue_))
 		psRTOSQueue_->psFront = psNewThreadNode;
 	else
 		psRTOSQueue_->psRear->psNext = psNewThreadNode;
@@ -70,7 +69,7 @@ rtos_EnQueue( //Function to add a node to the RTOSQueue
 
 //-----------------------------------------------------------------------
 ThreadContextStruct //Returns the dequeued node
-rtos_DeQueue( //A function that dequeues a nodes from the queue
+rtos_deQueue( //A function that dequeues a nodes from the queue
 		RTOSQueue* psRTOSQueue_) //A pointer an RTOSQueue
 {
 	//Init dequeued val with dummy results
@@ -79,7 +78,7 @@ rtos_DeQueue( //A function that dequeues a nodes from the queue
 	sDequeuedValue.puiMyThreadStackPointer = NULL;
 
 	//Check if the queue is empty
-	if (rtos_IsQueueEmpty(psRTOSQueue_))
+	if (rtos_isQueueEmpty(psRTOSQueue_))
 		return sDequeuedValue;
 
 	//Handle single-node and multi-node cases
@@ -126,7 +125,7 @@ rtos_DeQueue( //A function that dequeues a nodes from the queue
 
 //-----------------------------------------------------------------------
 UINT //The number of threads in the RTOS Queue
-rtos_GetQueueSize( //A function that returns the size of the RTOSQueue
+rtos_getQueueSize( //A function that returns the size of the RTOSQueue
 		RTOSQueue* psRTOSQueue_) //A pointer to an RTOSQueue
 {
 	return (psRTOSQueue_->uiNumThreads);
@@ -134,7 +133,7 @@ rtos_GetQueueSize( //A function that returns the size of the RTOSQueue
 
 //-----------------------------------------------------------------------
 ThreadNode* //A pointer to a ThreadNode
-rtos_PeekQueue( //A function that returns the first value of an RTOSQueue
+rtos_peekQueue( //A function that returns the first value of an RTOSQueue
 		RTOSQueue* psRTOSQueue_) //A pointer to an RTOSQueue
 {
 	return (psRTOSQueue_->psFront);
@@ -142,7 +141,7 @@ rtos_PeekQueue( //A function that returns the first value of an RTOSQueue
 
 //-----------------------------------------------------------------------
 BOOLE //True if the queue is empty, otherwise false
-rtos_IsQueueEmpty( //A function that returns whether the RTOSQueue is empty
+rtos_isQueueEmpty( //A function that returns whether the RTOSQueue is empty
 		RTOSQueue* psRTOSQueue_) //A pointer to an RTOSQueue
 {
 	return (psRTOSQueue_->psFront == NULL);
@@ -150,7 +149,7 @@ rtos_IsQueueEmpty( //A function that returns whether the RTOSQueue is empty
 
 //-----------------------------------------------------------------------
 BOOLE //True if the queue is full, otherwise false
-rtos_IsQueueFull( //A function that returns whether the queue is full
+rtos_isQueueFull( //A function that returns whether the queue is full
 		RTOSQueue* psRTOSQueue_) //A pointer to an RTOSQueue
 {
 	return (psRTOSQueue_->uiNumThreads == psRTOSQueue_->uiMaxNumThreads);

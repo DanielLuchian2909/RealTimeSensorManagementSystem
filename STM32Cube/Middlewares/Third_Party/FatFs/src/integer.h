@@ -14,7 +14,7 @@ typedef unsigned __int64 QWORD;
 
 #else			/* Embedded platform */
 
-#include "baseTypes.h"
+#include "base_types.h"
 
 /* These types MUST be 16-bit or 32-bit */
 //typedef int				INT;

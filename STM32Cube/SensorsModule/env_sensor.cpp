@@ -1,6 +1,6 @@
 /**
  ********************************************************************************
- * @file        EnvironmentalSensor.cpp
+ * @file        env_sensor.cpp
  * @author      Daniel Luchian
  * @brief       Implementation file for the EnvironmentalSensor class
  ********************************************************************************
@@ -9,8 +9,7 @@
 /************************************
  * INCLUDES
  ************************************/
-#include "include/EnvironmentalSensor.h"
-
+#include "include/env_sensor.h"
 #include <cstdlib>
 
 //Declaration of C Headers/Libraries
@@ -43,13 +42,13 @@ extern TIM_HandleTypeDef htim1; //Handle for timer 1
 /************************************
  * STATIC FUNCTIONS
  ************************************/
-static BME280_INTF_RET_TYPE	Bme280I2cRead(UCHAR ucRegAddr_, UCHAR *ucRegData_, UINT uiLen_, void *pvIntf_); //The I2C read function for the BME280 sensor
-static BME280_INTF_RET_TYPE Bme280I2cWrite(UCHAR ucRegAddr_, const UCHAR *ucRegData_, UINT uiLen_, void* pvIntf_); //The I2C write function for the BME280 sensor
-static void Bme280Delay(UINT uiPeriod_, void* pvIntf_); //Microsecond delay function for the BME280 sensor
+static BME280_INTF_RET_TYPE	bme280I2cRead(UCHAR ucRegAddr_, UCHAR *ucRegData_, UINT uiLen_, void *pvIntf_); //The I2C read function for the BME280 sensor
+static BME280_INTF_RET_TYPE bme280I2cWrite(UCHAR ucRegAddr_, const UCHAR *ucRegData_, UINT uiLen_, void* pvIntf_); //The I2C write function for the BME280 sensor
+static void bme280Delay(UINT uiPeriod_, void* pvIntf_); //Microsecond delay function for the BME280 sensor
 
 //-----------------------------------------------------------------------
 static BME280_INTF_RET_TYPE	//Returns the last read/write error code
-Bme280I2cRead(			    //The I2C read function for the BME280 sensor
+bme280I2cRead(			    //The I2C read function for the BME280 sensor
 		UCHAR ucRegAddr_,	//The address of the register to read from
 		UCHAR *ucRegData_,  //A pointer to the where the read data will be stored
 		UINT uiLen_,	    //Number of bytes of data to be read
@@ -81,7 +80,7 @@ Bme280I2cRead(			    //The I2C read function for the BME280 sensor
 
 //-----------------------------------------------------------------------
 static BME280_INTF_RET_TYPE 	 //Returns the last read/write error code
-Bme280I2cWrite( 				 //The i2c write function for the BME280 sensor
+bme280I2cWrite( 				 //The i2c write function for the BME280 sensor
 		UCHAR ucRegAddr_,		 //The address of the register to write to
 		const UCHAR *ucRegData_, //A pointer to the data to write to that register
 		UINT uiLen_,			 //The length (in bytes) of the data
@@ -114,7 +113,7 @@ Bme280I2cWrite( 				 //The i2c write function for the BME280 sensor
 
 //-----------------------------------------------------------------------
 static void
-Bme280Delay( //Delay function in microseconds
+bme280Delay( //Delay function in microseconds
 		UINT uiPeriod_, //Delay time in microseconds
 		void* pvIntf_)  //Function pointer (not used)
 {
@@ -172,7 +171,7 @@ EnvironmentalSensor::EnvironmentalSensor() //Default constructor
 	configureI2c();
 
 	//Set the delay function
-	psMyEnvSensor->delay_us = Bme280Delay;
+	psMyEnvSensor->delay_us = bme280Delay;
 
 	//Call the BME280 Api to initialize the sensor
 	bme280_init(psMyEnvSensor);
@@ -331,6 +330,6 @@ void
 EnvironmentalSensor::configureI2c() //Function responsible for configuring I2C for the sensor
 {
 	psMyEnvSensor->intf = BME280_I2C_INTF;
-	psMyEnvSensor->read = Bme280I2cRead;
-	psMyEnvSensor->write= Bme280I2cWrite;
+	psMyEnvSensor->read = bme280I2cRead;
+	psMyEnvSensor->write= bme280I2cWrite;
 }

@@ -170,13 +170,13 @@ void SysTick_Handler(void)
   if (g_uiKernelStatusFlag & KERNEL_STARTED)
   {
 	  //If the thread is not done running, decrement its runtime, otherwise yield
-	  if( rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs > 0)
+	  if( rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs > 0)
 	  {
-		  --(rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs);
+		  --(rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs);
 	  }
 	  else
 	  {
-		  rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs;
+		  rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs;
 		  _ICSR |= 1<<28;
 		  __asm("isb");
 	  }

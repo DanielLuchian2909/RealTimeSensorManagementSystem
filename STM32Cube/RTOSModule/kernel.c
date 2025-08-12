@@ -48,12 +48,12 @@ UINT g_uiKernelStatusFlag = 0;
 /************************************
  * STATIC FUNCTIONS
  ************************************/
-UINT* AllocateThread(void); //Allocates a new thread stack pointer
-void SVCHandlerMain(UINT* puiSvcArgs); //SVC Handler
+UINT* allocateThread(void); //Allocates a new thread stack pointer
+void svcHandlerMain(UINT* puiSvcArgs); //SVC Handler
 
 //-----------------------------------------------------------------------
 UINT*  //A pointer to a valid stack address for a new thread, or if no valid address exists; NULL
-AllocateThread() //Get a thread pointer
+allocateThread() //Get a thread pointer
 {
 	UINT* puiPotentialThread = (UINT*)((UINT)puiLastAllocatedThread - THREAD_STACK_SIZE);
 
@@ -66,7 +66,7 @@ AllocateThread() //Get a thread pointer
 
 //-----------------------------------------------------------------------
 void
-SVCHandlerMain( //SVC Handler function
+svcHandlerMain( //SVC Handler function
 		UINT* puiSvcArgs) //A pointer to an unsigned integer containing the SVC argument
 {
 	UINT uiSvcNumber;
@@ -84,7 +84,7 @@ SVCHandlerMain( //SVC Handler function
 	//Run the first thread
 	case RUN_FIRST_THREAD:
 		__set_PSP ((UINT)
-				rtos_PeekQueue(g_psRTOSQueue)->psThreadData->puiMyThreadStackPointer);
+				rtos_peekQueue(g_psRTOSQueue)->psThreadData->puiMyThreadStackPointer);
 		runFirstThread();
 		break;
 
@@ -104,7 +104,7 @@ SVCHandlerMain( //SVC Handler function
  ************************************/
 //-----------------------------------------------------------------------
 BOOLE //True if the kernel was initialized with not errors
-rtos_KernelInit() //Function to initialize kernel related information
+rtos_kernelInit() //Function to initialize kernel related information
 {
 	//Set PendSV priority to weakest
 	SHPR3 |= 0xFE << 16; //Shift the constant 0xFE 16 bits to set PendSV priority
@@ -120,7 +120,7 @@ rtos_KernelInit() //Function to initialize kernel related information
 	puiMinThreadStackPointer = (UINT*)(((UINT)puiMspVal - STACK_SIZE) + THREAD_STACK_SIZE);
 
 	//Initializing threads circular queue
-	g_psRTOSQueue = rtos_InitQueue(STACK_SIZE / THREAD_STACK_SIZE - 1);
+	g_psRTOSQueue = rtos_initQueue(STACK_SIZE / THREAD_STACK_SIZE - 1);
 	if (!g_psRTOSQueue)
 	{
 		//TODO add some debug log
@@ -135,7 +135,7 @@ rtos_KernelInit() //Function to initialize kernel related information
 
 //-----------------------------------------------------------------------
 void
-rtos_KernelStart() //Function to start the kernel
+rtos_kernelStart() //Function to start the kernel
 {
 	g_uiKernelStatusFlag |= KERNEL_STARTED;
 	__asm("SVC #0");
@@ -143,12 +143,12 @@ rtos_KernelStart() //Function to start the kernel
 
 //-----------------------------------------------------------------------
 BOOLE //Return whether a thread was succesfully created
-rtos_CreateThread( //A function that creates a thread
+rtos_createThread( //A function that creates a thread
 		void (*pfnThreadFunction_)(void*), //A pointer to the thread's function
 		void *pvParameters_) //A pointer to the thread's arguments
 {
 	//Allocate a new thread pointer
-	UINT* puiNewThreadPointer = AllocateThread();
+	UINT* puiNewThreadPointer = allocateThread();
 	if (puiNewThreadPointer == NULL)
 	{
 		//TODO add some debug log
@@ -188,7 +188,7 @@ rtos_CreateThread( //A function that creates a thread
 	psNewThreadContext->uiMyThreadTimesliceMs = ROUND_ROBIN_TIMEOUT_MS;
 
 	//Enqueue the new thread
-	if (!rtos_EnQueue(g_psRTOSQueue, psNewThreadContext))
+	if (!rtos_enQueue(g_psRTOSQueue, psNewThreadContext))
 	{
 		free(psNewThreadContext); //Free context memory if enqueue failed
 		//TODO add some debug log
@@ -200,21 +200,21 @@ rtos_CreateThread( //A function that creates a thread
 
 //-----------------------------------------------------------------------
 BOOLE //Return whether a thread was succesfully created
-rtos_CreateThreadWithDeadline( //A function that creates a thread
+rtos_createThreadWithDeadline( //A function that creates a thread
 		void (*pfnThreadFunction_)(void*), //A pointer to the thread's function
 		void *pvParameters_, //A pointer to the thread's arguments
 		UINT uiDeadline_)
 {
 	//Create a standard thread
-	if (!rtos_CreateThread(pfnThreadFunction_, pvParameters_))
+	if (!rtos_createThread(pfnThreadFunction_, pvParameters_))
 	{
 		//some debug log
 		return FALSE;
 	}
 
 	//Set the threads deadline
-	rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = uiDeadline_;
-	rtos_PeekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs = uiDeadline_;
+	rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = uiDeadline_;
+	rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs = uiDeadline_;
 
 	return TRUE;
 }

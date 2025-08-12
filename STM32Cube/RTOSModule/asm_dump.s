@@ -1,6 +1,6 @@
  /**
  ********************************************************************************
- * @file asmDump.s
+ * @file asm_dump.s
  * @author University of Waterloo MTE 241, edited and improved by Daniel Luchian
  * @brief This assembly file was originally written by Professor Jeff Zarnett
  * for the labratory section of UWaterloo's MTE 241 course, since then
@@ -19,7 +19,7 @@
 	ITE EQ //If Then Equal
 	MRSEQ R0, MSP //If the third bit is set, we are using MSP. Set us up to use that
 	MRSNE R0, PSP //Otherwise, use PSP
-	B SVCHandlerMain //Go to the C function
+	B svcHandlerMain //Go to the C function
 
 
   .global runFirstThread //Running the first thread requires some special consideration, so it is its own function
@@ -46,7 +46,7 @@
 	//Perform the switch
 	MRS R0, PSP
 	STMDB R0!,{R4-R11}
-	BL Sched
+	BL sched
 	MRS R0, PSP
 	MOV LR, #0xFFFFFFFD
 	LDMIA R0!,{R4-R11}

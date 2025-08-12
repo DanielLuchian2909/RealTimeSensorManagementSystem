@@ -41,17 +41,17 @@ extern RTOSQueue* g_psRTOSQueue; //Pointer to a global RTOSQueue
 /************************************
  * STATIC FUNCTION PROTOTYPES
  ************************************/
-BOOLE Sched(void); //RTOS scheduler
+BOOLE sched(void); //RTOS scheduler
 
 /************************************
  * STATIC FUNCTIONS
  ************************************/
 //-----------------------------------------------------------------------
 BOOLE //Return true if the schedular was run without exceptions
-Sched() //RTOS Scheduler, full implementation tbd
+sched() //RTOS Scheduler, full implementation tbd
 {
     //Dequeue the current thread and TODO checks if a thread context was dequeued
-    ThreadContextStruct sDeQueuedThread = rtos_DeQueue(g_psRTOSQueue);
+    ThreadContextStruct sDeQueuedThread = rtos_deQueue(g_psRTOSQueue);
 
     //TODO: Make this whole block conditional on the OS behaviour
     if (TRUE)
@@ -72,7 +72,7 @@ Sched() //RTOS Scheduler, full implementation tbd
 		psDeQueuedThread->puiMyThreadStackPointer = sDeQueuedThread.puiMyThreadStackPointer;
 
 		//Re-enqueue the current thread to the rear of the queue
-		if (!rtos_EnQueue(g_psRTOSQueue, psDeQueuedThread))
+		if (!rtos_enQueue(g_psRTOSQueue, psDeQueuedThread))
 		{
 			free(psDeQueuedThread); //Ensure failed enqueue memeory is freeed
 			//TODO add to debug log
@@ -81,7 +81,7 @@ Sched() //RTOS Scheduler, full implementation tbd
     }
 
     //Set PSP to the next thread's stack pointer
-    __set_PSP((UINT)rtos_PeekQueue(g_psRTOSQueue)->psThreadData->puiMyThreadStackPointer); //used to be psmynextthread
+    __set_PSP((UINT)rtos_peekQueue(g_psRTOSQueue)->psThreadData->puiMyThreadStackPointer); //used to be psmynextthread
 
     return TRUE;
 }
@@ -91,7 +91,7 @@ Sched() //RTOS Scheduler, full implementation tbd
  ************************************/
 //-----------------------------------------------------------------------
 void
-rtos_Yield() //Function that yields a thread
+rtos_yield() //Function that yields a thread
 {
 	__asm("SVC #1");
 }

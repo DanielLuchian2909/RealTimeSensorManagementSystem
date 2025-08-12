@@ -1,6 +1,6 @@
 /**
  ********************************************************************************
- * @file        CInterfaceEnvironmentalSensor.cpp
+ * @file        cinterface_env_sensor.cpp
  * @author      Daniel Luchian
  * @brief       CInterface for the EnvironmentalSensor class
  ********************************************************************************
@@ -9,9 +9,8 @@
 /************************************
  * INCLUDES
  ************************************/
-#include "baseTypes.h"
-
-#include "include/EnvironmentalSensor.h"
+#include "base_types.h"
+#include "include/env_sensor.h"
 
 /************************************
  * EXTERN VARIABLES

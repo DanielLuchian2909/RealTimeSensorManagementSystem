@@ -16,7 +16,8 @@ extern "C" {
 /************************************
  * INCLUDES
  ************************************/
-#include "baseTypes.h" //Basic type definitions and utilities
+#include "base_types.h" //Basic type definitions and utilities
+#include "thread.h"
 
 /************************************
  * MACROS AND DEFINES
@@ -50,15 +51,15 @@ typedef struct RTOSQueue
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
 /* RTOS Queue Operations */
-RTOSQueue* rtos_InitQueue(UINT uiMaxNumThreads_); //Initialize an RTOSQueue
-BOOLE rtos_EnQueue(RTOSQueue* psRTOSQueue_, ThreadContextStruct* psThreadData_); //Enqueue a thread
-ThreadContextStruct rtos_DeQueue(RTOSQueue* psRTOSQueue_); //Dequeue a thread
+RTOSQueue* rtos_initQueue(UINT uiMaxNumThreads_); //Initialize an RTOSQueue
+BOOLE rtos_enQueue(RTOSQueue* psRTOSQueue_, ThreadContextStruct* psThreadData_); //Enqueue a thread
+ThreadContextStruct rtos_deQueue(RTOSQueue* psRTOSQueue_); //Dequeue a thread
 
 /* RTOS Queue Getters */
-UINT rtos_GetQueueSize(RTOSQueue* psRTOSQueue_); //Returns the size of the queue
-ThreadNode* rtos_PeekQueue(RTOSQueue* psRTOSQueue_); //Returns a pointer to the front of the queue
-BOOLE rtos_IsQueueEmpty(RTOSQueue* psRTOSQueue_); //Returns whether the queue is empty
-BOOLE rtos_IsQueueFull(RTOSQueue* psRTOSQueue_); //Returns whether the queue is full
+UINT rtos_getQueueSize(RTOSQueue* psRTOSQueue_); //Returns the size of the queue
+ThreadNode* rtos_peekQueue(RTOSQueue* psRTOSQueue_); //Returns a pointer to the front of the queue
+BOOLE rtos_isQueueEmpty(RTOSQueue* psRTOSQueue_); //Returns whether the queue is empty
+BOOLE rtos_isQueueFull(RTOSQueue* psRTOSQueue_); //Returns whether the queue is full
 
 #ifdef __cplusplus
 }

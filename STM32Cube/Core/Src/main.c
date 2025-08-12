@@ -29,7 +29,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 
-#include "EnvironmentalSensor.h"
+#include "env_sensor.h"
 #include "kernel.h"
 #include "scheduler.h"
 
@@ -127,19 +127,19 @@ int main(void)
   HAL_TIM_Base_Start(&htim1);
 
   //Intialize all kernel related information
-  rtos_KernelInit();
+  rtos_kernelInit();
 
   //Create an environmental sensor class and an alias to the class
   EnvSensorHandle* psSensorHandle = cInterfaceCreateEnvironmentalSensor();
 
   //Create the thread to collect and display sensor data
-  rtos_CreateThread(TestThread1, NULL);
+  rtos_createThread(TestThread1, NULL);
 
   //Create a test thread to confirm scheduling
-  rtos_CreateThread(TestThread2, NULL);
+  rtos_createThread(TestThread2, NULL);
 
   //Start the kernel
-  rtos_KernelStart();
+  rtos_kernelStart();
 
   /* USER CODE END 2 */
 
@@ -228,7 +228,7 @@ TestThread1( //Function that serial prints "Thread2 Running\n"
 		printf("Thread1 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
-		rtos_Yield();
+		rtos_yield();
 	}
  }
 

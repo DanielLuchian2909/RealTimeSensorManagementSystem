@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file scheduler.h
- * @author Daniel Luchian
- * @brief Header file for the scheduler
+ * @file thread.h
+ * @author
+ * @brief
  ********************************************************************************
  */
 
-#ifndef __SCHEDULER_H__
-#define __SCHEDULER_H__
+#ifndef __THREAD__
+#define __THREAD__
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +16,7 @@ extern "C" {
 /************************************
  * INCLUDES
  ************************************/
-#include "base_types.h" //Basic type definitions and utilities
+#include "base_types.h"
 
 /************************************
  * MACROS AND DEFINES
@@ -25,7 +25,17 @@ extern "C" {
 /************************************
  * TYPEDEFS
  ************************************/
-#define ROUND_ROBIN_TIMEOUT_MS 1000; //The default value for a threads timeslice in ms
+
+/************************************
+ * Thread Context Struct (if used)
+ ************************************/
+typedef struct ThreadContextStruct
+{
+    UINT* puiMyThreadStackPointer;  // Stack pointer for the thread
+    void (*pfnMyThreadFunction)(void*); // Thread function pointer
+    UINT uiMyThreadRuntimeMs; // Runtime in milliseconds
+    UINT uiMyThreadTimesliceMs; // Time slice for the thread in milliseconds
+} ThreadContextStruct;
 
 /************************************
  * EXPORTED VARIABLES
@@ -34,10 +44,10 @@ extern "C" {
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-void rtos_yield(void); //Yield function for the RTOS
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif // __THREAD___

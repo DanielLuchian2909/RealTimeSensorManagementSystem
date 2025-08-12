@@ -1,18 +1,18 @@
 /**
  ********************************************************************************
- * @file        EnvironmentalSensor.h
+ * @file        env_sensor.h
  * @author      Daniel Luchian
  * @brief       Header file for the EnvironmentalSensor class
  ********************************************************************************
  */
 
-#ifndef __ENVIRONMENTALSENSOR_H__
-#define __ENVIRONMENTALSENSOR_H__
+#ifndef __ENV_SENSOR_H__
+#define __ENV_SENSOR_H__
 
 /************************************
  * INCLUDES
  ************************************/
-#include "baseTypes.h" //Basic type definitions and utilities
+#include "base_types.h" //Basic type definitions and utilities
 
 /************************************
  * MACROS AND DEFINES
@@ -121,4 +121,4 @@ private:
 
 #endif // __cplusplus
 
-#endif // __ENVIRONMENTALSENSOR_H__
+#endif // __ENV_SENSOR_H__
