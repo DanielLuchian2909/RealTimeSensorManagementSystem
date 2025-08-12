@@ -257,6 +257,8 @@
 /  SemaphoreHandle_t and etc.. A header file for O/S definitions needs to be
 /  included somewhere in the scope of ff.h. */
 
+#define FF_FS_FAT32 1
+
 /* define the ff_malloc ff_free macros as standard malloc free */
 #if !defined(ff_malloc) && !defined(ff_free)
 #include <stdlib.h>
