@@ -6,8 +6,8 @@
  ********************************************************************************
  */
 
-#ifndef __itc_types__
-#define __itc_types__
+#ifndef __ITC_TYPES_H__
+#define __ITC_TYPES_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,4 +38,4 @@ typedef struct msg_t
 }
 #endif
 
-#endif // __itc_types__
+#endif // __ITC_TYPES_H__

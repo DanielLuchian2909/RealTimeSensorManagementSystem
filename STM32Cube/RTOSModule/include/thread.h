@@ -6,8 +6,8 @@
  ********************************************************************************
  */
 
-#ifndef __THREAD__
-#define __THREAD__
+#ifndef __THREAD_H__
+#define __THREAD_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,17 +25,21 @@ extern "C" {
 /************************************
  * TYPEDEFS
  ************************************/
-
-/************************************
- * Thread Context Struct (if used)
- ************************************/
-typedef struct ThreadContextStruct
+/* Thread Context Structure */
+typedef struct thread_context_struct_t
 {
-    UINT* puiMyThreadStackPointer;  // Stack pointer for the thread
-    void (*pfnMyThreadFunction)(void*); // Thread function pointer
-    UINT uiMyThreadRuntimeMs; // Runtime in milliseconds
-    UINT uiMyThreadTimesliceMs; // Time slice for the thread in milliseconds
-} ThreadContextStruct;
+    UINT* pui_thread_stack_ptr_;  // Stack pointer for the thread
+    void (*pfn_thread_fn_)(void*); // Thread function pointer
+    UINT ui_thread_runtime_ms_; // Runtime in milliseconds
+    UINT ui_thread_timeslice_ms_; // Time slice for the thread in milliseconds
+} thread_context_struct_t;
+
+/* Thread Node Structure */
+typedef struct thread_node_t
+{
+	thread_context_struct_t* ps_thread_data_; //Pointer to thread-specific data
+	struct thread_node_t* ps_next_; //Pointer to the next node in the queue
+} thread_node_t;
 
 /************************************
  * EXPORTED VARIABLES
@@ -50,4 +54,4 @@ typedef struct ThreadContextStruct
 }
 #endif
 
-#endif // __THREAD___
+#endif // __THREAD_H__

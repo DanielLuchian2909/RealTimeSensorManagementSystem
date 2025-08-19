@@ -6,8 +6,8 @@
  ********************************************************************************
  */
 
-#ifndef __itc__
-#define __itc__
+#ifndef __ITC_H__
+#define __ITC_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,13 +34,13 @@ extern "C" {
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-msg_t* new_msg();
-void delete_msg(msg_t* msg);
-int send(uint8_t dest_id, msg_t* msg);
-int recv(uint8_t recv_id, msg_t* msg);
+msg_t* rtos_newMsg();
+void rtos_deleteMsg(msg_t* msg);
+INT rtos_sendMsg(UCHAR dest_id, msg_t* msg);
+INT rtos_recvMsg(UCHAR recv_id, msg_t* msg);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __itc___
+#endif // __ITC_H__

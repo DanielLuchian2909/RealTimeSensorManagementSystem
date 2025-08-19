@@ -9,13 +9,8 @@
 #ifndef __BASETYPES_H__
 #define __BASETYPES_H__
 
-//If C++, include the C++-specific header
-#ifdef __cplusplus
-    #include <cstdint>
-// If C, include the C header for fixed-width types
-#else
-    #include <stdint.h>
-#endif
+#include <stdint.h>
+#include <stddef.h>
 
 /************************************
  * Type Definitions (use standard types)

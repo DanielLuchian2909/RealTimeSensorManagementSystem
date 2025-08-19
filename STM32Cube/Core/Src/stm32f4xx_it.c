@@ -60,8 +60,8 @@
 /* External variables --------------------------------------------------------*/
 extern I2C_HandleTypeDef hi2c1;
 /* USER CODE BEGIN EV */
-extern RTOSQueue* g_psRTOSQueue; //Pointer to a global RTOSQueue
-extern UINT g_uiKernelStatusFlag;
+extern thread_queue_t* g_ps_rtos_queue; //Pointer to a global RTOSQueue
+extern UINT g_ui_kernel_status_flag;
 
 /* USER CODE END EV */
 
@@ -167,16 +167,16 @@ void SysTick_Handler(void)
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
-  if (g_uiKernelStatusFlag & KERNEL_STARTED)
+  if (g_ui_kernel_status_flag & KERNEL_STARTED)
   {
 	  //If the thread is not done running, decrement its runtime, otherwise yield
-	  if( rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs > 0)
+	  if( rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_runtime_ms_ > 0)
 	  {
-		  --(rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs);
+		  --(rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_runtime_ms_);
 	  }
 	  else
 	  {
-		  rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadRuntimeMs = rtos_peekQueue(g_psRTOSQueue)->psThreadData->uiMyThreadTimesliceMs;
+		  rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_runtime_ms_ = rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_timeslice_ms_;
 		  _ICSR |= 1<<28;
 		  __asm("isb");
 	  }
