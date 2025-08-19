@@ -25,7 +25,7 @@ extern "C" {
 /************************************
  * TYPEDEFS
  ************************************/
-typedef INT mutex_t;
+typedef INT mutex_t; /* Pending full implemenation once critical section for the ARM Cortex M-4 are implemented */
 
 /************************************
  * EXPORTED VARIABLES
