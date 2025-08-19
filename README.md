@@ -27,7 +27,7 @@ This project has three core aspects:
 
 ### RTOS Module
 
-The RTOS module was the first part of this project. As of now, the RTOS supports:
+The RTOS module supports:
 
 - **Task Management**: The RTOS can create a thread with its own stack. It also supports pre-emptive and cooperative multitasking. The RTOS manages threads and will trigger an interrupt if the thread reaches its time limit or another thread pre-empts it; however, the user also has the option to yield their threads. 
 - **Task Scheduling**: The RTOS currently uses round-robin to schedule threads; however, a high-priority task is to switch round-robin scheduling with a priority scheduling system.
