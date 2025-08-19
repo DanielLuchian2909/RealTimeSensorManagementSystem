@@ -19,7 +19,7 @@
 /************************************
  * EXTERN VARIABLES
  ************************************/
-extern RTOSQueue* g_psRTOSQueue; //Pointer to a global RTOSQueue
+extern thread_queue_t* g_ps_rtos_queue; //Pointer to a global RTOSQueue
 
 /************************************
  * PRIVATE MACROS AND DEFINES
@@ -51,37 +51,37 @@ BOOLE //Return true if the schedular was run without exceptions
 sched() //RTOS Scheduler, full implementation tbd
 {
     //Dequeue the current thread and TODO checks if a thread context was dequeued
-    ThreadContextStruct sDeQueuedThread = rtos_deQueue(g_psRTOSQueue);
+    thread_context_struct_t s_dequeued_thread = rtos_deQueue(g_ps_rtos_queue);
 
     //TODO: Make this whole block conditional on the OS behaviour
     if (TRUE)
     {
     	//Save the current thread's stack pointer
-    	sDeQueuedThread.puiMyThreadStackPointer = (UINT*)(__get_PSP() - 8*4);
+    	s_dequeued_thread.pui_thread_stack_ptr_ = (UINT*)(__get_PSP() - 8*4);
 
-		//Allocate a new ThreadContextStructure for the dequeued threadcheck if malloc was succesful
-		ThreadContextStruct* psDeQueuedThread = (ThreadContextStruct*)malloc(sizeof(ThreadContextStruct));
-		if (psDeQueuedThread == NULL)
+		//Allocate a new thread_context_struct_ture for the dequeued threadcheck if malloc was succesful
+		thread_context_struct_t* ps_dequeued_thread = (thread_context_struct_t*)malloc(sizeof(thread_context_struct_t));
+		if (ps_dequeued_thread == NULL)
 		{
 			//TODO add debug log
 			return FALSE; //Memory allocation failed
 		}
 
-		//Copy over the dequeued thread data into the new ThreadContextStructure
-		psDeQueuedThread->pfnMyThreadFunction = sDeQueuedThread.pfnMyThreadFunction;
-		psDeQueuedThread->puiMyThreadStackPointer = sDeQueuedThread.puiMyThreadStackPointer;
+		//Copy over the dequeued thread data into the new thread_context_struct
+		ps_dequeued_thread->pfn_thread_fn_ = s_dequeued_thread.pfn_thread_fn_;
+		ps_dequeued_thread->pui_thread_stack_ptr_ = s_dequeued_thread.pui_thread_stack_ptr_;
 
 		//Re-enqueue the current thread to the rear of the queue
-		if (!rtos_enQueue(g_psRTOSQueue, psDeQueuedThread))
+		if (!rtos_enQueue(g_ps_rtos_queue, ps_dequeued_thread))
 		{
-			free(psDeQueuedThread); //Ensure failed enqueue memeory is freeed
+			free(ps_dequeued_thread); //Ensure failed enqueue memeory is freeed
 			//TODO add to debug log
 			return FALSE; //Check if thread is successfully enqueued
 		}
     }
 
     //Set PSP to the next thread's stack pointer
-    __set_PSP((UINT)rtos_peekQueue(g_psRTOSQueue)->psThreadData->puiMyThreadStackPointer); //used to be psmynextthread
+    __set_PSP((UINT)rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->pui_thread_stack_ptr_); //used to be psmynextthread
 
     return TRUE;
 }

@@ -53,7 +53,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-typedef struct Bme280DataAlias
+typedef struct Bme280DataAlias_t
 {
 // Compensated pressure
 UINT pressure;
@@ -63,10 +63,7 @@ INT temperature;
 
 // Compensated humidity
 UINT humidity;
-} Bme280DataAlias;
-
-//Current flag used for syncrhronization (will be replaced by proper mutexes and semaphores later)
-volatile BOOLE bSensorBusy = FALSE;
+} Bme280DataAlias_t;
 
 /* USER CODE END PV */
 
@@ -79,8 +76,8 @@ void SystemClock_Config(void);
 INT __io_putchar(INT ch); //Transmit a character over UART
 
 /* Thread Test Functions */
-void TestThread1(void* pvParameters_);
-void TestThread2(void* pvParameters_);
+void TestThread1(void* pvParameters);
+void TestThread2(void* pvParameters);
 
 /* USER CODE END PFP */
 
@@ -217,11 +214,11 @@ __io_putchar( //Transmits a character ofer UART
 //-----------------------------------------------------------------------
 void
 TestThread1( //Function that serial prints "Thread2 Running\n"
-		void* pvParameters_)
+		void* pvParameters)
  {
 
 	//Cast argument
-	UINT inputs = *(UINT*)pvParameters_;
+	UINT inputs = *(UINT*)pvParameters;
 
 	while (1)
 	{
@@ -235,18 +232,18 @@ TestThread1( //Function that serial prints "Thread2 Running\n"
 //-----------------------------------------------------------------------
 void
 TestThread2( //Function that serial prints "Thread3 Running\n"
-		void* pvParameters_)
+		void* pvParameters)
  {
 
 	//Cast argument
-	UINT inputs = *(UINT*)pvParameters_;
+	UINT inputs = *(UINT*)pvParameters;
 
 	while (1)
 	{
 		printf("Thread2 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
-		//rtos_Yield();
+		rtos_yield();
 	}
  }
 
