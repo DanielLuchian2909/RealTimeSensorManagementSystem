@@ -32,13 +32,13 @@ The RTOS module was the first part of this project. As of now, the RTOS supports
 - **Task Management**: The RTOS can create a thread with its own stack. It also supports pre-emptive and cooperative multitasking. The RTOS manages threads and will trigger an interrupt if the thread reaches its time limit or another thread pre-empts it; however, the user also has the option to yield their threads. 
 - **Task Scheduling**: The RTOS currently uses round-robin to schedule threads; however, a high-priority task is to switch round-robin scheduling with a priority scheduling system.
 - **Interrupt Handling**: The RTOS currently supports interrupt handling for specific interrupts mainly related to context switching and thread handling. Further development of this RTOS will involve slowly configuring and handling more interrupts. 
+- **Synchronization**: Critical sections support from interrupt disabling/enabling is under construction
+- **Inter-task Communication**: Task communication library is implemented (ported from a POSIX based library I wrote for a project) but is also waiting on crit sections for full integration
 
 The RTOS currently does not support but aims to implement the following (highest priority at the top):
 
 - **Memory Management**: The RTOS does not manage all memory and still relies on functions such as malloc for initialization and uses the memory handling produced by STM's code generation. I aim to slowly move away from STM-generated functionality and implement my system (most likely a binary buddy system) for memory allocation.
 - **File System**: I am currently writing the file module (using FATFS Middleware) to support reading and writing from a Micro-SD card, which will then be integrated into the RTOS for file I/O functionality. 
-- **Synchronization**: The RTOS does not yet support synchronization techniques (mutexes, semaphores).
-- **Inter-task Communication**: I plan to create basic task communication functionality once synchronization is implemented.
 
 ### Sensor Module
 
@@ -46,7 +46,7 @@ The sensor module is responsible for all sensor-related functionality in the pro
 
 ### File Module
 
-The file module uses the FAT file system (with the FatFs library) to format, configure and interface with an SPI-connected [Micro-SD Card](https://www.amazon.ca/CANADUINO%C2%AE-Micro-SD-Adapter-Arduino-Converter/dp/B09TY9L76L/ref=sr_1_5?crid=3A6RL8QGT985C&dib=eyJ2IjoiMSJ9.SIrVYSov3s7t7n5hnBUjPzDeW0VITudyJrj1i__FlHJForNvKYTDMdU0XJuUHdqjcLfKYL-_lZ0Di8aSQOWHJ3KJ-dVkVW0l2XM1BIDGqTV_xwFpRqXwHDj1_6laR7p_XXTTDQOBgtkK-a1ISolZ_lZ3-n-Z7yyNq5NPrLU6MIxIv1cYWPf6LEJ-D4mE5xaPpm35lszV4ah9Mc0tuqc4c9Cw3odwG3YrRYt59LCofjzlqLt7CaAZAgVOKVcR2QL4AKLy8K7t26Ka-YNlqy7iWtdi7FXLTyCszXcGnunksP6dGDjH5QK6JRicWb9m0Uq-3ay9wbrLaZOOlh27KvT2zXSafqCgXlxmSmFBtqPKNxW-iWkMaaKIlOa5AXZEFj_D5nzq1NdN6pRUL0kdAQ0bPE4Qxno4F0b_NrvY2zSOJURFmZXOXdd-RKXwGiFwkZhT.VaFX_wPsMXRTJHI07sh_Vxkpso4LqKE9dCEW5wRyR7o&dib_tag=se&keywords=sd+card+stm32&qid=1736557535&sprefix=sd+card+stm3%2Caps%2C102&sr=8-5). This module is currently under development.
+The file module uses the FAT file system (with the FatFs library) to format, configure and interface with an SPI-connected [Micro-SD Card](https://www.amazon.ca/CANADUINO%C2%AE-Micro-SD-Adapter-Arduino-Converter/dp/B09TY9L76L/ref=sr_1_5?crid=3A6RL8QGT985C&dib=eyJ2IjoiMSJ9.SIrVYSov3s7t7n5hnBUjPzDeW0VITudyJrj1i__FlHJForNvKYTDMdU0XJuUHdqjcLfKYL-_lZ0Di8aSQOWHJ3KJ-dVkVW0l2XM1BIDGqTV_xwFpRqXwHDj1_6laR7p_XXTTDQOBgtkK-a1ISolZ_lZ3-n-Z7yyNq5NPrLU6MIxIv1cYWPf6LEJ-D4mE5xaPpm35lszV4ah9Mc0tuqc4c9Cw3odwG3YrRYt59LCofjzlqLt7CaAZAgVOKVcR2QL4AKLy8K7t26Ka-YNlqy7iWtdi7FXLTyCszXcGnunksP6dGDjH5QK6JRicWb9m0Uq-3ay9wbrLaZOOlh27KvT2zXSafqCgXlxmSmFBtqPKNxW-iWkMaaKIlOa5AXZEFj_D5nzq1NdN6pRUL0kdAQ0bPE4Qxno4F0b_NrvY2zSOJURFmZXOXdd-RKXwGiFwkZhT.VaFX_wPsMXRTJHI07sh_Vxkpso4LqKE9dCEW5wRyR7o&dib_tag=se&keywords=sd+card+stm32&qid=1736557535&sprefix=sd+card+stm3%2Caps%2C102&sr=8-5). Currently the fatfs diskio driver is under development, using the [SD Specifications Part 1 Physical Layer Simplified Specification] (https://academy.cba.mit.edu/classes/networking_communications/SD/SD.pdf). 
 
 
 ## Project Hardware and Tools
