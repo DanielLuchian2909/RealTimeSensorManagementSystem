@@ -33,7 +33,7 @@ The RTOS module supports:
 - **Task Scheduling**: The RTOS currently uses round-robin to schedule threads; however, a high-priority task is to switch round-robin scheduling with a priority scheduling system.
 - **Interrupt Handling**: The RTOS currently supports interrupt handling for specific interrupts mainly related to context switching and thread handling. Further development of this RTOS will involve slowly configuring and handling more interrupts. 
 - **Synchronization**: Critical sections support from interrupt disabling/enabling is under construction
-- **Inter-task Communication**: Task communication library is implemented (ported from a POSIX based library I wrote for a project) but is also waiting on crit sections for full integration
+- **Inter-task Communication**: Task communication library is implemented but is also waiting on crit sections for thread safe integation
 
 The RTOS currently does not support but aims to implement the following (highest priority at the top):
 
