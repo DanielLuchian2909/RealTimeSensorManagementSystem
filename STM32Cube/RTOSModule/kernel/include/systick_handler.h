@@ -53,7 +53,7 @@ rtos_handleSystick(void) // Function to handle systick firing
 
 			_ICSR |= 1<<28; // Fire PendSV (interrupt responsible for scheduler)
 
-			__ISB; // Flush processor pipeline - make sure state change is visible
+			__ISB(); // Flush processor pipeline - make sure state change is visible
 
 			/* Explanation for self: You might think why does it matter if I flush the pipeline if PendSV just fires
 			 * before ISB happens? But here interrupt priority context matters. Since setting ICSR -> PendSV is lower

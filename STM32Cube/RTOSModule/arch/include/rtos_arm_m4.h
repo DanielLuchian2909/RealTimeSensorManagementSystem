@@ -46,8 +46,8 @@ raiseBASEPRI() /* Raise the minimum interrupt priority register (lower priority 
 				*/
 {
 	__set_BASEPRI(PENDSV_INTERRUPT_PRIO);
-	__ISB; // Flushes processor pipeline so change in interrupt priority becomes immediately visible
-	__DSB; // Make sure all instructions before this one complete before moving on
+	__ISB(); // Flushes processor pipeline so change in interrupt priority becomes immediately visible
+	__DSB(); // Make sure all instructions before this one complete before moving on
 }
 
 //-----------------------------------------------------------------------
