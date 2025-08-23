@@ -22,9 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "queue.h"
-#include "kernel.h"
-
+#include "systick_handler.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,8 +58,6 @@
 /* External variables --------------------------------------------------------*/
 extern I2C_HandleTypeDef hi2c1;
 /* USER CODE BEGIN EV */
-extern thread_queue_t* g_ps_rtos_queue; //Pointer to a global RTOSQueue
-extern UINT g_ui_kernel_status_flag;
 
 /* USER CODE END EV */
 
@@ -167,21 +163,6 @@ void SysTick_Handler(void)
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
-  if (g_ui_kernel_status_flag & KERNEL_STARTED)
-  {
-	  //If the thread is not done running, decrement its runtime, otherwise yield
-	  if( rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_runtime_ms_ > 0)
-	  {
-		  --(rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_runtime_ms_);
-	  }
-	  else
-	  {
-		  rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_runtime_ms_ = rtos_peekQueue(g_ps_rtos_queue)->ps_thread_data_->ui_thread_timeslice_ms_;
-		  _ICSR |= 1<<28;
-		  __asm("isb");
-	  }
-  }
-
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -214,8 +195,13 @@ void I2C1_ER_IRQHandler(void)
   /* USER CODE BEGIN I2C1_ER_IRQn 0 */
 
   /* USER CODE END I2C1_ER_IRQn 0 */
+
   HAL_I2C_ER_IRQHandler(&hi2c1);
+
   /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+
+  // Handle rtos action every time a systick fires
+  rtos_handleSystick();
 
   /* USER CODE END I2C1_ER_IRQn 1 */
 }

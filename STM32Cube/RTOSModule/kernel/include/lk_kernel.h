@@ -23,16 +23,16 @@ extern "C" {
  ************************************/
 /* Standard stack sizes */
 #define STACK_SIZE 0x4000 //Default stack size for the system stack
-#define THREAD_STACK_SIZE 0x400 //Stack size for individual threads
 
 /* SVC Numbers */
 #define RUN_FIRST_THREAD 0x00
 #define RTOS_YIELD 0x01
 
 /* PendSVC priority */
-#define SHPR2 *(uint32_t*)0xE000ED1C //Setting SVC priority, bits 31-24
-#define SHPR3 *(uint32_t*)0xE000ED20 //PendSV is bits 23-16
-#define _ICSR *(uint32_t*)0xE000ED04 //Trigger PendSV
+
+#define SVC_PRIO     1
+#define PENDSV_PRIO  2
+#define SYSTICK_PRIO 3
 
 /* Kernel Status Flags */
 #define KERNEL_INITIALIZED		0x0001
@@ -50,10 +50,14 @@ extern "C" {
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-BOOLE rtos_kernelInit(void); //Initializes all kernel related functions/data
-void rtos_kernelStart(void); //A function that starts the RTOS
-BOOLE rtos_createThread(void (*pfn_thread_fn)(void*), void* pv_parameters); //Creates a thread
-BOOLE rtos_createThreadWithDeadline(void (*pfn_thread_fn)(void*), void* pv_parameters, UINT ui_deadline); //Creates a thread
+// Kernel Control Functions
+BOOLE lk_kernelInit(void); //Initializes all kernel related functions/data
+void lk_kernelStart(void); //A function that starts the RTOS
+
+// Thread creation and manipulation functions
+BOOLE lk_createThread(void (*thread_fn)(void*), void* parameters); //Creates a thread
+BOOLE lk_createThreadWithDeadline(void (*thread_fn)(void*), void* parameters, UINT deadline); //Creates a thread
+void lk_threadYield(void); //Yield function for the RTOS
 
 #ifdef __cplusplus
 }

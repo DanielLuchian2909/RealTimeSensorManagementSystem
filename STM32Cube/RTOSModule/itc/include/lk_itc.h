@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file scheduler.h
- * @author Daniel Luchian
- * @brief Header file for the scheduler
+ * @file
+ * @author
+ * @brief
  ********************************************************************************
  */
 
-#ifndef __SCHEDULER_H__
-#define __SCHEDULER_H__
+#ifndef __ITC_H__
+#define __ITC_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,7 +16,8 @@ extern "C" {
 /************************************
  * INCLUDES
  ************************************/
-#include "base_types.h" //Basic type definitions and utilities
+#include "base_types.h"
+#include "itc_types.h"
 
 /************************************
  * MACROS AND DEFINES
@@ -25,7 +26,6 @@ extern "C" {
 /************************************
  * TYPEDEFS
  ************************************/
-#define ROUND_ROBIN_TIMEOUT_MS 1000; //The default value for a threads timeslice in ms
 
 /************************************
  * EXPORTED VARIABLES
@@ -34,10 +34,13 @@ extern "C" {
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-void rtos_yield(void); //Yield function for the RTOS
+msg_t* lk_newMsg();
+void lk_deleteMsg(msg_t* msg);
+INT lk_sendMsg(UCHAR dest_id, msg_t* msg);
+INT lk_recvMsg(UCHAR recv_id, msg_t* msg);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif // __ITC_H__

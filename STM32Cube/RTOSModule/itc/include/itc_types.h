@@ -6,8 +6,8 @@
  ********************************************************************************
  */
 
-#ifndef __ITC_H__
-#define __ITC_H__
+#ifndef __ITC_TYPES_H__
+#define __ITC_TYPES_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,30 +17,25 @@ extern "C" {
  * INCLUDES
  ************************************/
 #include "base_types.h"
-#include "itc_types.h"
 
 /************************************
  * MACROS AND DEFINES
  ************************************/
+#define MSG_DATA_LEN_BYTES 255
 
 /************************************
  * TYPEDEFS
  ************************************/
+/* Message Structure */
+typedef struct msg_t
+{
+    UCHAR len_;
+    UCHAR data_[MSG_DATA_LEN_BYTES];
+} msg_t;
 
-/************************************
- * EXPORTED VARIABLES
- ************************************/
-
-/************************************
- * GLOBAL FUNCTION PROTOTYPES
- ************************************/
-msg_t* rtos_newMsg();
-void rtos_deleteMsg(msg_t* msg);
-INT rtos_sendMsg(UCHAR dest_id, msg_t* msg);
-INT rtos_recvMsg(UCHAR recv_id, msg_t* msg);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __ITC_H__
+#endif // __ITC_TYPES_H__

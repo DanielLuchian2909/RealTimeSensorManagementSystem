@@ -17,7 +17,7 @@ extern "C" {
  * INCLUDES
  ************************************/
 #include "itc_types.h"
-#include "mutex.h"
+#include "lk_mutex.h"
 
 /************************************
  * MACROS AND DEFINES
@@ -48,8 +48,8 @@ typedef struct msg_recv_queue_t
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-INT rtos_msgRecvInit(msg_recv_queue_t* msg_queue);
-INT rtos_msgRecvEnqueue(msg_recv_queue_t* msg_queue, msg_container_t* msg);
+CHAR rtos_msgRecvInit(msg_recv_queue_t* msg_queue);
+CHAR rtos_msgRecvEnqueue(msg_recv_queue_t* msg_queue, msg_container_t* msg);
 msg_container_t* rtos_msgRecvDequeue(msg_recv_queue_t* msg_queue);
 
 #ifdef __cplusplus

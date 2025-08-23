@@ -32,7 +32,8 @@ extern "C" {
 /************************************
  * GLOBAL FUNCTION PROTOTYPES
  ************************************/
-
+void lk_enterTaskCrit();
+void lk_exitTaskCrit();
 
 #ifdef __cplusplus
 }

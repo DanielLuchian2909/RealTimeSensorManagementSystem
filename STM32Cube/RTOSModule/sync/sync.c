@@ -1,6 +1,6 @@
 /**
  ********************************************************************************
- * @file mutex.c
+ * @file sync.c
  * @author Daniel Luchian
  * @brief
  ********************************************************************************
@@ -9,7 +9,8 @@
 /************************************
  * INCLUDES
  ************************************/
-#include "mutex.h"
+#include "lk_sync.h"
+#include "lk_kernel.h"
 
 /************************************
  * EXTERN VARIABLES
@@ -26,6 +27,7 @@
 /************************************
  * STATIC VARIABLES
  ************************************/
+INT critSectionNesting = 0; // God hopes we don't nest more than 2 billion times
 
 /************************************
  * GLOBAL VARIABLES
@@ -43,43 +45,37 @@
  * GLOBAL FUNCTIONS
  ************************************/
 //-----------------------------------------------------------------------
-INT
-rtos_mutexInit(
-		mutex_t* mutex)
+void
+lk_enterTaskCrit()
 {
-	return 0;
-}
-
-//-----------------------------------------------------------------------
-INT
-rtos_mutexLock(
-		mutex_t* mutex)
-{
-	return 0;
-}
-
-//-----------------------------------------------------------------------
-INT
-rtos_mutexUnlock(
-		mutex_t* mutex)
-{
-	return 0;
-}
-
-//-----------------------------------------------------------------------
-INT
-rtos_mutexTryLock(
-		mutex_t* mutex)
-{
-	return 0;
+	rtos_disableTaskInterrupts();
+	critSectionNesting++;
 }
 
 //-----------------------------------------------------------------------
 void
-rtos_mutexDestroy(
-		mutex_t* mutex)
+lk_exitTaskCrit()
 {
+	// TODO handle negative nest case (should never happen, however if it did, needs to be address)
+
+	critSectionNesting--;
+
+	if (critSectionNesting <= 0)
+	{
+		rtos_enableInterrupts();
+	}
 }
 
+//-----------------------------------------------------------------------
+void
+lk_enterIrqCrit()
+{
 
+}
 
+//-----------------------------------------------------------------------
+void
+lk_exitIrqCrit()
+{
+
+}
