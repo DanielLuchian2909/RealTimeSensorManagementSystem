@@ -30,8 +30,12 @@
 #include <stdio.h>
 
 #include "env_sensor.h"
-#include "kernel.h"
-#include "scheduler.h"
+
+// RTOS Includes
+#include "lk_kernel.h"
+#include "lk_itc.h"
+#include "lk_mutex.h"
+#include "lk_sync.h"
 
 /* USER CODE END Includes */
 
@@ -123,20 +127,20 @@ int main(void)
   //Start the timer
   HAL_TIM_Base_Start(&htim1);
 
-  //Intialize all kernel related information
-  rtos_kernelInit();
+  //Initialize all kernel related information
+  lk_kernelInit();
 
   //Create an environmental sensor class and an alias to the class
   EnvSensorHandle* psSensorHandle = cInterfaceCreateEnvironmentalSensor();
 
   //Create the thread to collect and display sensor data
-  rtos_createThread(TestThread1, NULL);
+  lk_createThread(TestThread1, NULL);
 
   //Create a test thread to confirm scheduling
-  rtos_createThread(TestThread2, NULL);
+  lk_createThread(TestThread2, NULL);
 
   //Start the kernel
-  rtos_kernelStart();
+  lk_kernelStart();
 
   /* USER CODE END 2 */
 
@@ -225,7 +229,7 @@ TestThread1( //Function that serial prints "Thread2 Running\n"
 		printf("Thread1 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
-		rtos_yield();
+		lk_threadYield();
 	}
  }
 
@@ -243,7 +247,7 @@ TestThread2( //Function that serial prints "Thread3 Running\n"
 		printf("Thread2 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
 		HAL_Delay(500);
-		rtos_yield();
+		lk_threadYield();
 	}
  }
 

@@ -26,8 +26,8 @@
 typedef struct thread_queue_arg_t
 {
     msg_recv_queue_t* queue_;
-    uint8_t num_operations_;
-    uint8_t* num_successes_;
+    UCHAR num_operations_;
+    UCHAR* num_successes_;
     char value_;
 } thread_queue_arg_t;
 
@@ -38,24 +38,40 @@ typedef struct thread_queue_arg_t
 /************************************
  * GLOBAL VARIABLES
  ************************************/
+
+/************************************
+ * STATIC FUNCTION PROTOTYPES
+ ************************************/
+
+/************************************
+ * STATIC FUNCTIONS
+ ************************************/
+
+/************************************
+ * GLOBAL FUNCTIONS
+ ************************************/
 //-----------------------------------------------------------------------
-INT
+CHAR
 rtos_msgRecvInit( // Function to init a message receiving queue
     msg_recv_queue_t* msg_queue) // Pointer to message receiving queue to init
 {
 	msg_queue->head_ = NULL; // Dequeues at head
 	msg_queue->tail_ = NULL; // Enqueues at tail
 
-    return rtos_mutexInit(&msg_queue->queue_mutex_);
+    if (!rtos_mutexInit(&msg_queue->queue_mutex_))
+    {
+    	return 0;
+    }
+    return -1;
 }
 
 //----------------------------------------------------------------------
-INT // 0 if successful, non-zero otherwise
+CHAR // 0 if successful, non-zero otherwise
 rtos_msgRecvEnqueue(     // Function to enqueue messages on a receiving queue
     msg_recv_queue_t* msg_queue,  // Pointer to message receiving queue to enqueue
     msg_container_t* msg) // Pointer to the message to enqueue
 {
-    // Return -1 if not given valid params
+    // Return -1 if not given valid parameters
     if ((msg_queue == NULL) || (msg == NULL))
     {
         return -1;
@@ -97,7 +113,7 @@ rtos_msgRecvDequeue(
         return NULL;
     }
 
-    /* Enter Crit Section */
+    /* Enter Critical Section */
     rtos_mutexLock(&msg_queue->queue_mutex_);
 
     // Case where queue is empty
@@ -124,14 +140,3 @@ rtos_msgRecvDequeue(
 
     return msg_cont;
 }
-/************************************
- * STATIC FUNCTION PROTOTYPES
- ************************************/
-
-/************************************
- * STATIC FUNCTIONS
- ************************************/
-
-/************************************
- * GLOBAL FUNCTIONS
- ************************************/

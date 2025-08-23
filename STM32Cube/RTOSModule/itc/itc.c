@@ -9,7 +9,7 @@
 /************************************
  * INCLUDES
  ************************************/
-#include "itc.h"
+#include "lk_itc.h"
 #include "itc_queue.h"
 
 /************************************
@@ -19,9 +19,9 @@
 /************************************
  * PRIVATE MACROS AND DEFINES
  ************************************/
-#define MAX_NUM_MESSAGES         1000
+#define MAX_NUM_MESSAGES     1000
 #define MAX_THREAD_ID        255
-#define NUM_RECV_QUEUES  (MAX_THREAD_ID + 1) // Includes spots for thread id 0
+#define NUM_RECV_QUEUES      (MAX_THREAD_ID + 1) // Includes spot for thread id 0
 
 #define SUCCESSFULLY_INIT    0x0U
 #define NOT_INIT             0x1U
@@ -33,9 +33,9 @@
 /* Structure Encapsulating all Messaging Data Structures*/
 typedef struct msg_system_t
 {
-    msg_container_t pool_[MAX_NUM_MESSAGES]; // Memory pool for all messages
-    msg_container_t* next_free_;         // Ptr to first free message
-    mutex_t pool_mutex_;             // Mutex to protect the message pool
+    msg_container_t pool_[MAX_NUM_MESSAGES];      // Memory pool for all messages
+    msg_container_t* next_free_;                  // Ptr to first free message
+    mutex_t pool_mutex_;                          // Mutex to protect the message pool
     msg_recv_queue_t receivers_[NUM_RECV_QUEUES]; // Array of receiving queues
 } msg_system_t;
 
@@ -58,11 +58,11 @@ static void initMsgSystem(void);
  * STATIC FUNCTIONS
  ************************************/
 static void // 0 if successful, non-zero otherwise
-initMsgSystem(void) // Function to init the message library data structures
+initMsgSystem(void) // Function to initialize the message library data structures
 {
     msg_system_status = SUCCESSFULLY_INIT;
 
-    // Init all messages in the free list
+    // Initialize all messages in the free list
     for (size_t i = 0; i < MAX_NUM_MESSAGES - 1; i++)
     {
         msg_system.pool_[i].next_free_ = &msg_system.pool_[i + 1];
@@ -70,13 +70,13 @@ initMsgSystem(void) // Function to init the message library data structures
     msg_system.pool_[MAX_NUM_MESSAGES - 1].next_free_ = NULL;
     msg_system.next_free_ = &msg_system.pool_[0];
 
-    // Init message pool mutex
+    // Initialize message pool mutex
     if (rtos_mutexInit(&msg_system.pool_mutex_) != 0)
     {
         msg_system_status = FAILED_INIT;
     }
 
-    // Init the receiving queue for every thread
+    // Initialize the receiving queue for every thread
     for (size_t i = 0; i < NUM_RECV_QUEUES; i++)
     {
         if (rtos_msgRecvInit(&msg_system.receivers_[i]) != 0)
@@ -90,8 +90,8 @@ initMsgSystem(void) // Function to init the message library data structures
  * GLOBAL FUNCTIONS
  ************************************/
 //-----------------------------------------------------------------------
-msg_t*    // Ptr to returned message struct
-rtos_newMsg() // Function that returns a message struct if available, NULL otherwise
+msg_t*    // Pointer to returned message structure
+lk_newMsg() // Function that returns a message structure if available, NULL otherwise
 {
     // Check system is running
     if (msg_system_status != SUCCESSFULLY_INIT)
@@ -122,8 +122,8 @@ rtos_newMsg() // Function that returns a message struct if available, NULL other
 
 //-----------------------------------------------------------------------
 void
-rtos_deletemsg(     // Function that returns (deletes) given msg struct
-    msg_t* msg) // Ptr to msg struct to delete
+lk_deletemsg(     // Function that returns (deletes) given msg structure
+    msg_t* msg) // Pointer to msg structure to delete
 {
     // Check system is running
     if (msg_system_status != SUCCESSFULLY_INIT)
@@ -154,7 +154,7 @@ rtos_deletemsg(     // Function that returns (deletes) given msg struct
 
 //-----------------------------------------------------------------------
 INT   // 0 if successfully sent, non-zero otherwise
-rtos_sendMsg( // Function that sends a msg to another thread
+lk_sendMsg( // Function that sends a msg to another thread
     UCHAR dest_id, // Destination id of thread to deliver msg to
     msg_t* msg)         // Ptr to msg to deliver
 {
@@ -177,7 +177,7 @@ rtos_sendMsg( // Function that sends a msg to another thread
 
 //-----------------------------------------------------------------------
 INT   // 0 if successfully received, non-zero otherwise
-rtos_recvMsg( // Function that received any pending incoming msgs
+lk_recvMsg( // Function that received any pending incoming msgs
     UCHAR recv_id, // Thread ID of receiver
     msg_t* msg)      // Ptr to buffer for received msg
 {

@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file
- * @author
- * @brief
+ * @file scheduler.h
+ * @author Daniel Luchian
+ * @brief Header file for the scheduler
  ********************************************************************************
  */
 
-#ifndef __ITC_TYPES_H__
-#define __ITC_TYPES_H__
+#ifndef __SCHEDULER_H__
+#define __SCHEDULER_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,26 +16,27 @@ extern "C" {
 /************************************
  * INCLUDES
  ************************************/
-#include "base_types.h"
+#include "base_types.h" //Basic type definitions and utilities
 
 /************************************
  * MACROS AND DEFINES
  ************************************/
-#define MSG_DATA_LEN_BYTES 255
 
 /************************************
  * TYPEDEFS
  ************************************/
-/* Message Struct */
-typedef struct msg_t
-{
-    UCHAR len_;
-    UCHAR data_[MSG_DATA_LEN_BYTES];
-} msg_t;
+#define ROUND_ROBIN_TIMEOUT_MS 1000; //The default value for a threads timeslice in ms
 
+/************************************
+ * EXPORTED VARIABLES
+ ************************************/
+
+/************************************
+ * GLOBAL FUNCTION PROTOTYPES
+ ************************************/
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __ITC_TYPES_H__
+#endif
