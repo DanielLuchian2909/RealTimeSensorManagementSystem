@@ -37,7 +37,7 @@ The RTOS module supports:
 
 The RTOS currently does not support but aims to implement the following (highest priority at the top):
 
-- **Memory Management**: The RTOS does not manage all memory and still relies on functions such as malloc for initialization and uses the memory handling produced by STM's code generation. I aim to slowly move away from STM-generated functionality and implement my system (most likely a binary buddy system) for memory allocation.
+- **Memory Management**: The RTOS does not manage system level memory and still relies on functions such as malloc for initialization and uses the memory handling produced by STM's code generation. I aim to slowly move away from STM-generated functionality and implement my system (most likely a binary buddy system) for memory allocation.
 - **File System**: I am currently writing the file module (using FATFS Middleware) to support reading and writing from a Micro-SD card, which will then be integrated into the RTOS for file I/O functionality. 
 
 ### Sensor Module
