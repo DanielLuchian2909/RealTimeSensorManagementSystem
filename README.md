@@ -32,8 +32,8 @@ The RTOS module supports:
 - **Task Management**: The RTOS can create a thread with its own stack. It also supports pre-emptive and cooperative multitasking. The RTOS manages threads and will trigger an interrupt if the thread reaches its time limit or another thread pre-empts it; however, the user also has the option to yield their threads. 
 - **Task Scheduling**: The RTOS currently uses round-robin to schedule threads; however, a high-priority task is to switch round-robin scheduling with a priority scheduling system.
 - **Interrupt Handling**: The RTOS currently supports interrupt handling for specific interrupts mainly related to context switching and thread handling. Further development of this RTOS will involve slowly configuring and handling more interrupts. 
-- **Synchronization**: Thread safe critical sections are available (currently being put to use to implement mutexes)
-- **Inter-task Communication**: Task communication library is implemented (ported from POSIX ITC project) but currently waiting on kernel mutex implementations
+- **Synchronization**: Thread safe critical sections and simple mutexes are available
+- **Inter-task Communication**: Inter task communication feature is implemented through thread safe messaging and receiving API
 
 The RTOS currently does not support but aims to implement the following (highest priority at the top):
 
