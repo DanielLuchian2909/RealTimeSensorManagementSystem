@@ -11,6 +11,7 @@
  ************************************/
 #include "lk_sync.h"
 #include "lk_kernel.h"
+#include "rtos_arm_m4.h"
 
 /************************************
  * EXTERN VARIABLES

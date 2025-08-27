@@ -30,9 +30,10 @@ extern "C" {
 typedef struct thread_queue_t
 {
 	thread_node_t* front_; //Pointer to the front of the queue
-	thread_node_t* rear_; //Poiner to the rear of the queue
-	UINT num_threads_; //Current number of threads in the queue
-	UINT max_num_threads_; //Maxium number of threads the queue can hold
+	thread_node_t* rear_;  //Pointer to the rear of the queue
+
+	UINT num_threads_;     //Current number of threads in the queue
+	UINT max_num_threads_; //Maximum number of threads the queue can hold
 } thread_queue_t;
 
 /************************************

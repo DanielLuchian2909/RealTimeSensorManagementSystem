@@ -37,17 +37,21 @@ extern thread_queue_t* g_rtos_queue; //Pointer to a global RTOSQueue
 /************************************
  * GLOBAL VARIABLES
  ************************************/
+thread_manager_t g_thread_manager;
 
 /************************************
  * STATIC FUNCTION PROTOTYPES
  ************************************/
-BOOLE sched(void); //RTOS scheduler
 
 /************************************
  * STATIC FUNCTIONS
  ************************************/
+
+/************************************
+ * GLOBAL FUNCTIONS
+ ************************************/
 //-----------------------------------------------------------------------
-BOOLE //Return true if the schedular was run without exceptions
+BOOLE //Return true if the scheduler was run without exceptions
 sched() //RTOS Scheduler, full implementation tbd
 {
     //Dequeue the current thread and TODO checks if a thread context was dequeued
@@ -83,10 +87,10 @@ sched() //RTOS Scheduler, full implementation tbd
     //Set PSP to the next thread's stack pointer
     __set_PSP((UINT)rtos_peekQueue(g_rtos_queue)->thread_data_->thread_stack_ptr_);
 
+    // Hack for mutex implementation
+    g_thread_manager.current_thread_ = rtos_peekQueue(g_rtos_queue)->thread_data_;
+
+    printf("%p\n",g_thread_manager.current_thread_->thread_stack_ptr_);
+
     return TRUE;
 }
-
-/************************************
- * GLOBAL FUNCTIONS
- ************************************/
-

@@ -11,6 +11,7 @@
  ************************************/
 #include <stdlib.h>
 #include "itc_queue.h"
+#include "utilities.h"
 
 /************************************
  * EXTERN VARIABLES
@@ -58,7 +59,7 @@ rtos_msgRecvInit( // Function to init a message receiving queue
 	msg_queue->head_ = NULL; // Dequeues at head
 	msg_queue->tail_ = NULL; // Enqueues at tail
 
-    if (!rtos_mutexInit(&msg_queue->queue_mutex_))
+    if (!lk_mutexInit(&msg_queue->queue_mutex_))
     {
     	return 0;
     }
@@ -72,15 +73,13 @@ rtos_msgRecvEnqueue(     // Function to enqueue messages on a receiving queue
     msg_container_t* msg) // Pointer to the message to enqueue
 {
     // Return -1 if not given valid parameters
-    if ((msg_queue == NULL) || (msg == NULL))
-    {
-        return -1;
-    }
+    SIGNED_NULL_PTR_CHECK(msg_queue);
+    SIGNED_NULL_PTR_CHECK(msg);
 
     msg->next_free_ = NULL;
 
     /* Enter Critical Section */
-    rtos_mutexLock(&msg_queue->queue_mutex_);
+    lk_mutexLock(&msg_queue->queue_mutex_);
 
     // Case where queue is empty
     if (msg_queue->tail_ == NULL)
@@ -97,7 +96,7 @@ rtos_msgRecvEnqueue(     // Function to enqueue messages on a receiving queue
     }
 
     /* Exit Critical Section */
-    rtos_mutexUnlock(&msg_queue->queue_mutex_);
+    lk_mutexUnlock(&msg_queue->queue_mutex_);
 
     return 0;
 }
@@ -114,13 +113,13 @@ rtos_msgRecvDequeue(
     }
 
     /* Enter Critical Section */
-    rtos_mutexLock(&msg_queue->queue_mutex_);
+    lk_mutexLock(&msg_queue->queue_mutex_);
 
     // Case where queue is empty
     if (msg_queue->head_ == NULL)
     {
         /* Exit Critical Section */
-        rtos_mutexUnlock(&msg_queue->queue_mutex_);
+        lk_mutexUnlock(&msg_queue->queue_mutex_);
         return NULL;
     }
 
@@ -136,7 +135,7 @@ rtos_msgRecvDequeue(
     }
 
     /* Exit Critical Section */
-    rtos_mutexUnlock(&msg_queue->queue_mutex_);
+    lk_mutexUnlock(&msg_queue->queue_mutex_);
 
     return msg_cont;
 }
