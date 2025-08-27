@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file
- * @author
+ * @file utilities.h
+ * @author Daniel Luchian
  * @brief
  ********************************************************************************
  */
 
-#ifndef __ITC_TYPES_H__
-#define __ITC_TYPES_H__
+#ifndef __UTILITIES_H__
+#define __UTILITIES_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,21 +21,19 @@ extern "C" {
 /************************************
  * MACROS AND DEFINES
  ************************************/
-#define MSG_DATA_LEN_BYTES 127
+#define SIGNED_NULL_PTR_CHECK(ptr) do { if (ptr == NULL) { return -1; } } while (0)
+#define VOID_NULL_PTR_CHECK(ptr) do { if (ptr == NULL) { return; } } while (0)
 
 /************************************
  * TYPEDEFS
  ************************************/
-/* Message Structure */
-typedef struct msg_t
-{
-    UCHAR len_;
-    UCHAR data_[MSG_DATA_LEN_BYTES];
-} msg_t;
 
+/************************************
+ * EXPORTED VARIABLES
+ ************************************/
 
-#ifdef __cplusplus
-}
-#endif
+/************************************
+ * GLOBAL FUNCTION PROTOTYPES
+ ************************************/
 
-#endif // __ITC_TYPES_H__
+#endif // __UTILITIES_H__

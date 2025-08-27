@@ -22,6 +22,7 @@ extern "C" {
  * INCLUDES
  ************************************/
 #include "base_types.h"
+#include "thread.h"
 
 /************************************
  * MACROS AND DEFINES
@@ -42,7 +43,8 @@ typedef enum
 typedef struct mutex_t
 {
 	volatile mutex_state_e lock_; // Core lock
-
+	tcb_t* owner_;
+	BOOLE init_;
 } mutex_t;
 
 /************************************

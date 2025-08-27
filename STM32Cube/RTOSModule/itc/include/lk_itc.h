@@ -36,8 +36,8 @@ extern "C" {
  ************************************/
 msg_t* lk_newMsg();
 void lk_deleteMsg(msg_t* msg);
-INT lk_sendMsg(UCHAR dest_id, msg_t* msg);
-INT lk_recvMsg(UCHAR recv_id, msg_t* msg);
+CHAR lk_sendMsg(UCHAR dest_id, msg_t* msg);
+CHAR lk_recvMsg(UCHAR recv_id, msg_t* msg);
 
 #ifdef __cplusplus
 }

@@ -22,6 +22,7 @@
  * EXTERN VARIABLES AND FUNCTIONS
  ************************************/
 extern void runFirstThread(void); //Function to start the first thread
+extern CHAR rtos_itcInit(void);
 
 /************************************
  * PRIVATE MACROS AND DEFINES
@@ -63,9 +64,13 @@ allocateThread() //Get a thread pointer
 
 	//If the potential new thread address fits in the stack return it, otherwise return NULL
 	if (potential_thread >= minthread_stack_ptr)
+	{
 		return potential_thread;
+	}
 	else
+	{
 		return NULL; //Not enough space for a new thread
+	}
 }
 
 //-----------------------------------------------------------------------
@@ -115,7 +120,7 @@ svcHandlerMain( //SVC Handler function
 	//Pend an interrupt to do a context switch
 	case RTOS_YIELD:
 		_ICSR |= (1 << PENDSV_TRIGGER_BIT); // Trigger PendSV
-		__asm("isb");
+		__ISB();
 		break;
 
 	default:
@@ -145,15 +150,19 @@ lk_kernelInit() //Function to initialize kernel related information
 
 	//Initializing threads circular queue
 	g_rtos_queue = rtos_initQueue(STACK_SIZE / THREAD_STACK_SIZE - 1);
-	if (!g_rtos_queue)
+	if (g_rtos_queue == NULL)
 	{
-		//TODO add some debug log
+
 		g_kernel_status_flag |= KERNEL_NOT_INITIALIZED;
 		return FALSE; //Failed to create kernel queue
 	}
 
 	// Initialize the message queue
-
+	if (rtos_itcInit() != 0)
+	{
+		g_kernel_status_flag |= KERNEL_NOT_INITIALIZED;
+		return FALSE;
+	}
 
 	//Kernel successfully created
 	g_kernel_status_flag |= KERNEL_INITIALIZED;
@@ -165,7 +174,7 @@ void
 lk_kernelStart() //Function to start the kernel
 {
 	g_kernel_status_flag |= KERNEL_STARTED;
-	__asm("SVC #0");
+	__ASM("SVC #0");
 }
 
 //-----------------------------------------------------------------------
@@ -178,7 +187,7 @@ lk_createThread( //A function that creates a thread
 	UINT* new_thread_ptr = allocateThread();
 	if (new_thread_ptr == NULL)
 	{
-		//TODO add some debug log
+
 		return FALSE; //New thread stack allocation failed
 	}
 
@@ -204,7 +213,7 @@ lk_createThread( //A function that creates a thread
 	tcb_t* new_thread_context = (tcb_t*)malloc(sizeof(tcb_t));
 	if (new_thread_context == NULL)
 	{
-		//TODO add some debug log
+
 		return FALSE; //Memory allocation failed
 	}
 
@@ -220,7 +229,6 @@ lk_createThread( //A function that creates a thread
 	if (!rtos_enQueue(g_rtos_queue, new_thread_context))
 	{
 		free(new_thread_context); //Free context memory if enqueue failed
-		//TODO add some debug log
 		return FALSE;
 	}
 
@@ -252,5 +260,5 @@ lk_createThreadWithDeadline( //A function that creates a thread
 void
 lk_threadYield() //Function that yields a thread
 {
-	__asm("SVC #1");
+	__ASM("SVC #1");
 }

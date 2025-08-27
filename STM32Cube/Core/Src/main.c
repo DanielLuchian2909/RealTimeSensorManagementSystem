@@ -228,7 +228,7 @@ TestThread1( //Function that serial prints "Thread2 Running\n"
 	{
 		printf("Thread1 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
-		HAL_Delay(500);
+		HAL_Delay(2000);
 		lk_threadYield();
 	}
  }
@@ -246,7 +246,7 @@ TestThread2( //Function that serial prints "Thread3 Running\n"
 	{
 		printf("Thread2 Running\n");
 		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
-		HAL_Delay(500);
+		HAL_Delay(2000);
 		lk_threadYield();
 	}
  }
