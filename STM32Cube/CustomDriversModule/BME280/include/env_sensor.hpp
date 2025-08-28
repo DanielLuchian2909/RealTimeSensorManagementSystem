@@ -1,13 +1,13 @@
 /**
  ********************************************************************************
- * @file        env_sensor.h
+ * @file        env_sensor.hpp
  * @author      Daniel Luchian
  * @brief       Header file for the EnvironmentalSensor class
  ********************************************************************************
  */
 
-#ifndef __ENV_SENSOR_H__
-#define __ENV_SENSOR_H__
+#ifndef __ENV_SENSOR_HPP__
+#define __ENV_SENSOR_HPP__
 
 /************************************
  * INCLUDES
@@ -121,4 +121,4 @@ private:
 
 #endif // __cplusplus
 
-#endif // __ENV_SENSOR_H__
+#endif // __ENV_SENSOR_HPP__
