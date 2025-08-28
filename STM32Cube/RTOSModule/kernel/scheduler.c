@@ -90,7 +90,5 @@ sched() //RTOS Scheduler, full implementation tbd
     // Hack for mutex implementation
     g_thread_manager.current_thread_ = rtos_peekQueue(g_rtos_queue)->thread_data_;
 
-    printf("%p\n",g_thread_manager.current_thread_->thread_stack_ptr_);
-
     return TRUE;
 }
