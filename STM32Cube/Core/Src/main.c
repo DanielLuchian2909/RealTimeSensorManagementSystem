@@ -29,13 +29,14 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 
-#include "env_sensor.h"
-
-// RTOS Includes
+// RTOS Module Includes
 #include "lk_kernel.h"
 #include "lk_itc.h"
 #include "lk_mutex.h"
 #include "lk_sync.h"
+
+// Sensor Driver Includes
+#include "env_sensor.hpp"
 
 /* USER CODE END Includes */
 
@@ -57,31 +58,15 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-typedef struct Bme280DataAlias_t
-{
-// Compensated pressure
-UINT pressure;
-
-// Compensated temperature
-INT temperature;
-
-// Compensated humidity
-UINT humidity;
-} Bme280DataAlias_t;
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-
 void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* I/O Utilities */
 INT __io_putchar(INT ch); //Transmit a character over UART
-
-/* Thread Test Functions */
-void TestThread1(void* pvParameters);
-void TestThread2(void* pvParameters);
 
 /* USER CODE END PFP */
 
@@ -126,21 +111,6 @@ int main(void)
 
   //Start the timer
   HAL_TIM_Base_Start(&htim1);
-
-  //Initialize all kernel related information
-  lk_kernelInit();
-
-  //Create an environmental sensor class and an alias to the class
-  EnvSensorHandle* psSensorHandle = cInterfaceCreateEnvironmentalSensor();
-
-  //Create the thread to collect and display sensor data
-  lk_createThread(TestThread1, NULL);
-
-  //Create a test thread to confirm scheduling
-  lk_createThread(TestThread2, NULL);
-
-  //Start the kernel
-  lk_kernelStart();
 
   /* USER CODE END 2 */
 
@@ -214,42 +184,6 @@ __io_putchar( //Transmits a character ofer UART
 		return -1; //If transmission fail, return error code
 	return ch; //Otherwise reuturn transmitted character
 }
-
-//-----------------------------------------------------------------------
-void
-TestThread1( //Function that serial prints "Thread2 Running\n"
-		void* pvParameters)
- {
-
-	//Cast argument
-	UINT inputs = *(UINT*)pvParameters;
-
-	while (1)
-	{
-		printf("Thread1 Running\n");
-		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
-		HAL_Delay(2000);
-		lk_threadYield();
-	}
- }
-
-//-----------------------------------------------------------------------
-void
-TestThread2( //Function that serial prints "Thread3 Running\n"
-		void* pvParameters)
- {
-
-	//Cast argument
-	UINT inputs = *(UINT*)pvParameters;
-
-	while (1)
-	{
-		printf("Thread2 Running\n");
-		for(int i = 0; i < 20002; i++){} //make sure the max iterations are different
-		HAL_Delay(2000);
-		lk_threadYield();
-	}
- }
 
 /* USER CODE END 4 */
 
