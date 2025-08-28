@@ -112,8 +112,8 @@ svcHandlerMain( //SVC Handler function
 
 	//Run the first thread
 	case RUN_FIRST_THREAD:
-		__set_PSP ((UINT)
-				rtos_peekQueue(g_rtos_queue)->thread_data_->thread_stack_ptr_);
+		g_thread_manager.current_thread_ = rtos_peekQueue(g_rtos_queue)->thread_data_;
+		__set_PSP ((UINT)rtos_peekQueue(g_rtos_queue)->thread_data_->thread_stack_ptr_);
 		runFirstThread();
 		break;
 

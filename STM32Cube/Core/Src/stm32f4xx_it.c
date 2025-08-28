@@ -161,7 +161,11 @@ void SysTick_Handler(void)
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
+
   /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  // Fires scheduler
+  rtos_handleSystick();
 
   /* USER CODE END SysTick_IRQn 1 */
 }
@@ -199,9 +203,6 @@ void I2C1_ER_IRQHandler(void)
   HAL_I2C_ER_IRQHandler(&hi2c1);
 
   /* USER CODE BEGIN I2C1_ER_IRQn 1 */
-
-  // Handle rtos action every time a systick fires
-  rtos_handleSystick();
 
   /* USER CODE END I2C1_ER_IRQn 1 */
 }
