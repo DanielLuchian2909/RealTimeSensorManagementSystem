@@ -1,5 +1,5 @@
 
-# Real-Time Sensor Management System Project Overview
+# Real-Time Operating System with Sensor and File Support
 
 This repository, written by Daniel Luchian, contains the software for an in-progress project developing an RTOS and some associated drivers for an STM32.
 
