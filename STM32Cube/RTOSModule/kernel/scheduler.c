@@ -20,6 +20,7 @@
  * EXTERN VARIABLES
  ************************************/
 extern thread_queue_t* g_rtos_queue; //Pointer to a global RTOSQueue
+extern volatile UINT g_kernel_status_flag;
 
 /************************************
  * PRIVATE MACROS AND DEFINES
@@ -89,6 +90,8 @@ sched() //RTOS Scheduler, full implementation tbd
 
     // Hack for mutex implementation
     g_thread_manager.current_thread_ = rtos_peekQueue(g_rtos_queue)->thread_data_;
+
+    g_kernel_status_flag &= ~(KERNEL_SCHEDULING);
 
     return TRUE;
 }

@@ -40,7 +40,9 @@ extern UINT g_kernel_status_flag;
 static inline void // Static inline for speed and internal linkage to stm32f4xx_it.c
 rtos_handleSystick(void) // Function to handle systick firing
 {
-	if (g_kernel_status_flag & KERNEL_STARTED)
+	// Run or update scheduler if kernel is working but not currently scheduling
+	if ( (g_kernel_status_flag & KERNEL_STARTED) &&
+		 !(g_kernel_status_flag & KERNEL_SCHEDULING))
 	{
 		//If the thread is not done running, decrement its runtime, otherwise yield
 		if( rtos_peekQueue(g_rtos_queue)->thread_data_->thread_runtime_ms_ > 0)
@@ -61,6 +63,8 @@ rtos_handleSystick(void) // Function to handle systick firing
 			 * the ISB will make sure the processor sees the new state of ICSR, if for some reason (which should never happen)
 			 * systick becomes lower priority than PendSV the ISB becomes useless.
 			 */
+
+			g_kernel_status_flag |= KERNEL_SCHEDULING;
 		}
 	}
 }
