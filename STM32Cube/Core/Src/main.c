@@ -38,6 +38,8 @@
 // Sensor Driver Includes
 #include "env_sensor.hpp"
 
+#include "sensor_rw_demo.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +54,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define RUN_SENSOR_RW_DEMO // Uncomment to run sensor r/w demo
 
 /* USER CODE END PM */
 
@@ -67,6 +70,9 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 /* I/O Utilities */
 INT __io_putchar(INT ch); //Transmit a character over UART
+
+void readSensorThread(void* args);
+void writeSensorThread(void* args);
 
 /* USER CODE END PFP */
 
@@ -116,6 +122,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+#ifdef RUN_SENSOR_RW_DEMO
+  runSensorRWDemo(); // Concurrent read/write sensor using the RTOS demo
+#endif
 
   while (1)
   {
