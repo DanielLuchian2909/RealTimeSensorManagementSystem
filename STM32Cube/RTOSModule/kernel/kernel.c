@@ -47,7 +47,7 @@ static UINT* last_allocated_thread = NULL; //Last allocated thread stack pointer
  * GLOBAL VARIABLES
  ************************************/
 thread_queue_t* g_rtos_queue = NULL; //RTOS thread queue
-UINT g_kernel_status_flag = 0;
+volatile UINT g_kernel_status_flag = 0;
 
 /************************************
  * STATIC FUNCTIONS
@@ -173,6 +173,11 @@ lk_kernelInit() //Function to initialize kernel related information
 void
 lk_kernelStart() //Function to start the kernel
 {
+	if (!(g_kernel_status_flag & KERNEL_INITIALIZED))
+	{
+		return;
+	}
+
 	g_kernel_status_flag |= KERNEL_STARTED;
 	__ASM("SVC #0");
 }
@@ -262,3 +267,13 @@ lk_threadYield() //Function that yields a thread
 {
 	__ASM("SVC #1");
 }
+
+//-----------------------------------------------------------------------
+void
+lk_delay(              // Wrapper of HAL delay for now
+		UINT delay_ms)
+{
+	HAL_Delay(delay_ms);
+}
+
+
